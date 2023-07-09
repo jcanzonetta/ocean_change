@@ -29,6 +29,13 @@
             {
               "client_id": "798401796422-qdfe08l0efs4u471hlpgl3ph7ndoddl9.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "798401796422-6ffst6a9plm8qi16nhkm15amp946hd28.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.oceanChange"
+              }
             }
           ]
         }
