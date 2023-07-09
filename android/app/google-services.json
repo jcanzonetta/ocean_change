@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "798401796422",
+    "project_id": "ocean-change",
+    "storage_bucket": "ocean-change.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798401796422:android:86e579e21e2ee39c142d47",
+        "android_client_info": {
+          "package_name": "com.example.ocean_change"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "798401796422-qdfe08l0efs4u471hlpgl3ph7ndoddl9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCL-2KtKKt2V3xrp0cYCom5RGMSpBU_XOA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "798401796422-qdfe08l0efs4u471hlpgl3ph7ndoddl9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
