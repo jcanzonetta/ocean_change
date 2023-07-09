@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'create_report_screen.dart';
+
 class MapScreen extends StatelessWidget {
   static const String routeName = '/';
 
@@ -7,6 +9,14 @@ class MapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: const Text('Ocean Change')),
+      body: const Placeholder(),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.pushNamed(context, CreateReportScreen.routeName);
+          }),
+    );
   }
 }
