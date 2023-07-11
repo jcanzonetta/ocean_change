@@ -13,7 +13,7 @@ class WaterTemperatureFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.fromLTRB(48.0, 8.0, 48.0, 8.0),
       child: TextFormField(
           decoration:
               const InputDecoration(labelText: 'Water Temperature (°F)'),
