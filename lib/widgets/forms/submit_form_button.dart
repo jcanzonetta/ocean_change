@@ -28,8 +28,9 @@ class _SubmitFormButton extends State<SubmitFormButton> {
               'water_temp': widget.userReport.waterTemp,
               'date': widget.userReport.date
             });
+
+            Navigator.of(context).pop();
           }
-          ;
         },
         icon: const Icon(Icons.cloud_circle),
         label: const Text('Submit'),
