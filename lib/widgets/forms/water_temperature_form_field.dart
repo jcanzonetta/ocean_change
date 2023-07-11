@@ -16,7 +16,7 @@ class WaterTemperatureFormField extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(48.0, 8.0, 48.0, 8.0),
       child: TextFormField(
           decoration:
-              const InputDecoration(labelText: 'Water Temperature (°F)'),
+              const InputDecoration(label: Text('Water Temperature (°F)')),
           keyboardType: const TextInputType.numberWithOptions(signed: false),
           maxLength: 5,
           inputFormatters: [
