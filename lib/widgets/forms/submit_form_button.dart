@@ -25,7 +25,8 @@ class _SubmitFormButton extends State<SubmitFormButton> {
 
             FirebaseFirestore.instance.collection('reports').add({
               'observation': widget.userReport.observation,
-              'water_temp': widget.userReport.waterTemp
+              'water_temp': widget.userReport.waterTemp,
+              'date': widget.userReport.date
             });
           }
           ;
