@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:ocean_change/models/user_report.dart';
 
@@ -21,15 +22,55 @@ class _DateTimeFormFieldState extends State<DateTimeFormField> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: OutlinedButton(
-        child: Text('When was this observed?'),
-        onPressed: _pickDateTime,
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: OutlinedButton(
+              onPressed: _pickDate,
+              child: const Icon(Icons.calendar_month_outlined),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child:
+                Text(DateFormat('MM-dd-yyyy').format(widget.userReport.date!)),
+          ),
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: OutlinedButton(
+                onPressed: _pickTime,
+                child: const Icon(Icons.schedule_outlined),
+              )),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(DateFormat('hh:mm a').format(widget.userReport.date!)),
+          )
+        ],
       ),
     );
   }
 
-  void _pickDateTime() async {
+  void _pickTime() async {
+    TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay(
+            hour: widget.userReport.date!.hour,
+            minute: widget.userReport.date!.minute));
+    if (pickedTime == null) {
+      return;
+    } else {
+      setState(() {
+        DateTime tempDate = widget.userReport.date!;
+        widget.userReport.date = DateTime(tempDate.year, tempDate.month,
+            tempDate.day, pickedTime.hour, pickedTime.minute);
+      });
+    }
+  }
+
+  void _pickDate() async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         initialDate: widget.userReport.date!,
@@ -40,7 +81,11 @@ class _DateTimeFormFieldState extends State<DateTimeFormField> {
       return;
     } else {
       setState(() {
-        widget.userReport.date = pickedDate;
+        TimeOfDay tempTime = TimeOfDay(
+            hour: widget.userReport.date!.hour,
+            minute: widget.userReport.date!.minute);
+        widget.userReport.date = DateTime(pickedDate.year, pickedDate.month,
+            pickedDate.day, tempTime.hour, tempTime.minute);
       });
     }
   }
