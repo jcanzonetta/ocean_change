@@ -17,18 +17,22 @@ class ObservationFormField extends StatefulWidget {
 }
 
 class _ObservationFormFieldState extends State<ObservationFormField> {
-  String dropdownValue = ObservationFormField.observationList.first;
+  @override
+  void initState() {
+    super.initState();
+    widget.userReport.observation = ObservationFormField.observationList.first;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: DropdownButton<String>(
-          value: dropdownValue,
+          value: widget.userReport.observation,
           icon: const Icon(Icons.arrow_downward),
           onChanged: (String? value) {
             setState(() {
-              dropdownValue = value!;
+              widget.userReport.observation = value!;
             });
           },
           items: ObservationFormField.observationList
