@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/user_report.dart';
 import '../widgets/forms/date_time_form_field.dart';
+import '../widgets/forms/number_of_observation_form_field.dart';
 import '../widgets/forms/observation_form_field.dart';
 import '../widgets/forms/submit_form_button.dart';
 import '../widgets/forms/water_temperature_form_field.dart';
@@ -33,6 +34,8 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
         child: SingleChildScrollView(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             ObservationFormField(userReport: userReport),
+            NumberOfObservationFormField(userReport: userReport),
+            const Text('Placeholder for species form field'),
             WaterTemperatureFormField(userReport: userReport),
             DateTimeFormField(userReport: userReport),
             SubmitFormButton(formKey: formKey, userReport: userReport),
