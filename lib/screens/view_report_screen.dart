@@ -9,7 +9,8 @@ class ViewReportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
-          AppBar(title: const Text('Placeholder Text (reads from Firestore)')),
+          AppBar(title: const Text('Observation - Date & Time (From firestore)', 
+            style: TextStyle(fontSize: 16))),
       body: const Placeholder(),
     );
   }
