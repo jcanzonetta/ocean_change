@@ -16,7 +16,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Wasteagram',
+      title: 'Ocean Change',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
