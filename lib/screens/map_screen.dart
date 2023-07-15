@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/report_icon.dart';
+import '../widgets/map/base_map.dart';
 
 import 'create_report_screen.dart';
 
@@ -12,11 +12,11 @@ class MapScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Ocean Change')),
-      // container in body is map placeholder
-      body: Container(
-              color: const Color.fromARGB(255, 163, 213, 236),
-              alignment: Alignment.center,
-              child: const ReportIcon()),
+      body: const Stack(
+        fit: StackFit.expand,
+        children: [
+          BaseMap(),
+        ],),
       floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {
