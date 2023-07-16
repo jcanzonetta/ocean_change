@@ -18,7 +18,8 @@ class ObservationStreamBuilder extends StatelessWidget {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('possible-observations')
-            .orderBy('name')
+            .orderBy(
+                'name') //ToDo: Why doesn't this result in a sorted dropdown list?
             .snapshots(),
         builder: (context, snapshot) {
           List<Observation> observationList = [];
@@ -29,6 +30,7 @@ class ObservationStreamBuilder extends StatelessWidget {
                   Observation.fromFirestore(docSnapshot.data());
               observationList.add(observation);
             }
+
             return ObservationFormField(
                 userReport: userReport, observationList: observationList);
           } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
