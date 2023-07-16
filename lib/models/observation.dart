@@ -11,7 +11,7 @@ class Observation {
       for (final singleSpecies in document['species']) {
         final String name = singleSpecies['name'];
         final String imageUrl = singleSpecies['image_url'];
-        speciesList.add({name: name, imageUrl: imageUrl});
+        speciesList.add({'name': name, 'imageUrl': imageUrl});
       }
     }
 

@@ -35,7 +35,6 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             ObservationStreamBuilder(userReport: userReport),
             NumberOfObservationFormField(userReport: userReport),
-            const Text('Placeholder for species form field'),
             WaterTemperatureFormField(userReport: userReport),
             DateTimeFormField(userReport: userReport),
             SubmitFormButton(formKey: formKey, userReport: userReport),

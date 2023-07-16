@@ -5,6 +5,7 @@ class UserReport {
   GeoPoint? geopoint;
   String? geohash;
   String? observation;
+  String? species;
   num? observationNumber;
   String? waterColor;
   num? waterTemp;
@@ -15,6 +16,7 @@ class UserReport {
       this.geopoint,
       this.geohash,
       this.observation,
+      this.species,
       this.observationNumber,
       this.waterColor,
       this.waterTemp,
@@ -27,6 +29,7 @@ class UserReport {
       date: post['date'].toDate(),
       geopoint: post['geopoint'],
       observation: post['observation'],
+      species: post['species'],
       observationNumber: post['observation_number'],
       waterColor: post['water_color'],
       waterTemp: post['water_temp'],
