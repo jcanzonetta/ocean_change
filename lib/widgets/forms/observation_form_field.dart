@@ -31,7 +31,7 @@ class _ObservationFormFieldState extends State<ObservationFormField> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Padding(
@@ -63,7 +63,7 @@ class _ObservationFormFieldState extends State<ObservationFormField> {
                 ),
               ],
             ),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Padding(
