@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:ocean_change/widgets/forms/species_form_field.dart';
 
 import '../../models/observation.dart';
 import '../../models/user_report.dart';
