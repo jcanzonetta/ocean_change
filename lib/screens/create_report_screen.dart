@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../models/user_report.dart';
 import '../widgets/forms/date_time_form_field.dart';
+import '../widgets/forms/image_form_field.dart';
 import '../widgets/forms/number_of_observation_form_field.dart';
-import '../widgets/forms/observation_form_field.dart';
+import '../widgets/forms/observation_stream_builder.dart';
 import '../widgets/forms/submit_form_button.dart';
 import '../widgets/forms/water_temperature_form_field.dart';
 
@@ -19,10 +22,23 @@ class CreateReportScreen extends StatefulWidget {
 class _CreateReportScreenState extends State<CreateReportScreen> {
   final formKey = GlobalKey<FormState>();
   final userReport = UserReport();
+  File? image;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  void updateImageCallback(File newImage) {
+    setState(() {
+      image = newImage;
+    });
+  }
+
+  void clearImageCallback() {
+    setState(() {
+      image = null;
+    });
   }
 
   @override
@@ -33,12 +49,18 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
         key: formKey,
         child: SingleChildScrollView(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            ObservationFormField(userReport: userReport),
+            ObservationStreamBuilder(userReport: userReport),
             NumberOfObservationFormField(userReport: userReport),
-            const Text('Placeholder for species form field'),
             WaterTemperatureFormField(userReport: userReport),
             DateTimeFormField(userReport: userReport),
-            SubmitFormButton(formKey: formKey, userReport: userReport),
+            ImageFormField(
+                userReport: userReport,
+                updateImageCallback: updateImageCallback),
+            SubmitFormButton(
+                formKey: formKey,
+                userReport: userReport,
+                image: image,
+                clearImageCallback: clearImageCallback),
           ]),
         ),
       ),
