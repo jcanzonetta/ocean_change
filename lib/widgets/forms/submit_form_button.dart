@@ -10,9 +10,14 @@ class SubmitFormButton extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final UserReport userReport;
   final File? image;
+  final Function clearImageCallback;
 
   const SubmitFormButton(
-      {super.key, required this.formKey, required this.userReport, this.image});
+      {super.key,
+      required this.formKey,
+      required this.userReport,
+      this.image,
+      required this.clearImageCallback});
 
   @override
   State<SubmitFormButton> createState() => _SubmitFormButton();
@@ -55,6 +60,8 @@ class _SubmitFormButton extends State<SubmitFormButton> {
               'date': widget.userReport.date,
               'photo_url': imageUrl
             });
+
+            widget.clearImageCallback;
 
             Navigator.of(context).pop();
           }
