@@ -16,10 +16,15 @@ class ImageFormField extends StatelessWidget {
         Widget child,
       ) {
         final bool connected = connectivity != ConnectivityResult.none;
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(connected ? 'online' : 'offline'),
-        );
+
+        if (connected) {
+          return const Text('Placehoder for Image Picker');
+        } else {
+          return const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text('Image can only be uploaded while online.'),
+          );
+        }
       },
       child: const Text("Error: Image Picker"),
     );
