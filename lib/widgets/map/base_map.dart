@@ -8,18 +8,13 @@ class BaseMap extends StatefulWidget {
   const BaseMap({super.key});
 
   @override
-  State<BaseMap> createState() => _MapState();
+  State<BaseMap> createState() => _BaseMapState();
 }
 
-class _MapState extends State<BaseMap> {
+class _BaseMapState extends State<BaseMap> {
   final mapController = MapController();
-  late List<Marker> reportMarker;
-
-  @override
-  void initState() {
-    reportMarker = generateMarkers(context);
-    super.initState();
-  }
+  List<Marker> reportMarkers = [];
+  bool _markersReady = false;
 
   @override
   Widget build(BuildContext context) {
@@ -31,28 +26,31 @@ class _MapState extends State<BaseMap> {
           userAgentPackageName: 'dfw.state.or.us.oceanchange.app',
         ),
         MarkerLayer(
-          markers: reportMarker,
+          markers: _generateMarkers(context),
         )
       ],
     );
   }
-}
 
-List<Marker> generateMarkers(BuildContext context) {
-  List<Marker> reportMarkers = [];
-  FirebaseFirestore.instance.collection('test_reports').get().then(
-    (event) {
-      for (var doc in event.docs) {
-        final report = doc.data();
-        reportMarkers.add(Marker(
-            point: LatLng(report["Lat"], report["Long"]),
-            width: 50,
-            height: 50,
-            builder: (context) => ReportMarker(
-                  observation: report["Observation"],
-                )));
-      }
-    },
-  );
-  return reportMarkers;
+  List<Marker> _generateMarkers(BuildContext context) {
+    if (_markersReady == false) {
+      FirebaseFirestore.instance.collection('test_reports').get().then(
+        (event) {
+          for (var doc in event.docs) {
+            final report = doc.data();
+            reportMarkers.add(Marker(
+                point: LatLng(report["Lat"], report["Long"]),
+                width: 50,
+                height: 50,
+                builder: (context) => ReportMarker(
+                      observation: report["Observation"],
+                    )));
+          }
+          _markersReady = true;
+          setState(() {});
+        },
+      );
+    }
+    return reportMarkers;    
+  }
 }
