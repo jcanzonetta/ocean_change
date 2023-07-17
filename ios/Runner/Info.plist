@@ -47,5 +47,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photos are used in your reports to help the Oregon Department of Fish and Wildlife better understand your observations.</string> 
 </dict>
 </plist>

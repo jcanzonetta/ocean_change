@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../models/user_report.dart';
@@ -20,10 +22,17 @@ class CreateReportScreen extends StatefulWidget {
 class _CreateReportScreenState extends State<CreateReportScreen> {
   final formKey = GlobalKey<FormState>();
   final userReport = UserReport();
+  File? image;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  void updateImageCallback(File newImage) {
+    setState(() {
+      image = newImage;
+    });
   }
 
   @override
@@ -38,8 +47,11 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
             NumberOfObservationFormField(userReport: userReport),
             WaterTemperatureFormField(userReport: userReport),
             DateTimeFormField(userReport: userReport),
-            ImageFormField(userReport: userReport),
-            SubmitFormButton(formKey: formKey, userReport: userReport),
+            ImageFormField(
+                userReport: userReport,
+                updateImageCallback: updateImageCallback),
+            SubmitFormButton(
+                formKey: formKey, userReport: userReport, image: image),
           ]),
         ),
       ),
