@@ -35,6 +35,12 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
     });
   }
 
+  void clearImageCallback() {
+    setState(() {
+      image = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +57,10 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                 userReport: userReport,
                 updateImageCallback: updateImageCallback),
             SubmitFormButton(
-                formKey: formKey, userReport: userReport, image: image),
+                formKey: formKey,
+                userReport: userReport,
+                image: image,
+                clearImageCallback: clearImageCallback),
           ]),
         ),
       ),
