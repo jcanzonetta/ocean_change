@@ -24,6 +24,13 @@ class SubmitFormButton extends StatefulWidget {
 }
 
 class _SubmitFormButton extends State<SubmitFormButton> {
+  bool _uploading = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   Future<String> uploadImage(File image) async {
     String fileName =
         '${widget.userReport.observation!}${DateFormat('MMddyyyy').format(widget.userReport.date!)}.jpg';
@@ -43,30 +50,40 @@ class _SubmitFormButton extends State<SubmitFormButton> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ElevatedButton.icon(
-        onPressed: () async {
-          if (widget.formKey.currentState?.validate() ?? true) {
-            widget.formKey.currentState!.save();
+        onPressed: _uploading
+            ? null
+            : () async {
+                if (widget.formKey.currentState?.validate() ?? true) {
+                  setState(() {
+                    _uploading = true;
+                  });
 
-            String? imageUrl;
-            if (widget.image != null) {
-              imageUrl = await uploadImage(widget.image!);
-            }
+                  widget.formKey.currentState!.save();
 
-            FirebaseFirestore.instance.collection('reports').add({
-              'observation': widget.userReport.observation,
-              'species': widget.userReport.species,
-              'observation_number': widget.userReport.observationNumber,
-              'water_temp': widget.userReport.waterTemp,
-              'date': widget.userReport.date,
-              'photo_url': imageUrl
-            });
+                  String? imageUrl;
+                  if (widget.image != null) {
+                    imageUrl = await uploadImage(widget.image!);
+                  }
 
-            widget.clearImageCallback;
+                  FirebaseFirestore.instance.collection('reports').add({
+                    'observation': widget.userReport.observation,
+                    'species': widget.userReport.species,
+                    'observation_number': widget.userReport.observationNumber,
+                    'water_temp': widget.userReport.waterTemp,
+                    'date': widget.userReport.date,
+                    'photo_url': imageUrl
+                  });
 
-            Navigator.of(context).pop();
-          }
-        },
-        icon: const Icon(Icons.cloud_circle),
+                  widget.clearImageCallback;
+
+                  Navigator.of(context).pop();
+                }
+              },
+        icon: _uploading
+            ? Transform.scale(
+                scale: 0.5,
+                child: const CircularProgressIndicator(color: Colors.white))
+            : const Icon(Icons.cloud_circle),
         label: const Text('Submit'),
       ),
     );
