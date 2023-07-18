@@ -20,6 +20,12 @@ class ImageFormField extends StatefulWidget {
 
 class _ImageFormFieldState extends State<ImageFormField> {
   late File image;
+  bool _imagePicked = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void getImage() async {
     try {
@@ -28,7 +34,9 @@ class _ImageFormFieldState extends State<ImageFormField> {
 
       if (pickedImage == null) return;
 
-      image = File(pickedImage.path);
+      _imagePicked = true;
+
+      image = File(pickedImage!.path);
       widget.updateImageCallback(image);
     } on PlatformException catch (error) {
       print('Unable to get image: $error');
@@ -46,11 +54,24 @@ class _ImageFormFieldState extends State<ImageFormField> {
         final bool connected = connectivity != ConnectivityResult.none;
 
         if (connected) {
-          return OutlinedButton(
-              onPressed: () async {
-                getImage();
-              },
-              child: const Icon(Icons.photo));
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: OutlinedButton(
+                    onPressed: () async {
+                      getImage();
+                    },
+                    child: const Icon(Icons.photo)),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child:
+                    Text(_imagePicked ? 'Image Selected' : 'No Image Selected'),
+              )
+            ],
+          );
         } else {
           return const Padding(
             padding: EdgeInsets.all(8.0),
