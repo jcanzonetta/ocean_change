@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:ocean_change/screens/map_screen.dart';
 import 'package:ocean_change/widgets/map/report_marker.dart';
 
 class BaseMap extends StatefulWidget {
@@ -14,7 +15,6 @@ class BaseMap extends StatefulWidget {
 class _BaseMapState extends State<BaseMap> {
   final mapController = MapController();
   List<Marker> reportMarkers = [];
-  bool _markersReady = false;
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +26,18 @@ class _BaseMapState extends State<BaseMap> {
           userAgentPackageName: 'dfw.state.or.us.oceanchange.app',
         ),
         MarkerLayer(
-          markers: _generateMarkers(context),
+          markers: generateMarkers(context),
         )
       ],
     );
   }
 
-  List<Marker> _generateMarkers(BuildContext context) {
-    if (_markersReady == false) {
+  List<Marker> generateMarkers(BuildContext context) {
+    // reaches up to map screen to determine if it should generate markers
+    MapScreenState? mapScreenState =
+        context.findAncestorStateOfType<MapScreenState>();
+    if (mapScreenState?.markersReady == false) {
+      reportMarkers.clear();
       FirebaseFirestore.instance.collection('test_reports').get().then(
         (event) {
           for (var doc in event.docs) {
@@ -47,7 +51,7 @@ class _BaseMapState extends State<BaseMap> {
                       observation: report["Observation"],
                     )));
           }
-          _markersReady = true;
+          mapScreenState?.toggleMarkersReady();
           setState(() {});
         },
       );
