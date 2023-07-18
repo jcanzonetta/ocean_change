@@ -39,7 +39,8 @@ class _BaseMapState extends State<BaseMap> {
           for (var doc in event.docs) {
             final report = doc.data();
             reportMarkers.add(Marker(
-                point: LatLng(report["Lat"], report["Long"]),
+                point:
+                    LatLng(report["Lat"].toDouble(), report["Long"].toDouble()),
                 width: 50,
                 height: 50,
                 builder: (context) => ReportMarker(
@@ -51,6 +52,6 @@ class _BaseMapState extends State<BaseMap> {
         },
       );
     }
-    return reportMarkers;    
+    return reportMarkers;
   }
 }
