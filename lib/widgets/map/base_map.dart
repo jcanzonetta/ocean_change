@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:ocean_change/screens/map_screen.dart';
+import 'package:ocean_change/widgets/map/popup.dart';
 import 'package:ocean_change/widgets/map/report_marker.dart';
 
 class BaseMap extends StatefulWidget {
@@ -19,14 +21,17 @@ class _BaseMapState extends State<BaseMap> {
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
-      options: MapOptions(center: const LatLng(45.3, -125), zoom: 6.8),
+      options: MapOptions(center: LatLng(45.3, -125), zoom: 6.8),
       children: [
         TileLayer(
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
           userAgentPackageName: 'dfw.state.or.us.oceanchange.app',
         ),
-        MarkerLayer(
-          markers: generateMarkers(context),
+        PopupMarkerLayerWidget(
+          options: PopupMarkerLayerOptions(
+            markers: generateMarkers(context),
+            popupBuilder: (BuildContext context, Marker marker) => PopUp(marker),
+          ),
         )
       ],
     );
