@@ -6,6 +6,9 @@ import 'package:latlong2/latlong.dart';
 import 'package:ocean_change/screens/map_screen.dart';
 import 'package:ocean_change/widgets/map/popup.dart';
 import 'package:ocean_change/widgets/map/report_marker.dart';
+import 'package:ocean_change/models/user_report.dart';
+import 'package:ocean_change/widgets/map/report_marker_icon.dart';
+
 
 class BaseMap extends StatefulWidget {
   const BaseMap({super.key});
@@ -16,7 +19,7 @@ class BaseMap extends StatefulWidget {
 
 class _BaseMapState extends State<BaseMap> {
   final mapController = MapController();
-  List<Marker> reportMarkers = [];
+  List<ReportMarker> reportMarkers = [];
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +40,7 @@ class _BaseMapState extends State<BaseMap> {
     );
   }
 
-  List<Marker> generateMarkers(BuildContext context) {
+  List<ReportMarker> generateMarkers(BuildContext context) {
     // reaches up to map screen to determine if it should generate markers
     MapScreenState? mapScreenState =
         context.findAncestorStateOfType<MapScreenState>();
@@ -46,15 +49,11 @@ class _BaseMapState extends State<BaseMap> {
       FirebaseFirestore.instance.collection('test_reports').get().then(
         (event) {
           for (var doc in event.docs) {
-            final report = doc.data();
-            reportMarkers.add(Marker(
-                point:
-                    LatLng(report["Lat"].toDouble(), report["Long"].toDouble()),
-                width: 50,
-                height: 50,
-                builder: (context) => ReportMarker(
-                      observation: report["Observation"],
-                    )));
+            final report = UserReport.fromFirestore(doc.data());
+            reportMarkers.add(ReportMarker(
+                userReport: report,
+                builder: (context) => ReportMarkerIcon(
+                  observation: report.observation)));
           }
           mapScreenState?.toggleMarkersReady();
           setState(() {});
