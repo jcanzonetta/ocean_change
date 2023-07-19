@@ -5,10 +5,10 @@ import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:ocean_change/screens/map_screen.dart';
 import 'package:ocean_change/widgets/map/popup.dart';
+import 'package:ocean_change/widgets/map/report_popup.dart';
 import 'package:ocean_change/widgets/map/report_marker.dart';
 import 'package:ocean_change/models/user_report.dart';
 import 'package:ocean_change/widgets/map/report_marker_icon.dart';
-
 
 class BaseMap extends StatefulWidget {
   const BaseMap({super.key});
@@ -33,7 +33,14 @@ class _BaseMapState extends State<BaseMap> {
         PopupMarkerLayerWidget(
           options: PopupMarkerLayerOptions(
             markers: generateMarkers(context),
-            popupBuilder: (BuildContext context, Marker marker) => PopUp(marker),
+            popupBuilder: (BuildContext context, Marker marker) {
+              if (marker is ReportMarker) {
+                return ReportPopUp(marker, marker.userReport);
+              }
+              else {
+                return PopUp(marker);
+              }
+            }
           ),
         )
       ],
@@ -46,14 +53,14 @@ class _BaseMapState extends State<BaseMap> {
         context.findAncestorStateOfType<MapScreenState>();
     if (mapScreenState?.markersReady == false) {
       reportMarkers.clear();
-      FirebaseFirestore.instance.collection('test_reports').get().then(
+      FirebaseFirestore.instance.collection('reports').get().then(
         (event) {
           for (var doc in event.docs) {
             final report = UserReport.fromFirestore(doc.data());
             reportMarkers.add(ReportMarker(
                 userReport: report,
-                builder: (context) => ReportMarkerIcon(
-                  observation: report.observation)));
+                builder: (context) =>
+                    ReportMarkerIcon(observation: report.observation)));
           }
           mapScreenState?.toggleMarkersReady();
           setState(() {});
