@@ -36,6 +36,14 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
         FlutterMap(
           mapController: _mapController,
           options: MapOptions(
+              onMapReady: () {
+                if (userReport.geopoint != null) {
+                  _position = _mapController.latLngToScreenPoint(LatLng(
+                      userReport.geopoint!.latitude,
+                      userReport.geopoint!.longitude));
+                  setState(() {});
+                }
+              },
               center: LatLng(_center['x']!, _center['y']!),
               zoom: 6.8,
               onTap: (tapPos, latLng) {
