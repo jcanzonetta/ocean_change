@@ -36,7 +36,7 @@ class _ImageFormFieldState extends State<ImageFormField> {
 
       _imagePicked = true;
 
-      image = File(pickedImage!.path);
+      image = File(pickedImage.path);
       widget.updateImageCallback(image);
     } on PlatformException catch (error) {
       print('Unable to get image: $error');
