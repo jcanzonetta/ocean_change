@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:ocean_change/models/user_report.dart';
 
 class LocationPickerScreen extends StatefulWidget {
   static const String routeName = 'LocationPickerScreen';
@@ -25,6 +27,9 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final UserReport userReport =
+        ModalRoute.of(context)?.settings.arguments as UserReport;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Where was this observed?')),
       body: Stack(children: [
@@ -35,7 +40,11 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               zoom: 6.8,
               onTap: (tapPos, latLng) {
                 debugPrint('x: ${_position.x} y: ${_position.y}');
+
                 _position = _mapController.latLngToScreenPoint(latLng);
+
+                userReport.geopoint =
+                    GeoPoint(latLng.latitude, latLng.longitude);
 
                 setState(() {
                   _position = _mapController.latLngToScreenPoint(latLng);
