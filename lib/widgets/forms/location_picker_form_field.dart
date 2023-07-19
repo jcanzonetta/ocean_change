@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 
 import '../../screens/location_picker_screen.dart';
 
@@ -18,6 +20,34 @@ class _LocationPickerFormFieldState extends State<LocationPickerFormField> {
   @override
   void initState() {
     super.initState();
+    _initializeLocation();
+  }
+
+  void _initializeLocation() async {
+    Location location = Location();
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    serviceEnabled = await location.serviceEnabled();
+
+    // Check if service is enabled.
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) return;
+    }
+
+    // Check if presmission is granted.
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) return;
+    }
+
+    var locationData = await location.getLocation();
+    widget.userReport.geopoint =
+        GeoPoint(locationData.latitude!, locationData.longitude!);
+
+    setState(() {});
   }
 
   Widget _showGeopoint() {
