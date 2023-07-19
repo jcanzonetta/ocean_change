@@ -12,24 +12,47 @@ class LocationPickerScreen extends StatefulWidget {
 }
 
 class _LocationPickerScreenState extends State<LocationPickerScreen> {
+  static const Map<String, double> _center = {'x': 45.3, 'y': -125};
+  CustomPoint<double> _position = const CustomPoint(10, 10);
+
+  late final MapController _mapController;
+
   @override
   void initState() {
     super.initState();
+    _mapController = MapController();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Where was this observed?')),
-      body: FlutterMap(
-        options: MapOptions(center: const LatLng(45.3, -125), zoom: 6.8),
-        children: [
-          TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'dfw.state.or.us.oceanchange.app',
-          )
-        ],
-      ),
+      body: Stack(children: [
+        FlutterMap(
+          mapController: _mapController,
+          options: MapOptions(
+              center: LatLng(_center['x']!, _center['y']!),
+              zoom: 6.8,
+              onTap: (tapPos, latLng) {
+                debugPrint('x: ${_position.x} y: ${_position.y}');
+                _position = _mapController.latLngToScreenPoint(latLng);
+
+                setState(() {
+                  _position = _mapController.latLngToScreenPoint(latLng);
+                });
+              }),
+          children: [
+            TileLayer(
+              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+              userAgentPackageName: 'dfw.state.or.us.oceanchange.app',
+            )
+          ],
+        ),
+        Positioned(
+            left: _position.x,
+            top: _position.y,
+            child: const Icon(Icons.location_searching))
+      ]),
     );
   }
 }
