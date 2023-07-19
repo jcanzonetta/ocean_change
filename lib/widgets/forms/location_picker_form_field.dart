@@ -46,6 +46,13 @@ class _LocationPickerFormFieldState extends State<LocationPickerFormField> {
           padding: const EdgeInsets.all(8.0),
           child: _showGeopoint(),
         ),
+        OutlinedButton(
+            onPressed: () {
+              setState(() {
+                widget.userReport.geopoint = null;
+              });
+            },
+            child: const Icon(Icons.clear)),
       ],
     );
   }
