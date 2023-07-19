@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:ocean_change/models/user_report.dart';
+import '../../screens/view_report_screen.dart';
 
-class PopUp extends StatefulWidget {
+class ReportPopUp extends StatefulWidget {
   final Marker marker;
+  final UserReport userReport;
 
-  const PopUp(this.marker, {super.key});
+  const ReportPopUp(this.marker, this.userReport, {super.key});
 
   @override
-  State<PopUp> createState() => _PopUpState();
+  State<ReportPopUp> createState() => _ReportPopUpState();
 }
 
-class _PopUpState extends State<PopUp> {
+class _ReportPopUpState extends State<ReportPopUp> {
   @override
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
+        onTap: () => Navigator.pushNamed(context, ViewReportScreen.routeName,
+            arguments: widget.userReport),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -35,11 +40,11 @@ class _PopUpState extends State<PopUp> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const Text(
-              'Popup for a marker!',
+            Text(
+              '${widget.userReport.observation}',
               overflow: TextOverflow.fade,
               softWrap: false,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 14.0,
               ),
@@ -47,10 +52,6 @@ class _PopUpState extends State<PopUp> {
             const Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
             Text(
               'Position: ${widget.marker.point.latitude}, ${widget.marker.point.longitude}',
-              style: const TextStyle(fontSize: 12.0),
-            ),
-            Text(
-              'Marker size: ${widget.marker.width}, ${widget.marker.height}',
               style: const TextStyle(fontSize: 12.0),
             ),
           ],

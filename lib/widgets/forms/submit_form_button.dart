@@ -70,7 +70,7 @@ class _SubmitFormButton extends State<SubmitFormButton> {
                     'species': widget.userReport.species,
                     'observation_number': widget.userReport.observationNumber,
                     'water_temp': widget.userReport.waterTemp,
-                    'date': widget.userReport.date.toString(),
+                    'date': widget.userReport.date,
                     'photo_url': imageUrl,
                     'geopoint': widget.userReport.geopoint
                   });
