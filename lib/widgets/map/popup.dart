@@ -16,7 +16,7 @@ class _PopUpState extends State<PopUp> {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        onTap: () => Navigator.pushNamed(context, ViewReportScreen.routeName),
+        onTap: () => Navigator.pushNamed(context, ViewReportScreen.routeName, arguments: widget.marker),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
