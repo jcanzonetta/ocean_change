@@ -19,7 +19,7 @@ class _BaseMapState extends State<BaseMap> {
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
-      options: MapOptions(center: const LatLng(45.3, -125), zoom: 6.8),
+      options: MapOptions(center: LatLng(45.3, -125), zoom: 6.8),
       children: [
         TileLayer(
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
