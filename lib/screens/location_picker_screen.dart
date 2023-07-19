@@ -15,7 +15,7 @@ class LocationPickerScreen extends StatefulWidget {
 
 class _LocationPickerScreenState extends State<LocationPickerScreen> {
   static const Map<String, double> _center = {'x': 45.3, 'y': -125};
-  CustomPoint<double> _position = const CustomPoint(10, 10);
+  CustomPoint<double>? _position = const CustomPoint(10, 10);
 
   late final MapController _mapController;
 
@@ -60,7 +60,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               center: LatLng(_center['x']!, _center['y']!),
               zoom: 6.8,
               onTap: (tapPos, latLng) {
-                debugPrint('x: ${_position.x} y: ${_position.y}');
+                debugPrint('x: ${_position?.x} y: ${_position?.y}');
 
                 _position = _mapController.latLngToScreenPoint(latLng);
 
@@ -82,8 +82,8 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
           ],
         ),
         Positioned(
-            left: _position.x - 10,
-            top: _position.y - 10,
+            left: _position!.x - 10,
+            top: _position!.y - 10,
             height: 20,
             width: 20,
             child: const Icon(Icons.location_searching))
