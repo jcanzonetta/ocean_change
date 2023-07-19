@@ -59,6 +59,9 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                 userReport.geopoint =
                     GeoPoint(latLng.latitude, latLng.longitude);
 
+                debugPrint(
+                    'x: ${userReport.geopoint!.latitude}, y: ${userReport.geopoint!.longitude}');
+
                 setState(() {
                   _position = _mapController.latLngToScreenPoint(latLng);
                 });
@@ -71,8 +74,10 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
           ],
         ),
         Positioned(
-            left: _position.x,
-            top: _position.y,
+            left: _position.x - 10,
+            top: _position.y - 10,
+            height: 20,
+            width: 20,
             child: const Icon(Icons.location_searching))
       ]),
     );

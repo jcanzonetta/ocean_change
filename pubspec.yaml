@@ -38,6 +38,7 @@ dependencies:
 
   flutter_map: ^5.0.0
   latlong2: ^0.9.0
+  location: ^5.0.0
 
   image_picker: ^1.0.1
   flutter_offline: ^3.0.0
