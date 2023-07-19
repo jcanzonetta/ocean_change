@@ -41,8 +41,13 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                   _position = _mapController.latLngToScreenPoint(LatLng(
                       userReport.geopoint!.latitude,
                       userReport.geopoint!.longitude));
-                  setState(() {});
+                } else {
+                  final centerLatLng = _mapController.center;
+                  _position = _mapController.latLngToScreenPoint(centerLatLng);
+                  userReport.geopoint =
+                      GeoPoint(centerLatLng.latitude, centerLatLng.longitude);
                 }
+                setState(() {});
               },
               center: LatLng(_center['x']!, _center['y']!),
               zoom: 6.8,
