@@ -26,8 +26,8 @@ class UserReport {
     // ToDo: calculate geohash here using geoflutterfire package.
 
     return UserReport(
-      date: post['date'].toDate(),
       geopoint: post['geopoint'],
+      date: post['date'].toDate(),
       observation: post['observation'],
       species: post['species'],
       observationNumber: post['observation_number'],
