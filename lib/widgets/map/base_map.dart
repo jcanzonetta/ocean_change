@@ -24,24 +24,29 @@ class _BaseMapState extends State<BaseMap> {
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
-      options: MapOptions(center: LatLng(45.3, -125), zoom: 6.8),
+      options: MapOptions(
+        center: LatLng(45.3, -125),
+        zoom: 6,
+        maxZoom: 11,
+        minZoom: 5,
+        maxBounds: LatLngBounds(LatLng(35.65, -140.10), LatLng(50.80, -120.50)),
+      ),
       children: [
         TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          userAgentPackageName: 'dfw.state.or.us.oceanchange.app',
+          tileProvider: AssetTileProvider(),
+          urlTemplate: 'assets/map/{z}/{x}/{y}.png',
+          tms: false,
         ),
         PopupMarkerLayerWidget(
           options: PopupMarkerLayerOptions(
-            markers: generateMarkers(context),
-            popupBuilder: (BuildContext context, Marker marker) {
-              if (marker is ReportMarker) {
-                return ReportPopUp(marker, marker.userReport);
-              }
-              else {
-                return PopUp(marker);
-              }
-            }
-          ),
+              markers: generateMarkers(context),
+              popupBuilder: (BuildContext context, Marker marker) {
+                if (marker is ReportMarker) {
+                  return ReportPopUp(marker, marker.userReport);
+                } else {
+                  return PopUp(marker);
+                }
+              }),
         )
       ],
     );
