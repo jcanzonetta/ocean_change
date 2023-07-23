@@ -43,6 +43,8 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                 _position = _mapController.latLngToScreenPoint(updatedLatLng);
 
                 setState(() {});
+                imageCache.clear();
+                // imageCache.clearLiveImages();
               },
               onMapReady: () {
                 if (userReport.geopoint != null) {
