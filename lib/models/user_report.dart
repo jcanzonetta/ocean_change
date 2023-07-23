@@ -33,6 +33,7 @@ class UserReport {
       observationNumber: post['observation_number'],
       waterColor: post['water_color'],
       waterTemp: post['water_temp'],
+      photoURL: post['photo_url']
     );
   }
 }
