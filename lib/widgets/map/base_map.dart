@@ -25,6 +25,9 @@ class _BaseMapState extends State<BaseMap> {
   Widget build(BuildContext context) {
     return FlutterMap(
       options: MapOptions(
+        onPositionChanged: (mapPosition, someBool) {
+          imageCache.clear();
+        },
         center: LatLng(45.3, -125),
         zoom: 6,
         maxZoom: 11,
