@@ -57,8 +57,12 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                 }
                 setState(() {});
               },
-              center: LatLng(_center['x']!, _center['y']!),
-              zoom: 6.8,
+              center: LatLng(45.3, -125),
+              zoom: 6,
+              maxZoom: 11,
+              minZoom: 5,
+              maxBounds:
+                  LatLngBounds(LatLng(35.65, -140.10), LatLng(50.80, -120.50)),
               onTap: (tapPos, latLng) {
                 debugPrint('x: ${_position?.x} y: ${_position?.y}');
 
@@ -76,8 +80,9 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               }),
           children: [
             TileLayer(
-              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'dfw.state.or.us.oceanchange.app',
+              tileProvider: AssetTileProvider(),
+              urlTemplate: 'assets/map/{z}/{x}/{y}.png',
+              tms: false,
             )
           ],
         ),
