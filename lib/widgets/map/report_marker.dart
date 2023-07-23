@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:ocean_change/models/user_report.dart';
 
-class ReportMarker extends StatelessWidget {
-  const ReportMarker({super.key, required this.observation});
-
-  final String observation;
-
-  @override
-  Widget build(BuildContext context) {
-    if (observation == "Jellyfish") {
-      return Image.asset('assets/images/jellyfish_icon.png');
-    } else {
-      return Image.asset('assets/images/generic_pin_icon.png');
-    }
-  }
+class ReportMarker extends Marker {
+  final UserReport userReport;
+  ReportMarker(
+      {super.key,
+      required this.userReport,
+      required super.builder,
+      super.height,
+      super.width})
+      : super(
+            point: LatLng(
+                userReport.geopoint!.latitude, userReport.geopoint!.longitude));
 }

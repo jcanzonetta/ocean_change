@@ -1,9 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:ocean_change/screens/map_screen.dart';
+import 'package:ocean_change/widgets/map/popup.dart';
+import 'package:ocean_change/widgets/map/report_popup.dart';
 import 'package:ocean_change/widgets/map/report_marker.dart';
+import 'package:ocean_change/models/user_report.dart';
+import 'package:ocean_change/widgets/map/report_marker_icon.dart';
 
 class BaseMap extends StatefulWidget {
   const BaseMap({super.key});
@@ -14,42 +19,53 @@ class BaseMap extends StatefulWidget {
 
 class _BaseMapState extends State<BaseMap> {
   final mapController = MapController();
-  List<Marker> reportMarkers = [];
+  List<ReportMarker> reportMarkers = [];
 
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
-      options: MapOptions(center: LatLng(45.3, -125), zoom: 6.8),
+      options: MapOptions(
+        center: LatLng(45.3, -125),
+        zoom: 6,
+        maxZoom: 11,
+        minZoom: 5,
+        maxBounds: LatLngBounds(LatLng(35.65, -140.10), LatLng(50.80, -120.50)),
+      ),
       children: [
         TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          userAgentPackageName: 'dfw.state.or.us.oceanchange.app',
+          tileProvider: AssetTileProvider(),
+          urlTemplate: 'assets/map/{z}/{x}/{y}.png',
+          tms: false,
         ),
-        MarkerLayer(
-          markers: generateMarkers(context),
+        PopupMarkerLayerWidget(
+          options: PopupMarkerLayerOptions(
+              markers: generateMarkers(context),
+              popupBuilder: (BuildContext context, Marker marker) {
+                if (marker is ReportMarker) {
+                  return ReportPopUp(marker, marker.userReport);
+                } else {
+                  return PopUp(marker);
+                }
+              }),
         )
       ],
     );
   }
 
-  List<Marker> generateMarkers(BuildContext context) {
+  List<ReportMarker> generateMarkers(BuildContext context) {
     // reaches up to map screen to determine if it should generate markers
     MapScreenState? mapScreenState =
         context.findAncestorStateOfType<MapScreenState>();
     if (mapScreenState?.markersReady == false) {
       reportMarkers.clear();
-      FirebaseFirestore.instance.collection('test_reports').get().then(
+      FirebaseFirestore.instance.collection('reports').get().then(
         (event) {
           for (var doc in event.docs) {
-            final report = doc.data();
-            reportMarkers.add(Marker(
-                point:
-                    LatLng(report["Lat"].toDouble(), report["Long"].toDouble()),
-                width: 50,
-                height: 50,
-                builder: (context) => ReportMarker(
-                      observation: report["Observation"],
-                    )));
+            final report = UserReport.fromFirestore(doc.data());
+            reportMarkers.add(ReportMarker(
+                userReport: report,
+                builder: (context) =>
+                    ReportMarkerIcon(observation: report.observation)));
           }
           mapScreenState?.toggleMarkersReady();
           setState(() {});
