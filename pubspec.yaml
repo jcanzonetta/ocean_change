@@ -30,11 +30,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  cupertino_icons: ^1.0.2
+
   firebase_core: ^2.14.0
   cloud_firestore: ^4.8.2
   firebase_storage: ^11.2.4
   intl: ^0.18.1
-  cupertino_icons: ^1.0.2
+
+  csv: ^5.0.2
+  path_provider: ^2.0.15
+  share_plus: ^7.0.2
 
   flutter_map: ^4.0.0
   latlong2: ^0.8.0
@@ -42,7 +47,6 @@ dependencies:
   location: ^5.0.0
   image_picker: ^1.0.1
   flutter_offline: ^3.0.0
-
 
 dev_dependencies:
   flutter_test:

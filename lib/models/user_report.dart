@@ -35,4 +35,26 @@ class UserReport {
       waterTemp: post['water_temp'],
     );
   }
+
+  List<String> csvHeaderList() {
+    return [
+      'observation',
+      'species',
+      'number',
+      'water temperature',
+      'date',
+      'location'
+    ];
+  }
+
+  List<String> toCSVList() {
+    return [
+      '$observation',
+      '$species',
+      '$observationNumber',
+      '$waterTemp',
+      '$date',
+      '${geopoint?.latitude},${geopoint?.longitude}'
+    ];
+  }
 }
