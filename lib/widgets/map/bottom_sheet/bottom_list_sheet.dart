@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ocean_change/models/user_report.dart';
 
 class BottomListSheet extends StatelessWidget {
@@ -41,24 +42,37 @@ class UserReportStreamBuilder extends StatelessWidget {
         if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
           return ListView.builder(
             controller: scrollController,
-            itemCount: snapshot.data!.docs.length,
+            itemCount: snapshot.data!.docs.length + 1,
             itemBuilder: (context, index) {
-              UserReport report =
-                  UserReport.fromFirestore(snapshot.data!.docs[index].data());
+              if (index == 0) {
+                return const Icon(Icons.drag_handle);
+              }
+
+              UserReport report = UserReport.fromFirestore(
+                  snapshot.data!.docs[index - 1].data());
 
               return ListTile(
                 title: Text(report.observation!),
+                subtitle: _populateSubtitle(report),
+                trailing:
+                    Text(DateFormat('MM-dd-yyyy hh:mm a').format(report.date!)),
               );
             },
           );
-        } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
+        } else {
           return const Center(
             child: Center(child: Text("There are no reports.")),
           );
-        } else {
-          return const Placeholder();
         }
       },
     );
+  }
+
+  Widget? _populateSubtitle(UserReport report) {
+    if (report.species != null) {
+      return Text(report.species!);
+    } else {
+      return null;
+    }
   }
 }
