@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/map/base_map.dart';
+import '../widgets/map/bottom_sheet/bottom_list_sheet.dart';
 import '../widgets/map/csv_export_button.dart';
 import 'create_report_screen.dart';
 
@@ -49,7 +50,8 @@ class MapScreenState extends State<MapScreen> {
                   },
                   child: const Align(
                       alignment: Alignment.topLeft,
-                      child: Icon(Icons.refresh))))
+                      child: Icon(Icons.refresh)))),
+          const BottomListSheet(),
         ],
       ),
       floatingActionButton: FloatingActionButton(
