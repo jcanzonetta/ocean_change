@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ocean_change/components/csv_exporter.dart';
 import '../widgets/map/base_map.dart';
 
 import 'create_report_screen.dart';
@@ -28,18 +29,34 @@ class MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Ocean Change')),
+      appBar: AppBar(
+        title: const Text('Ocean Change'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              exportCSV();
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.white),
+            child: const Text('CSV'),
+          ),
+        ],
+      ),
       body: Stack(
         fit: StackFit.expand,
         children: [
+          // ignore: prefer_const_constructors
           BaseMap(), //Ignore 'const' tip from IDE, it prevents marker refresh
           Positioned(
               top: 20,
               left: 20,
               child: ElevatedButton(
-                onPressed: () {setState(() => markersReady = false);},
-                child: const Align(alignment: Alignment.topLeft, child: Icon(Icons.refresh)))
-        )],
+                  onPressed: () {
+                    setState(() => markersReady = false);
+                  },
+                  child: const Align(
+                      alignment: Alignment.topLeft,
+                      child: Icon(Icons.refresh))))
+        ],
       ),
       floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
