@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ocean_change/components/csv_exporter.dart';
-import '../widgets/map/base_map.dart';
 
+import '../widgets/map/base_map.dart';
+import '../widgets/map/csv_export_button.dart';
 import 'create_report_screen.dart';
 
 class MapScreen extends StatefulWidget {
@@ -31,14 +31,8 @@ class MapScreenState extends State<MapScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ocean Change'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              exportCSV();
-            },
-            style: TextButton.styleFrom(foregroundColor: Colors.white),
-            child: const Text('CSV'),
-          ),
+        actions: const [
+          CSVExportButton(),
         ],
       ),
       body: Stack(
