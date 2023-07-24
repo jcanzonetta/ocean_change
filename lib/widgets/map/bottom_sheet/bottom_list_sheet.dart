@@ -54,8 +54,8 @@ class UserReportStreamBuilder extends StatelessWidget {
               return ListTile(
                 title: Text(report.observation!),
                 subtitle: _populateSubtitle(report),
-                trailing:
-                    Text(DateFormat('MM-dd-yyyy hh:mm a').format(report.date!)),
+                trailing: Text(
+                    DateFormat('MM-dd-yyyy | hh:mm a').format(report.date!)),
               );
             },
           );
