@@ -14,9 +14,11 @@ String convertToCSVString(List<List<dynamic>> listOfLists) {
 List<List<dynamic>> convertQuerySnapshotToList(
     QuerySnapshot<Map<String, dynamic>> querySnapshot) {
   List<List<dynamic>> csvList = [UserReport().csvHeaderList()];
+
   for (QueryDocumentSnapshot<Map<String, dynamic>> docSnapshot
       in querySnapshot.docs) {
     final report = UserReport.fromFirestore(docSnapshot.data());
+
     csvList.add(report.toCSVList());
   }
 
@@ -25,12 +27,15 @@ List<List<dynamic>> convertQuerySnapshotToList(
 
 Future<XFile> generateCSV(String csvString) async {
   final Directory tempDir = await getTemporaryDirectory();
+
   File csvFile = File('${tempDir.path}/ocean_change_export.csv');
+
   await csvFile.writeAsString(csvString);
+
   return XFile(csvFile.path);
 }
 
-Future<bool> exportCSV() async {
+void exportCSV() async {
   QuerySnapshot<Map<String, dynamic>> querySnapshot =
       await FirebaseFirestore.instance.collection('reports').get();
 
@@ -41,5 +46,4 @@ Future<bool> exportCSV() async {
   XFile csvXFile = await generateCSV(csvString);
 
   Share.shareXFiles([csvXFile]);
-  return true;
 }
