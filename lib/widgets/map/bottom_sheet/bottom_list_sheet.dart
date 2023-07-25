@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ocean_change/models/user_report.dart';
 
+import '../../../screens/view_report_screen.dart';
+
 class BottomListSheet extends StatelessWidget {
   const BottomListSheet({
     super.key,
@@ -52,6 +54,9 @@ class UserReportStreamBuilder extends StatelessWidget {
                   snapshot.data!.docs[index - 1].data());
 
               return ListTile(
+                onTap: () => Navigator.pushNamed(
+                    context, ViewReportScreen.routeName,
+                    arguments: report),
                 title: Text(report.observation!),
                 subtitle: _populateSubtitle(report),
                 trailing: Text(
