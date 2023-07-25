@@ -76,7 +76,7 @@ class ViewReportScreen extends StatelessWidget {
   }
 
   Widget loadImage(imageUrl) {
-    if (imageUrl == null) {
+    if (imageUrl == null || imageUrl.isEmpty) {
       return Container();
     } else {
       return Image.network(imageUrl);
