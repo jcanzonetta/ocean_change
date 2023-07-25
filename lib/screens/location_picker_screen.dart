@@ -14,7 +14,6 @@ class LocationPickerScreen extends StatefulWidget {
 }
 
 class _LocationPickerScreenState extends State<LocationPickerScreen> {
-  static const Map<String, double> _center = {'x': 45.3, 'y': -125};
   CustomPoint<double>? _position = const CustomPoint(10, 10);
 
   late final MapController _mapController;
