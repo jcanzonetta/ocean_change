@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/map/base_map.dart';
 import '../widgets/map/bottom_sheet/bottom_list_sheet.dart';
 import '../widgets/map/csv_export_button.dart';
 import 'create_report_screen.dart';
+import 'package:ocean_change/widgets/map/report_marker_icon.dart';
+import 'package:ocean_change/widgets/map/report_marker.dart';
+import 'package:ocean_change/models/user_report.dart';
 
 class MapScreen extends StatefulWidget {
   static const String routeName = '/';
@@ -15,18 +18,6 @@ class MapScreen extends StatefulWidget {
 }
 
 class MapScreenState extends State<MapScreen> {
-  late bool markersReady;
-
-  @override
-  void initState() {
-    super.initState();
-    markersReady = false;
-  }
-
-  void toggleMarkersReady() {
-    markersReady = true;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,18 +30,24 @@ class MapScreenState extends State<MapScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // ignore: prefer_const_constructors
-          BaseMap(), //Ignore 'const' tip from IDE, it prevents marker refresh
-          Positioned(
-              top: 20,
-              left: 20,
-              child: ElevatedButton(
-                  onPressed: () {
-                    setState(() => markersReady = false);
-                  },
-                  child: const Align(
-                      alignment: Alignment.topLeft,
-                      child: Icon(Icons.refresh)))),
+          StreamBuilder(
+              stream:
+                  FirebaseFirestore.instance.collection('reports').snapshots(),
+              builder: (content, snapshot) {
+                List<ReportMarker> reportMarkers = [];
+                if (snapshot.hasData) {
+                  for (final docSnapshot in snapshot.data!.docs) {
+                    final report = UserReport.fromFirestore(docSnapshot.data());
+                    reportMarkers.add(ReportMarker(
+                        userReport: report,
+                        builder: (context) =>
+                            ReportMarkerIcon(observation: report.observation)));
+                  }
+                  return BaseMap(reportMarkers: reportMarkers);
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              }),
           const BottomListSheet(),
         ],
       ),

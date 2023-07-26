@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:ocean_change/models/user_report.dart';
 
 import '../../../screens/view_report_screen.dart';
+import 'filter_bar.dart';
 
 class BottomListSheet extends StatelessWidget {
   const BottomListSheet({
@@ -28,11 +29,17 @@ class BottomListSheet extends StatelessWidget {
   }
 }
 
-class UserReportStreamBuilder extends StatelessWidget {
+class UserReportStreamBuilder extends StatefulWidget {
   final ScrollController scrollController;
 
   const UserReportStreamBuilder({super.key, required this.scrollController});
 
+  @override
+  State<UserReportStreamBuilder> createState() =>
+      _UserReportStreamBuilderState();
+}
+
+class _UserReportStreamBuilderState extends State<UserReportStreamBuilder> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -42,32 +49,43 @@ class UserReportStreamBuilder extends StatelessWidget {
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-          return ListView.builder(
-            controller: scrollController,
-            itemCount: snapshot.data!.docs.length + 1,
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return const Icon(Icons.drag_handle);
-              }
+          return CustomScrollView(
+              controller: widget.scrollController,
+              slivers: [
+                const SliverAppBar(
+                  pinned: true,
+                  title: Icon(Icons.drag_handle),
+                  titleSpacing: 0.0,
+                  centerTitle: true,
+                  bottom: PreferredSize(
+                      preferredSize: Size.fromHeight(30.0),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
+                        child: FilterBar(),
+                      )),
+                ),
+                SliverList.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    UserReport report = UserReport.fromFirestore(
+                        snapshot.data!.docs[index].data());
 
-              UserReport report = UserReport.fromFirestore(
-                  snapshot.data!.docs[index - 1].data());
-
-              return ListTile(
-                onTap: () => Navigator.pushNamed(
-                    context, ViewReportScreen.routeName,
-                    arguments: report),
-                title: Text(report.observation!),
-                subtitle: _populateSubtitle(report),
-                trailing: Text(
-                    DateFormat('MM-dd-yyyy | hh:mm a').format(report.date!)),
-              );
-            },
-          );
+                    return Card(
+                      child: ListTile(
+                        onTap: () => Navigator.pushNamed(
+                            context, ViewReportScreen.routeName,
+                            arguments: report),
+                        title: Text(report.observation!),
+                        subtitle: _populateSubtitle(report),
+                        trailing: Text(DateFormat('MM-dd-yyyy | hh:mm a')
+                            .format(report.date!)),
+                      ),
+                    );
+                  },
+                ),
+              ]);
         } else {
-          return const Center(
-            child: Center(child: Text("There are no reports.")),
-          );
+          return const Icon(Icons.drag_handle);
         }
       },
     );
