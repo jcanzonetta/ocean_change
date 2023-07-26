@@ -20,10 +20,16 @@ class MapScreen extends StatefulWidget {
 }
 
 class MapScreenState extends State<MapScreen> {
-  Stream userReportsStream = FirebaseFirestore.instance
-      .collection('reports')
-      .snapshots()
-      .asBroadcastStream();
+  Stream userReportsStream =
+      FirebaseFirestore.instance.collection('reports').snapshots();
+
+  void setDate() {
+    userReportsStream = FirebaseFirestore.instance
+        .collection('reports')
+        .where("date", isGreaterThan: DateTime(2023, 7, 22))
+        .snapshots();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +60,10 @@ class MapScreenState extends State<MapScreen> {
                   return const Center(child: CircularProgressIndicator());
                 }
               }),
-          BottomListSheet(userReportStream: userReportsStream),
+          BottomListSheet(
+            userReportStream: userReportsStream,
+            setDate: setDate,
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

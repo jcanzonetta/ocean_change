@@ -8,8 +8,10 @@ import 'filter_bar.dart';
 
 class BottomListSheet extends StatelessWidget {
   final Stream userReportStream;
+  final Function setDate;
 
-  const BottomListSheet({super.key, required this.userReportStream});
+  const BottomListSheet(
+      {super.key, required this.userReportStream, required this.setDate});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,8 @@ class BottomListSheet extends StatelessWidget {
             color: Colors.white,
             child: UserReportStreamBuilder(
               scrollController: scrollController,
+              userReportsStream: userReportStream,
+              setDate: setDate,
             ),
           );
         });
@@ -31,8 +35,14 @@ class BottomListSheet extends StatelessWidget {
 
 class UserReportStreamBuilder extends StatefulWidget {
   final ScrollController scrollController;
+  final Stream userReportsStream;
+  final Function setDate;
 
-  const UserReportStreamBuilder({super.key, required this.scrollController});
+  const UserReportStreamBuilder(
+      {super.key,
+      required this.scrollController,
+      required this.userReportsStream,
+      required this.setDate});
 
   @override
   State<UserReportStreamBuilder> createState() =>
@@ -43,25 +53,24 @@ class _UserReportStreamBuilderState extends State<UserReportStreamBuilder> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection('reports')
-          .orderBy("date", descending: true)
-          .snapshots(),
+      stream: widget.userReportsStream,
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
           return CustomScrollView(
               controller: widget.scrollController,
               slivers: [
-                const SliverAppBar(
+                SliverAppBar(
                   pinned: true,
-                  title: Icon(Icons.drag_handle),
+                  title: const Icon(Icons.drag_handle),
                   titleSpacing: 0.0,
                   centerTitle: true,
                   bottom: PreferredSize(
-                      preferredSize: Size.fromHeight(30.0),
+                      preferredSize: const Size.fromHeight(30.0),
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
-                        child: FilterBar(),
+                        padding: const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
+                        child: FilterBar(
+                          setDate: widget.setDate,
+                        ),
                       )),
                 ),
                 SliverList.builder(
