@@ -11,7 +11,7 @@ import '../widgets/map/report_marker.dart';
 import '../models/user_report.dart';
 
 class MapScreen extends StatefulWidget {
-  static const String routeName = '/';
+  static const String routeName = 'MapScreen';
 
   const MapScreen({super.key});
 
