@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/map/base_map.dart';
@@ -18,6 +20,11 @@ class MapScreen extends StatefulWidget {
 }
 
 class MapScreenState extends State<MapScreen> {
+  Stream userReportsStream = FirebaseFirestore.instance
+      .collection('reports')
+      .snapshots()
+      .asBroadcastStream();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,8 +38,7 @@ class MapScreenState extends State<MapScreen> {
         fit: StackFit.expand,
         children: [
           StreamBuilder(
-              stream:
-                  FirebaseFirestore.instance.collection('reports').snapshots(),
+              stream: userReportsStream,
               builder: (content, snapshot) {
                 List<ReportMarker> reportMarkers = [];
                 if (snapshot.hasData) {
@@ -48,7 +54,7 @@ class MapScreenState extends State<MapScreen> {
                   return const Center(child: CircularProgressIndicator());
                 }
               }),
-          const BottomListSheet(),
+          BottomListSheet(userReportStream: userReportsStream),
         ],
       ),
       floatingActionButton: FloatingActionButton(
