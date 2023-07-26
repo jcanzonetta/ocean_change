@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../widgets/map/base_map.dart';
-import '../widgets/map/csv_export_button.dart';
+
 import 'create_report_screen.dart';
-import 'package:ocean_change/widgets/map/report_marker_icon.dart';
-import 'package:ocean_change/widgets/map/report_marker.dart';
-import 'package:ocean_change/models/user_report.dart';
+
+import '../widgets/map/base_map.dart';
+import '../widgets/map/bottom_sheet/bottom_list_sheet.dart';
+import '../widgets/map/csv_export_button.dart';
+import '../widgets/map/report_marker_icon.dart';
+import '../widgets/map/report_marker.dart';
+import '../models/user_report.dart';
 
 class MapScreen extends StatefulWidget {
   static const String routeName = '/';
@@ -17,6 +20,16 @@ class MapScreen extends StatefulWidget {
 }
 
 class MapScreenState extends State<MapScreen> {
+  Stream userReportsStream =
+      FirebaseFirestore.instance.collection('reports').snapshots();
+
+  void setDate() {
+    userReportsStream = FirebaseFirestore.instance
+        .collection('reports')
+        .where("date", isGreaterThan: DateTime(2023, 7, 22))
+        .snapshots();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +44,8 @@ class MapScreenState extends State<MapScreen> {
         fit: StackFit.expand,
         children: [
           StreamBuilder(
-              stream:
-                  FirebaseFirestore.instance.collection('reports').snapshots(),
+              stream: userReportsStream,
+
               builder: (content, snapshot) {
                 List<ReportMarker> reportMarkers = [];
                 if (snapshot.hasData) {
@@ -44,11 +57,15 @@ class MapScreenState extends State<MapScreen> {
                             ReportMarkerIcon(observation: report.observation)));
                   }
                   return BaseMap(reportMarkers: reportMarkers);
-                }
-                else {
+                } else {
                   return const Center(child: CircularProgressIndicator());
                 }
               }),
+          BottomListSheet(
+            userReportStream: userReportsStream,
+            setDate: setDate,
+          ),
+
         ],
       ),
       floatingActionButton: FloatingActionButton(
