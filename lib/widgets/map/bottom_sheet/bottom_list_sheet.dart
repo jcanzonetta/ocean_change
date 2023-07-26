@@ -7,9 +7,9 @@ import '../../../screens/view_report_screen.dart';
 import 'filter_bar.dart';
 
 class BottomListSheet extends StatelessWidget {
-  const BottomListSheet({
-    super.key,
-  });
+  final Stream userReportStream;
+
+  const BottomListSheet({super.key, required this.userReportStream});
 
   @override
   Widget build(BuildContext context) {
