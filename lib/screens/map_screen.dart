@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'create_report_screen.dart';
+
 import '../widgets/map/base_map.dart';
 import '../widgets/map/bottom_sheet/bottom_list_sheet.dart';
 import '../widgets/map/csv_export_button.dart';
@@ -44,6 +45,7 @@ class MapScreenState extends State<MapScreen> {
         children: [
           StreamBuilder(
               stream: userReportsStream,
+
               builder: (content, snapshot) {
                 List<ReportMarker> reportMarkers = [];
                 if (snapshot.hasData) {
@@ -63,6 +65,7 @@ class MapScreenState extends State<MapScreen> {
             userReportStream: userReportsStream,
             setDate: setDate,
           ),
+
         ],
       ),
       floatingActionButton: FloatingActionButton(
