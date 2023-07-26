@@ -19,7 +19,8 @@ class _SpeciesFormFieldState extends State<SpeciesFormField> {
   void initState() {
     super.initState();
 
-    if (widget.chosenObservation.species != null) {
+    if (widget.chosenObservation.species != null &&
+        widget.chosenObservation.species!.isNotEmpty) {
       widget.userReport.species =
           widget.chosenObservation.species!.first['name'];
     }

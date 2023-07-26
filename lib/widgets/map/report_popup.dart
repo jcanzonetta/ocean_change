@@ -34,9 +34,9 @@ class _ReportPopUpState extends State<ReportPopUp> {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Container(
-        constraints: const BoxConstraints(minWidth: 100, maxWidth: 200),
+        constraints: const BoxConstraints(minWidth: 50, maxWidth: 200),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -49,11 +49,16 @@ class _ReportPopUpState extends State<ReportPopUp> {
                 fontSize: 14.0,
               ),
             ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 1.0)),
             Text(
-              'Position: ${widget.marker.point.latitude}, ${widget.marker.point.longitude}',
+              '${widget.userReport.date!.month}/${widget.userReport.date!.day}/${widget.userReport.date!.year}',
               style: const TextStyle(fontSize: 12.0),
             ),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
+            const Text(
+              'Tap for more info',
+              style: TextStyle(fontSize: 11.0, ),
+            )
           ],
         ),
       ),
