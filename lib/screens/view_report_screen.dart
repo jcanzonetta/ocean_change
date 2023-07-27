@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ocean_change/models/user_report.dart';
 import 'package:ocean_change/styles.dart';
+import 'package:ocean_change/widgets/login/sign_out_button.dart';
 
 class ViewReportScreen extends StatelessWidget {
   static const String routeName = 'ViewReportScreen';
@@ -14,7 +15,8 @@ class ViewReportScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           title: Text('${userReport.observation} Report',
-              style: const TextStyle(fontSize: 22))),
+              style: const TextStyle(fontSize: 22)),
+              actions: const [SignOutButton()],),
       body: Column(children: [
         Center(child: loadImage(userReport.photoURL)),
         Padding(

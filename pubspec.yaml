@@ -47,6 +47,7 @@ dependencies:
   location: ^5.0.0
   image_picker: ^1.0.1
   flutter_offline: ^3.0.0
+  firebase_auth: ^4.7.2
 
 dev_dependencies:
   flutter_test:
