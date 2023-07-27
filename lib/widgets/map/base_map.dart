@@ -6,7 +6,6 @@ import 'package:ocean_change/widgets/map/popup.dart';
 import 'package:ocean_change/widgets/map/report_popup.dart';
 import 'package:ocean_change/widgets/map/report_marker.dart';
 
-
 class BaseMap extends StatefulWidget {
   final List<ReportMarker> reportMarkers;
   BaseMap({super.key, required this.reportMarkers});
@@ -22,15 +21,20 @@ class _BaseMapState extends State<BaseMap> {
   Widget build(BuildContext context) {
     return FlutterMap(
       options: MapOptions(
-        onPositionChanged: (mapPosition, someBool) {
-          imageCache.clear();
-        },
-        center: LatLng(45.3, -125),
-        zoom: 6,
-        maxZoom: 11,
-        minZoom: 5,
-        maxBounds: LatLngBounds(LatLng(35.65, -140.10), LatLng(50.80, -120.50)),
-      ),
+          onPositionChanged: (mapPosition, someBool) {
+            imageCache.clear();
+          },
+          center: LatLng(45.3, -125),
+          zoom: 6,
+          maxZoom: 11,
+          minZoom: 5,
+          maxBounds:
+              LatLngBounds(LatLng(35.65, -140.10), LatLng(50.80, -120.50)),
+          interactiveFlags: InteractiveFlag.doubleTapZoom |
+              InteractiveFlag.drag |
+              InteractiveFlag.pinchMove |
+              InteractiveFlag.pinchZoom |
+              InteractiveFlag.flingAnimation),
       children: [
         TileLayer(
           tileProvider: AssetTileProvider(),
