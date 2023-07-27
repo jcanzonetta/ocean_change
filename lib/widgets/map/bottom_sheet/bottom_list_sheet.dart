@@ -4,6 +4,7 @@ import 'package:ocean_change/models/user_report.dart';
 import 'package:ocean_change/widgets/map/bottom_sheet/bottom_sheet_card.dart';
 
 import '../../../screens/view_report_screen.dart';
+import 'bottom_sheet_bar.dart';
 import 'filter_bar.dart';
 
 class BottomListSheet extends StatelessWidget {
@@ -59,20 +60,7 @@ class _UserReportStreamBuilderState extends State<UserReportStreamBuilder> {
           return CustomScrollView(
               controller: widget.scrollController,
               slivers: [
-                SliverAppBar(
-                  pinned: true,
-                  title: const Icon(Icons.drag_handle),
-                  titleSpacing: 0.0,
-                  centerTitle: true,
-                  bottom: PreferredSize(
-                      preferredSize: const Size.fromHeight(30.0),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
-                        child: FilterBar(
-                          setDate: widget.setDate,
-                        ),
-                      )),
-                ),
+                BottomSheetAppBar(widget: widget),
                 SliverList.builder(
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
