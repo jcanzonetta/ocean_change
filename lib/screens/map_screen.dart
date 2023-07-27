@@ -38,10 +38,17 @@ class MapScreenState extends State<MapScreen> {
 
     // Date
     if (query['date'] != null) {
+      DateTime start = query['date'].start;
+      DateTime end = query['date'].end;
+
+      if (query['date'].start == query['date'].end) {
+        end = query['date'].end.add(const Duration(days: 1));
+      }
+
       userReportsStream = FirebaseFirestore.instance
           .collection('reports')
-          .where("date", isGreaterThan: query['date'].start)
-          .where('date', isLessThan: query['date'].end)
+          .where("date", isGreaterThanOrEqualTo: start)
+          .where('date', isLessThanOrEqualTo: end)
           .orderBy('date')
           .snapshots();
     }
