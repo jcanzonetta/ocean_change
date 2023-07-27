@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:ocean_change/models/user_report.dart';
 import 'package:ocean_change/widgets/map/bottom_sheet/bottom_sheet_card.dart';
 
-import '../../../screens/view_report_screen.dart';
-import 'bottom_sheet_bar.dart';
-import 'filter_bar.dart';
+import 'bottom_sheet_app_bar.dart';
 
 class BottomListSheet extends StatelessWidget {
   final Stream userReportStream;
-  final Function setDate;
+  final Function setStreamQuery;
 
   const BottomListSheet(
-      {super.key, required this.userReportStream, required this.setDate});
+      {super.key,
+      required this.userReportStream,
+      required this.setStreamQuery});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class BottomListSheet extends StatelessWidget {
             child: UserReportStreamBuilder(
               scrollController: scrollController,
               userReportsStream: userReportStream,
-              setDate: setDate,
+              setStreamQuery: setStreamQuery,
             ),
           );
         });
@@ -37,13 +36,13 @@ class BottomListSheet extends StatelessWidget {
 class UserReportStreamBuilder extends StatefulWidget {
   final ScrollController scrollController;
   final Stream userReportsStream;
-  final Function setDate;
+  final Function setStreamQuery;
 
   const UserReportStreamBuilder(
       {super.key,
       required this.scrollController,
       required this.userReportsStream,
-      required this.setDate});
+      required this.setStreamQuery});
 
   @override
   State<UserReportStreamBuilder> createState() =>
@@ -60,7 +59,7 @@ class _UserReportStreamBuilderState extends State<UserReportStreamBuilder> {
           return CustomScrollView(
               controller: widget.scrollController,
               slivers: [
-                BottomSheetAppBar(widget: widget),
+                BottomSheetAppBar(setStreamQuery: widget.setStreamQuery),
                 SliverList.builder(
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
@@ -72,7 +71,21 @@ class _UserReportStreamBuilderState extends State<UserReportStreamBuilder> {
                 ),
               ]);
         } else {
-          return const Icon(Icons.drag_handle);
+          return CustomScrollView(
+            controller: widget.scrollController,
+            slivers: [
+              BottomSheetAppBar(setStreamQuery: widget.setStreamQuery),
+              const SliverList(
+                delegate: SliverChildListDelegate.fixed([
+                  Center(
+                      child: Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text('No matching reports were found.'),
+                  ))
+                ]),
+              )
+            ],
+          );
         }
       },
     );
