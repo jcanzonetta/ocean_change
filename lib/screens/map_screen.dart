@@ -20,14 +20,22 @@ class MapScreen extends StatefulWidget {
 }
 
 class MapScreenState extends State<MapScreen> {
-  Stream userReportsStream =
-      FirebaseFirestore.instance.collection('reports').snapshots();
+  Stream userReportsStream = FirebaseFirestore.instance
+      .collection('reports')
+      .orderBy('date')
+      .snapshots();
 
-  void setDate() {
-    userReportsStream = FirebaseFirestore.instance
-        .collection('reports')
-        .where("date", isGreaterThan: DateTime(2023, 7, 22))
-        .snapshots();
+  void setStreamQuery(Map query) {
+    // Date
+    if (query['date'] != null) {
+      userReportsStream = FirebaseFirestore.instance
+          .collection('reports')
+          .where("date", isGreaterThan: query['date'].start)
+          .where('date', isLessThan: query['date'].end)
+          .orderBy('date')
+          .snapshots();
+    }
+
     setState(() {});
   }
 
@@ -45,7 +53,6 @@ class MapScreenState extends State<MapScreen> {
         children: [
           StreamBuilder(
               stream: userReportsStream,
-
               builder: (content, snapshot) {
                 List<ReportMarker> reportMarkers = [];
                 if (snapshot.hasData) {
@@ -63,9 +70,8 @@ class MapScreenState extends State<MapScreen> {
               }),
           BottomListSheet(
             userReportStream: userReportsStream,
-            setDate: setDate,
+            setStreamQuery: setStreamQuery,
           ),
-
         ],
       ),
       floatingActionButton: FloatingActionButton(

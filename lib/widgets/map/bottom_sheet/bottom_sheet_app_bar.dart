@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'bottom_list_sheet.dart';
 import 'filter_bar.dart';
 
 class BottomSheetAppBar extends StatelessWidget {
   const BottomSheetAppBar({
     super.key,
-    required this.widget,
+    required this.setStreamQuery,
   });
 
-  final UserReportStreamBuilder widget;
+  final Function setStreamQuery;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class BottomSheetAppBar extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
             child: FilterBar(
-              setDate: widget.setDate,
+              setStreamQuery: setStreamQuery,
             ),
           )),
     );
