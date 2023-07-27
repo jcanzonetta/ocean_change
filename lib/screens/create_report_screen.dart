@@ -1,7 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-
+import 'package:ocean_change/widgets/login/sign_out_button.dart';
 import '../models/user_report.dart';
 import '../widgets/forms/date_time_form_field.dart';
 import '../widgets/forms/image_form_field.dart';
@@ -45,7 +44,9 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Report an Observation')),
+      appBar: AppBar(
+        title: const Text('Report an Observation'),
+        actions: const [SignOutButton()],),
       body: Form(
         key: formKey,
         child: SingleChildScrollView(

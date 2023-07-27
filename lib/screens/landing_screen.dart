@@ -9,17 +9,16 @@ class LandingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Ocean Change')),
-      body: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return const MapScreen();
-            } else {
-              return const LoginScreen();
-            }
-          }),
-    );
+    return StreamBuilder(
+        stream: FirebaseAuth.instance.userChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            Navigator.maybePop(context);
+            return const MapScreen();
+          } else {
+            Navigator.maybePop(context);
+            return const LoginScreen();
+          }
+        });
   }
 }
