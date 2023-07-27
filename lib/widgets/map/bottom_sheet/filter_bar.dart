@@ -11,20 +11,28 @@ class FilterBar extends StatelessWidget {
       children: [
         const Text('Filter:'),
         Padding(
+            padding: const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
+            child: IconButton(
+                onPressed: () async {
+                  final DateTimeRange? range = await showDateRangePicker(
+                      context: context,
+                      firstDate: DateTime(2023, 1, 1),
+                      lastDate: DateTime.now());
+                  setStreamQuery({'date': range});
+                },
+                icon: const Icon(
+                  Icons.date_range_outlined,
+                  color: Colors.white,
+                ))),
+        Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
-          child: TextButton(
-              onPressed: () async {
-                final DateTimeRange? range = await showDateRangePicker(
-                    context: context,
-                    firstDate: DateTime(2023, 1, 1),
-                    lastDate: DateTime.now());
-                setStreamQuery({'date': range});
-              },
-              child: const Icon(
-                Icons.date_range_outlined,
-                color: Colors.white,
-              )),
-        )
+          child: IconButton(
+            onPressed: () {
+              setStreamQuery(null);
+            },
+            icon: const Icon(Icons.clear, color: Colors.white),
+          ),
+        ),
       ],
     );
   }

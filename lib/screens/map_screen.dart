@@ -22,10 +22,20 @@ class MapScreen extends StatefulWidget {
 class MapScreenState extends State<MapScreen> {
   Stream userReportsStream = FirebaseFirestore.instance
       .collection('reports')
-      .orderBy('date')
+      .orderBy('date', descending: true)
       .snapshots();
 
-  void setStreamQuery(Map query) {
+  void setStreamQuery(Map? query) {
+    // Clear Filter
+    if (query == null) {
+      userReportsStream = FirebaseFirestore.instance
+          .collection('reports')
+          .orderBy('date', descending: true)
+          .snapshots();
+      setState(() {});
+      return;
+    }
+
     // Date
     if (query['date'] != null) {
       userReportsStream = FirebaseFirestore.instance
