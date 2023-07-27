@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ocean_change/models/user_report.dart';
+import 'package:ocean_change/widgets/map/bottom_sheet/bottom_sheet_card.dart';
 
 import '../../../screens/view_report_screen.dart';
 import 'filter_bar.dart';
@@ -79,17 +79,7 @@ class _UserReportStreamBuilderState extends State<UserReportStreamBuilder> {
                     UserReport report = UserReport.fromFirestore(
                         snapshot.data!.docs[index].data());
 
-                    return Card(
-                      child: ListTile(
-                        onTap: () => Navigator.pushNamed(
-                            context, ViewReportScreen.routeName,
-                            arguments: report),
-                        title: Text(report.observation!),
-                        subtitle: _populateSubtitle(report),
-                        trailing: Text(DateFormat('MM-dd-yyyy | hh:mm a')
-                            .format(report.date!)),
-                      ),
-                    );
+                    return BottomSheetCard(report: report);
                   },
                 ),
               ]);
@@ -98,13 +88,5 @@ class _UserReportStreamBuilderState extends State<UserReportStreamBuilder> {
         }
       },
     );
-  }
-
-  Widget? _populateSubtitle(UserReport report) {
-    if (report.species != null) {
-      return Text(report.species!);
-    } else {
-      return null;
-    }
   }
 }
