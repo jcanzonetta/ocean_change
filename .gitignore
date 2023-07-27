@@ -58,6 +58,6 @@ app.*.map.json
 /android/app/release
 
 # Shouldn't need MacOS, Linux, and Windows build files.
-/linux/
-/macos/
-/windows/
+linux/
+macos/
+windows/
