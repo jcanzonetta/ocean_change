@@ -1,17 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:ocean_change/models/user_report.dart';
+import 'package:ocean_change/widgets/map/bottom_sheet/bottom_sheet_card.dart';
 
-import '../../../screens/view_report_screen.dart';
-import 'filter_bar.dart';
+import 'bottom_sheet_app_bar.dart';
 
 class BottomListSheet extends StatelessWidget {
   final Stream userReportStream;
-  final Function setDate;
+  final Function setStreamQuery;
 
   const BottomListSheet(
-      {super.key, required this.userReportStream, required this.setDate});
+      {super.key,
+      required this.userReportStream,
+      required this.setStreamQuery});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class BottomListSheet extends StatelessWidget {
             child: UserReportStreamBuilder(
               scrollController: scrollController,
               userReportsStream: userReportStream,
-              setDate: setDate,
+              setStreamQuery: setStreamQuery,
             ),
           );
         });
@@ -36,13 +36,13 @@ class BottomListSheet extends StatelessWidget {
 class UserReportStreamBuilder extends StatefulWidget {
   final ScrollController scrollController;
   final Stream userReportsStream;
-  final Function setDate;
+  final Function setStreamQuery;
 
   const UserReportStreamBuilder(
       {super.key,
       required this.scrollController,
       required this.userReportsStream,
-      required this.setDate});
+      required this.setStreamQuery});
 
   @override
   State<UserReportStreamBuilder> createState() =>
@@ -59,52 +59,35 @@ class _UserReportStreamBuilderState extends State<UserReportStreamBuilder> {
           return CustomScrollView(
               controller: widget.scrollController,
               slivers: [
-                SliverAppBar(
-                  pinned: true,
-                  title: const Icon(Icons.drag_handle),
-                  titleSpacing: 0.0,
-                  centerTitle: true,
-                  bottom: PreferredSize(
-                      preferredSize: const Size.fromHeight(30.0),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0),
-                        child: FilterBar(
-                          setDate: widget.setDate,
-                        ),
-                      )),
-                ),
+                BottomSheetAppBar(setStreamQuery: widget.setStreamQuery),
                 SliverList.builder(
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     UserReport report = UserReport.fromFirestore(
                         snapshot.data!.docs[index].data());
 
-                    return Card(
-                      child: ListTile(
-                        onTap: () => Navigator.pushNamed(
-                            context, ViewReportScreen.routeName,
-                            arguments: report),
-                        title: Text(report.observation!),
-                        subtitle: _populateSubtitle(report),
-                        trailing: Text(DateFormat('MM-dd-yyyy | hh:mm a')
-                            .format(report.date!)),
-                      ),
-                    );
+                    return BottomSheetCard(report: report);
                   },
                 ),
               ]);
         } else {
-          return const Icon(Icons.drag_handle);
+          return CustomScrollView(
+            controller: widget.scrollController,
+            slivers: [
+              BottomSheetAppBar(setStreamQuery: widget.setStreamQuery),
+              const SliverList(
+                delegate: SliverChildListDelegate.fixed([
+                  Center(
+                      child: Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text('No matching reports were found.'),
+                  ))
+                ]),
+              )
+            ],
+          );
         }
       },
     );
-  }
-
-  Widget? _populateSubtitle(UserReport report) {
-    if (report.species != null) {
-      return Text(report.species!);
-    } else {
-      return null;
-    }
   }
 }

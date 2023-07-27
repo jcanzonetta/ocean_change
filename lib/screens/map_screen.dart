@@ -19,14 +19,39 @@ class MapScreen extends StatefulWidget {
 }
 
 class MapScreenState extends State<MapScreen> {
-  Stream userReportsStream =
-      FirebaseFirestore.instance.collection('reports').snapshots();
+  Stream userReportsStream = FirebaseFirestore.instance
+      .collection('reports')
+      .orderBy('date', descending: true)
+      .snapshots();
 
-  void setDate() {
-    userReportsStream = FirebaseFirestore.instance
-        .collection('reports')
-        .where("date", isGreaterThan: DateTime(2023, 7, 22))
-        .snapshots();
+  void setStreamQuery(Map? query) {
+    // Clear Filter
+    if (query == null) {
+      userReportsStream = FirebaseFirestore.instance
+          .collection('reports')
+          .orderBy('date', descending: true)
+          .snapshots();
+      setState(() {});
+      return;
+    }
+
+    // Date
+    if (query['date'] != null) {
+      DateTime start = query['date'].start;
+      DateTime end = query['date'].end;
+
+      if (query['date'].start == query['date'].end) {
+        end = query['date'].end.add(const Duration(days: 1));
+      }
+
+      userReportsStream = FirebaseFirestore.instance
+          .collection('reports')
+          .where("date", isGreaterThanOrEqualTo: start)
+          .where('date', isLessThanOrEqualTo: end)
+          .orderBy('date')
+          .snapshots();
+    }
+
     setState(() {});
   }
 
@@ -62,7 +87,7 @@ class MapScreenState extends State<MapScreen> {
               }),
           BottomListSheet(
             userReportStream: userReportsStream,
-            setDate: setDate,
+            setStreamQuery: setStreamQuery,
           ),
         ],
       ),
