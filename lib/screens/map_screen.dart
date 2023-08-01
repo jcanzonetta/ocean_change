@@ -37,6 +37,9 @@ class MapScreenState extends State<MapScreen> {
     if (query == null) {
       activeQuery = {};
       userReportQuery = FirebaseFirestore.instance.collection('reports');
+      userReportsStream =
+          userReportQuery.orderBy('name', descending: true).snapshots();
+      return;
     }
 
     // Date
