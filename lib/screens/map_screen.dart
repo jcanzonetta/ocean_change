@@ -39,6 +39,7 @@ class MapScreenState extends State<MapScreen> {
       userReportQuery = FirebaseFirestore.instance.collection('reports');
       userReportsStream =
           userReportQuery.orderBy('name', descending: true).snapshots();
+      setState(() {});
       return;
     }
 
