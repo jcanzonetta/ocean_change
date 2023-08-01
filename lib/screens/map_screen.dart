@@ -24,9 +24,15 @@ class MapScreenState extends State<MapScreen> {
       .collection('reports')
       .orderBy('date', descending: true)
       .snapshots();
+  late Query userReportQuery;
+
+  @override
+  void initState() {
+    super.initState();
+    userReportQuery = FirebaseFirestore.instance.collection('reports');
+  }
 
   void setStreamQuery(Map? query) {
-    Query userReportQuery = FirebaseFirestore.instance.collection('reports');
     // Clear Filter
     if (query == null) {
       userReportsStream = FirebaseFirestore.instance
