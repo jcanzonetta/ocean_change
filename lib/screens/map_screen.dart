@@ -25,6 +25,7 @@ class MapScreenState extends State<MapScreen> {
       .snapshots();
 
   void setStreamQuery(Map? query) {
+    Query userReportQuery = FirebaseFirestore.instance.collection('reports');
     // Clear Filter
     if (query == null) {
       userReportsStream = FirebaseFirestore.instance
@@ -44,13 +45,19 @@ class MapScreenState extends State<MapScreen> {
         end = query['date'].end.add(const Duration(days: 1));
       }
 
-      userReportsStream = FirebaseFirestore.instance
-          .collection('reports')
+      userReportQuery = userReportQuery
           .where("date", isGreaterThanOrEqualTo: start)
-          .where('date', isLessThanOrEqualTo: end)
-          .orderBy('date')
-          .snapshots();
+          .where('date', isLessThanOrEqualTo: end);
     }
+
+    // Observation
+    if (query['observation'] != null) {
+      userReportQuery =
+          userReportQuery.where('observation', whereIn: query['observation']);
+    }
+
+    userReportsStream =
+        userReportQuery.orderBy('date', descending: true).snapshots();
 
     setState(() {});
   }
