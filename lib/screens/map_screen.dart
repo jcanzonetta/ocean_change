@@ -23,10 +23,19 @@ class MapScreenState extends State<MapScreen> {
       .collection('reports')
       .orderBy('date', descending: true)
       .snapshots();
+  late Query userReportQuery;
+  Map activeQuery = {};
+
+  @override
+  void initState() {
+    super.initState();
+    userReportQuery = FirebaseFirestore.instance.collection('reports');
+  }
 
   void setStreamQuery(Map? query) {
     // Clear Filter
     if (query == null) {
+      activeQuery = {};
       userReportsStream = FirebaseFirestore.instance
           .collection('reports')
           .orderBy('date', descending: true)
@@ -37,6 +46,15 @@ class MapScreenState extends State<MapScreen> {
 
     // Date
     if (query['date'] != null) {
+      if (activeQuery.containsKey('date')) {
+        userReportQuery = FirebaseFirestore.instance.collection('reports');
+
+        if (activeQuery.containsKey('observation')) {
+          userReportQuery.where('observation',
+              whereIn: activeQuery['observation']);
+        }
+      }
+
       DateTime start = query['date'].start;
       DateTime end = query['date'].end;
 
@@ -44,13 +62,34 @@ class MapScreenState extends State<MapScreen> {
         end = query['date'].end.add(const Duration(days: 1));
       }
 
-      userReportsStream = FirebaseFirestore.instance
-          .collection('reports')
+      activeQuery['date'] = {'start': start, 'end': end};
+
+      userReportQuery = userReportQuery
           .where("date", isGreaterThanOrEqualTo: start)
-          .where('date', isLessThanOrEqualTo: end)
-          .orderBy('date')
-          .snapshots();
+          .where('date', isLessThanOrEqualTo: end);
     }
+
+    // Observation
+    if (query['observation'] != null) {
+      if (activeQuery.containsKey('observation')) {
+        userReportQuery = FirebaseFirestore.instance.collection('reports');
+
+        if (activeQuery.containsKey('date')) {
+          userReportQuery
+              .where('date',
+                  isGreaterThanOrEqualTo: activeQuery['date']['start'])
+              .where('date', isLessThanOrEqualTo: activeQuery['date']['end']);
+        }
+      }
+
+      activeQuery['observation'] = query['observation'];
+
+      userReportQuery =
+          userReportQuery.where('observation', whereIn: query['observation']);
+    }
+
+    userReportsStream =
+        userReportQuery.orderBy('date', descending: true).snapshots();
 
     setState(() {});
   }
@@ -60,10 +99,7 @@ class MapScreenState extends State<MapScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ocean Change'),
-        actions: const [
-          CSVExportButton(),
-          SignOutButton()
-        ],
+        actions: const [CSVExportButton(), SignOutButton()],
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -99,4 +135,3 @@ class MapScreenState extends State<MapScreen> {
     );
   }
 }
-
