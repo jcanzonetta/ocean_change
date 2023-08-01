@@ -36,12 +36,8 @@ class MapScreenState extends State<MapScreen> {
     // Clear Filter
     if (query == null) {
       activeQuery = {};
-      userReportsStream = FirebaseFirestore.instance
-          .collection('reports')
-          .orderBy('date', descending: true)
-          .snapshots();
+      userReportQuery = FirebaseFirestore.instance.collection('reports');
       setState(() {});
-      return;
     }
 
     // Date
