@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_data.dart';
 import '../widgets/login/login_error_alert.dart';
 
@@ -81,6 +82,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: userData.email!, password: userData.password!);
+        FirebaseFirestore.instance.collection("users").add({
+          'admin': false, //default is false on creation
+          'username': userData.username,
+          'email': userData.email,
+        });
       } on FirebaseAuthException catch (e) {
         showLoginError(context, e.message!);
       }

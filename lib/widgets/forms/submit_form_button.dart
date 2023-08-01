@@ -72,7 +72,8 @@ class _SubmitFormButton extends State<SubmitFormButton> {
                     'water_temp': widget.userReport.waterTemp,
                     'date': widget.userReport.date,
                     'photo_url': imageUrl,
-                    'geopoint': widget.userReport.geopoint
+                    'geopoint': widget.userReport.geopoint,
+                    'user': widget.userReport.user
                   });
 
                   widget.clearImageCallback;
