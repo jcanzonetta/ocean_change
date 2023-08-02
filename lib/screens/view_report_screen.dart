@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ocean_change/models/user_report.dart';
-import 'package:ocean_change/styles.dart';
 import 'package:ocean_change/widgets/login/sign_out_button.dart';
 import 'package:ocean_change/widgets/view_report/view_report_data.dart';
 
@@ -22,27 +21,4 @@ class ViewReportScreen extends StatelessWidget {
     );
   }
 
-  Widget loadImage(imageUrl) {
-    if (imageUrl == null || imageUrl.isEmpty) {
-      return Container();
-    } else {
-      return Image.network(imageUrl);
-    }
-  }
-
-  Widget loadWaterTemp(waterTempReported) {
-    if (waterTempReported == null) {
-      return Container();
-    } else {
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-          child: Row(
-            children: [
-              const Text('Water Temperature:', style: Styles.viewScreenSmallLabels),
-              Text(' $waterTempReported°F', style: Styles.viewScreenSmallData),
-            ],
-          ),
-        );
-    }
-  }
 }
