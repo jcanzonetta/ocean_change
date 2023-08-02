@@ -10,12 +10,12 @@ Future<void> showLoginError(BuildContext context, String message) async {
         title: const Text('Error'),
         content: SingleChildScrollView(
           child: ListBody(
-            children: <Widget>[
+            children: [
               Text(message),
             ],
           ),
         ),
-        actions: <Widget>[
+        actions: [
           TextButton(
             child: const Text('Ok'),
             onPressed: () {
