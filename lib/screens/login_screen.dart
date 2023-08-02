@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ocean_change/screens/create_account_screen.dart';
 import '../models/user_data.dart';
 import '../widgets/login/login_error_alert.dart';
-
+import '../widgets/login/google_sign_in_button.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = 'LoginScreen';
@@ -27,18 +28,10 @@ class _LoginScreenState extends State<LoginScreen> {
           key: formKey,
           child: Column(
             children: [
+              const GoogleSignInButton(),
               const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 24, 0, 6),
-                  child: Text("First time user?")),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 48),
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, CreateAccountScreen.routeName);
-                    },
-                    child: const Text("Create Account")),
-              ),
+                padding: EdgeInsets.fromLTRB(0, 24, 0, 6),
+                child: Text("Or sign in with email and password.")),
               TextFormField(
                   decoration: const InputDecoration(labelText: "Email"),
                   validator: (value) {
@@ -64,7 +57,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   onSaved: (value) {
                     userData.password = value!;
                   }),
-              ElevatedButton(onPressed: _signIn, child: const Text("Log In"))
+              ElevatedButton(
+                  onPressed: _emailSignIn, child: const Text("Sign In")),
+              const Spacer(),
+              const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 150, 0, 6),
+                  child: Text("New user who can't sign in with a Google account?")),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 48),
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, CreateAccountScreen.routeName);
+                    },
+                    child: const Text("Create Account Manually")),
+              ),
             ],
           ),
         ),
@@ -72,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future _signIn() async {
+  Future _emailSignIn() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
       try {
@@ -83,5 +90,5 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
-}
 
+}
