@@ -29,7 +29,23 @@ class MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-    userReportQuery = FirebaseFirestore.instance.collection('reports');
+
+    DateTime now = DateTime.now();
+    DateTime initStart = DateTime(now.year, now.month, now.day)
+        .subtract(const Duration(days: 7));
+    DateTime initEnd = DateTime.now();
+
+    userReportQuery = FirebaseFirestore.instance
+        .collection('reports')
+        .where("date", isGreaterThanOrEqualTo: initStart)
+        .where('date', isLessThanOrEqualTo: initEnd);
+
+    setState(() {
+      userReportsStream =
+          userReportQuery.orderBy('date', descending: true).snapshots();
+    });
+
+    activeQuery['date'] = {'start': initStart, 'end': initEnd};
   }
 
   void setStreamQuery(Map? query) {
@@ -109,7 +125,8 @@ class MapScreenState extends State<MapScreen> {
                 List<ReportMarker> reportMarkers = [];
                 if (snapshot.hasData) {
                   for (final docSnapshot in snapshot.data!.docs) {
-                    final report = UserReport.fromFirestore(docSnapshot.data(), docSnapshot.id);
+                    final report = UserReport.fromFirestore(
+                        docSnapshot.data(), docSnapshot.id);
                     reportMarkers.add(ReportMarker(
                         userReport: report,
                         builder: (context) =>
