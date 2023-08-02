@@ -16,25 +16,28 @@ class BaseMap extends StatefulWidget {
 
 class _BaseMapState extends State<BaseMap> {
   final mapController = MapController();
+  final PopupController _popupLayerController = PopupController();
 
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
       options: MapOptions(
-          onPositionChanged: (mapPosition, someBool) {
-            imageCache.clear();
-          },
-          center: LatLng(45.3, -125),
-          zoom: 6,
-          maxZoom: 11,
-          minZoom: 5,
-          maxBounds:
-              LatLngBounds(LatLng(35.65, -140.10), LatLng(50.80, -120.50)),
-          interactiveFlags: InteractiveFlag.doubleTapZoom |
-              InteractiveFlag.drag |
-              InteractiveFlag.pinchMove |
-              InteractiveFlag.pinchZoom |
-              InteractiveFlag.flingAnimation),
+        onPositionChanged: (mapPosition, someBool) {
+          imageCache.clear();
+          _popupLayerController.hideAllPopups();
+        },
+        center: LatLng(45.3, -125),
+        zoom: 6,
+        maxZoom: 11,
+        minZoom: 5,
+        maxBounds: LatLngBounds(LatLng(35.65, -140.10), LatLng(50.80, -120.50)),
+        interactiveFlags: InteractiveFlag.doubleTapZoom |
+            InteractiveFlag.drag |
+            InteractiveFlag.pinchMove |
+            InteractiveFlag.pinchZoom |
+            InteractiveFlag.flingAnimation,
+        onTap: (_, __) => _popupLayerController.hideAllPopups(),
+      ),
       children: [
         TileLayer(
           tileProvider: AssetTileProvider(),
@@ -44,6 +47,7 @@ class _BaseMapState extends State<BaseMap> {
         PopupMarkerLayerWidget(
           options: PopupMarkerLayerOptions(
               markers: widget.reportMarkers,
+              popupController: _popupLayerController,
               popupBuilder: (BuildContext context, Marker marker) {
                 if (marker is ReportMarker) {
                   return ReportPopUp(marker, marker.userReport);

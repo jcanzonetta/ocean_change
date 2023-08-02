@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ocean_change/models/user_report.dart';
 import 'package:ocean_change/styles.dart';
 import 'package:ocean_change/widgets/login/sign_out_button.dart';
+import 'package:ocean_change/widgets/view_report/view_report_data.dart';
 
 class ViewReportScreen extends StatelessWidget {
   static const String routeName = 'ViewReportScreen';
@@ -17,63 +18,7 @@ class ViewReportScreen extends StatelessWidget {
           title: Text('${userReport.observation} Report',
               style: const TextStyle(fontSize: 22)),
               actions: const [SignOutButton()],),
-      body: Column(children: [
-        Center(child: loadImage(userReport.photoURL)),
-        Padding(
-            padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-            child: Row(
-              children: [
-                const Text('Observation:',
-                    style: Styles.viewScreenObservationLabels),
-                Text(
-                  ' ${userReport.observation}',
-                  style: Styles.viewScreenObservationData,
-                ),
-              ],
-            )),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-          child: Row(
-            children: [
-              const Text('Number Observed:',
-                  style: Styles.viewScreenMediumLabels),
-              Text(' ${userReport.observationNumber}',
-                  style: Styles.viewScreenMediumData),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-          child: Row(
-            children: [
-              const Text('Date: ', style: Styles.viewScreenMediumLabels),
-              Text(
-                  '${userReport.date!.month}/${userReport.date!.day}/${userReport.date!.year}',
-                  style: Styles.viewScreenMediumData),
-              const Expanded(
-                  child: Text(' Time:',
-                      style: Styles.viewScreenMediumLabels,
-                      textAlign: TextAlign.right)),
-              Text(' ${userReport.date.toString().substring(11, 19)}',
-                  style: Styles.viewScreenMediumData,
-                  textAlign: TextAlign.right)
-            ],
-          ),
-        ),
-        loadWaterTemp(userReport.waterTemp),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-          child: Row(
-            children: [
-              const Text('Location:', style: Styles.viewScreenSmallLabels),
-              Text(
-                ' ${userReport.geopoint?.latitude.toString().substring(0, 8)}° N, ${userReport.geopoint?.longitude.toString().substring(0, 10)}° W',
-                style: Styles.viewScreenSmallData,
-              ),
-            ],
-          ),
-        )
-      ]),
+      body: ViewReportData(userReport: userReport)
     );
   }
 
