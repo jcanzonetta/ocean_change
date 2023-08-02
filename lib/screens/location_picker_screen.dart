@@ -92,7 +92,14 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             top: _position!.y - 10,
             height: 20,
             width: 20,
-            child: const Icon(Icons.location_searching))
+            child: const Icon(Icons.location_searching)),
+        Positioned(
+          top: MediaQuery.of(context).size.height * 1 / 24,
+          left: MediaQuery.of(context).size.width * 1 / 8,
+          height: MediaQuery.of(context).size.height * 1 / 12,
+          width: MediaQuery.of(context).size.width * 3 / 4,
+          child: Container(child: Placeholder(), color: Colors.white),
+        )
       ]),
     );
   }
