@@ -17,7 +17,7 @@ List<List<dynamic>> convertQuerySnapshotToList(
 
   for (QueryDocumentSnapshot<Map<String, dynamic>> docSnapshot
       in querySnapshot.docs) {
-    final report = UserReport.fromFirestore(docSnapshot.data());
+    final report = UserReport.fromFirestore(docSnapshot.data(), docSnapshot.id);
 
     csvList.add(report.toCSVList());
   }

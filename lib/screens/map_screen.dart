@@ -74,7 +74,7 @@ class MapScreenState extends State<MapScreen> {
                 List<ReportMarker> reportMarkers = [];
                 if (snapshot.hasData) {
                   for (final docSnapshot in snapshot.data!.docs) {
-                    final report = UserReport.fromFirestore(docSnapshot.data());
+                    final report = UserReport.fromFirestore(docSnapshot.data(), docSnapshot.id);
                     reportMarkers.add(ReportMarker(
                         userReport: report,
                         builder: (context) =>

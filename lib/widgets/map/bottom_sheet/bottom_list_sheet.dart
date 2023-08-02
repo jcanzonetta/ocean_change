@@ -64,7 +64,7 @@ class _UserReportStreamBuilderState extends State<UserReportStreamBuilder> {
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     UserReport report = UserReport.fromFirestore(
-                        snapshot.data!.docs[index].data());
+                        snapshot.data!.docs[index].data(), snapshot.data!.docs[index].id);
 
                     return BottomSheetCard(report: report);
                   },
