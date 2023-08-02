@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class UserReport {
   DateTime? date;
@@ -11,8 +10,8 @@ class UserReport {
   String? waterColor;
   num? waterTemp;
   String? photoURL;
-  String? user = FirebaseAuth.instance.currentUser?.email;
-
+  String? user;
+  String? id;
   UserReport(
       {this.date,
       this.geopoint,
@@ -22,9 +21,11 @@ class UserReport {
       this.observationNumber,
       this.waterColor,
       this.waterTemp,
-      this.photoURL});
+      this.photoURL,
+      this.user,
+      this.id});
 
-  factory UserReport.fromFirestore(Map post) {
+  factory UserReport.fromFirestore(Map post, String id) {
     // ToDo: calculate geohash here using geoflutterfire package.
 
     return UserReport(
@@ -36,7 +37,8 @@ class UserReport {
         waterColor: post['water_color'],
         waterTemp: post['water_temp'],
         photoURL: post['photo_url'],
-        );
+        user: post['user'],
+        id: id);
   }
 
   List<String> csvHeaderList() {
