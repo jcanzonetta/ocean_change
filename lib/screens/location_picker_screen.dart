@@ -32,61 +32,69 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
     final UserReport userReport =
         ModalRoute.of(context)?.settings.arguments as UserReport;
 
+    updatePositionTarget() {
+      setState(() {
+        _position = _mapController.latLngToScreenPoint(LatLng(
+            userReport.geopoint!.latitude, userReport.geopoint!.longitude));
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text('Where was this observed?')),
+      resizeToAvoidBottomInset: false,
       body: Stack(children: [
         FlutterMap(
           mapController: _mapController,
           options: MapOptions(
-              onPositionChanged: (mapPosition, someBool) {
-                final updatedLatLng = LatLng(userReport.geopoint!.latitude,
-                    userReport.geopoint!.longitude);
+            onPositionChanged: (mapPosition, someBool) {
+              final updatedLatLng = LatLng(userReport.geopoint!.latitude,
+                  userReport.geopoint!.longitude);
 
-                _position = _mapController.latLngToScreenPoint(updatedLatLng);
+              _position = _mapController.latLngToScreenPoint(updatedLatLng);
 
-                setState(() {});
-                imageCache.clear();
-                // imageCache.clearLiveImages();
-              },
-              onMapReady: () {
-                if (userReport.geopoint != null) {
-                  _position = _mapController.latLngToScreenPoint(LatLng(
-                      userReport.geopoint!.latitude,
-                      userReport.geopoint!.longitude));
-                } else {
-                  final centerLatLng = _mapController.center;
-                  _position = _mapController.latLngToScreenPoint(centerLatLng);
-                  userReport.geopoint =
-                      GeoPoint(centerLatLng.latitude, centerLatLng.longitude);
-                }
-                _latController.text = '${userReport.geopoint!.latitude}';
-                _longController.text = '${userReport.geopoint!.longitude}';
-
-                setState(() {});
-              },
-              center: LatLng(45.3, -125),
-              zoom: 6,
-              maxZoom: 11,
-              minZoom: 5,
-              maxBounds:
-                  LatLngBounds(LatLng(35.65, -140.10), LatLng(50.80, -120.50)),
-              onTap: (tapPos, latLng) {
-                debugPrint('x: ${_position?.x} y: ${_position?.y}');
-
-                _position = _mapController.latLngToScreenPoint(latLng);
-
+              setState(() {});
+              imageCache.clear();
+              // imageCache.clearLiveImages();
+            },
+            onMapReady: () {
+              if (userReport.geopoint != null) {
+                _position = _mapController.latLngToScreenPoint(LatLng(
+                    userReport.geopoint!.latitude,
+                    userReport.geopoint!.longitude));
+              } else {
+                final centerLatLng = _mapController.center;
+                _position = _mapController.latLngToScreenPoint(centerLatLng);
                 userReport.geopoint =
-                    GeoPoint(latLng.latitude, latLng.longitude);
-                _latController.text = '${userReport.geopoint!.latitude}';
-                _longController.text = '${userReport.geopoint!.longitude}';
+                    GeoPoint(centerLatLng.latitude, centerLatLng.longitude);
+              }
+              _latController.text = '${userReport.geopoint!.latitude}';
+              _longController.text = '${userReport.geopoint!.longitude}';
 
-                debugPrint(
-                    'x: ${userReport.geopoint!.latitude}, y: ${userReport.geopoint!.longitude}');
+              setState(() {});
+            },
+            center: LatLng(45.3, -125),
+            zoom: 6,
+            maxZoom: 11,
+            minZoom: 5,
+            maxBounds:
+                LatLngBounds(LatLng(35.65, -140.10), LatLng(50.80, -120.50)),
+            onTap: (tapPos, latLng) {
+              debugPrint('x: ${_position?.x} y: ${_position?.y}');
 
-                setState(() {
-                  _position = _mapController.latLngToScreenPoint(latLng);
-                });
-              }),
+              _position = _mapController.latLngToScreenPoint(latLng);
+
+              userReport.geopoint = GeoPoint(latLng.latitude, latLng.longitude);
+              _latController.text = '${userReport.geopoint!.latitude}';
+              _longController.text = '${userReport.geopoint!.longitude}';
+
+              debugPrint(
+                  'x: ${userReport.geopoint!.latitude}, y: ${userReport.geopoint!.longitude}');
+
+              setState(() {
+                _position = _mapController.latLngToScreenPoint(latLng);
+              });
+            },
+          ),
           children: [
             TileLayer(
               tileProvider: AssetTileProvider(),
@@ -123,13 +131,26 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                           decoration: const InputDecoration(
                               labelText: 'Latitude:',
                               border: OutlineInputBorder()),
-                          keyboardType: TextInputType.number,
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true, signed: false),
                           inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d*'))
                           ],
-                          onSaved: (newValue) {
-                            userReport.geopoint = GeoPoint(newValue as double,
+                          onChanged: (newValue) {
+                            if (newValue.isEmpty ||
+                                !(num.parse(newValue) >= -90 &&
+                                    num.parse(newValue) <= 90)) {
+                              _latController.text =
+                                  userReport.geopoint!.latitude.toString();
+                              return;
+                            }
+
+                            userReport.geopoint = GeoPoint(
+                                double.parse(_latController.text),
                                 userReport.geopoint!.longitude);
+
+                            updatePositionTarget();
                           },
                         ),
                       ),
@@ -142,14 +163,26 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                           decoration: const InputDecoration(
                               labelText: 'Longitude:',
                               border: OutlineInputBorder()),
-                          keyboardType: TextInputType.number,
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true, signed: true),
                           inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^[-]\d+\.?\d*'))
                           ],
-                          onSaved: (newValue) {
+                          onChanged: (newValue) {
+                            if (newValue.isEmpty ||
+                                !(num.parse(newValue) >= -180 &&
+                                    num.parse(newValue) <= 180)) {
+                              _longController.text =
+                                  userReport.geopoint!.longitude.toString();
+                              return;
+                            }
+
                             userReport.geopoint = GeoPoint(
                                 userReport.geopoint!.latitude,
-                                newValue as double);
+                                double.parse(_longController.text));
+
+                            updatePositionTarget();
                           },
                         ),
                       ),
