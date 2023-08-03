@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:ocean_change/models/user_report.dart';
+import '../models/user_report.dart';
+
+import '../widgets/forms/latitude_entry_field.dart';
+import '../widgets/forms/longitude_entry_field.dart';
 
 class LocationPickerScreen extends StatefulWidget {
   static const String routeName = 'LocationPickerScreen';
@@ -123,70 +125,14 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
                   children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: _latController,
-                          decoration: const InputDecoration(
-                              labelText: 'Latitude:',
-                              border: OutlineInputBorder()),
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true, signed: false),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'^\d+\.?\d*'))
-                          ],
-                          onChanged: (newValue) {
-                            if (newValue.isEmpty ||
-                                !(num.parse(newValue) >= -90 &&
-                                    num.parse(newValue) <= 90)) {
-                              _latController.text =
-                                  userReport.geopoint!.latitude.toString();
-                              return;
-                            }
-
-                            userReport.geopoint = GeoPoint(
-                                double.parse(_latController.text),
-                                userReport.geopoint!.longitude);
-
-                            updatePositionTarget();
-                          },
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: _longController,
-                          decoration: const InputDecoration(
-                              labelText: 'Longitude:',
-                              border: OutlineInputBorder()),
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true, signed: true),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'^[-]\d+\.?\d*'))
-                          ],
-                          onChanged: (newValue) {
-                            if (newValue.isEmpty ||
-                                !(num.parse(newValue) >= -180 &&
-                                    num.parse(newValue) <= 180)) {
-                              _longController.text =
-                                  userReport.geopoint!.longitude.toString();
-                              return;
-                            }
-
-                            userReport.geopoint = GeoPoint(
-                                userReport.geopoint!.latitude,
-                                double.parse(_longController.text));
-
-                            updatePositionTarget();
-                          },
-                        ),
-                      ),
-                    ),
+                    LatitudeEntryField(
+                        latController: _latController,
+                        userReport: userReport,
+                        updatePositionTarget: updatePositionTarget),
+                    LongitudeEntryField(
+                        longController: _longController,
+                        userReport: userReport,
+                        updatePositionTarget: updatePositionTarget),
                   ],
                 ),
               )),
