@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:ocean_change/models/user_report.dart';
@@ -17,6 +18,8 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   CustomPoint<double>? _position = const CustomPoint(10, 10);
 
   late final MapController _mapController;
+  final TextEditingController _latController = TextEditingController();
+  final TextEditingController _longController = TextEditingController();
 
   @override
   void initState() {
@@ -56,6 +59,9 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                   userReport.geopoint =
                       GeoPoint(centerLatLng.latitude, centerLatLng.longitude);
                 }
+                _latController.text = '${userReport.geopoint!.latitude}';
+                _longController.text = '${userReport.geopoint!.longitude}';
+
                 setState(() {});
               },
               center: LatLng(45.3, -125),
@@ -71,6 +77,8 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
 
                 userReport.geopoint =
                     GeoPoint(latLng.latitude, latLng.longitude);
+                _latController.text = '${userReport.geopoint!.latitude}';
+                _longController.text = '${userReport.geopoint!.longitude}';
 
                 debugPrint(
                     'x: ${userReport.geopoint!.latitude}, y: ${userReport.geopoint!.longitude}');
@@ -96,9 +104,59 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
         Positioned(
           top: MediaQuery.of(context).size.height * 1 / 24,
           left: MediaQuery.of(context).size.width * 1 / 8,
-          height: MediaQuery.of(context).size.height * 1 / 12,
           width: MediaQuery.of(context).size.width * 3 / 4,
-          child: Container(child: Placeholder(), color: Colors.white),
+          child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    width: 1,
+                  )),
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: _latController,
+                          decoration: const InputDecoration(
+                              labelText: 'Latitude:',
+                              border: OutlineInputBorder()),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          onSaved: (newValue) {
+                            userReport.geopoint = GeoPoint(newValue as double,
+                                userReport.geopoint!.longitude);
+                          },
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: _longController,
+                          decoration: const InputDecoration(
+                              labelText: 'Longitude:',
+                              border: OutlineInputBorder()),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          onSaved: (newValue) {
+                            userReport.geopoint = GeoPoint(
+                                userReport.geopoint!.latitude,
+                                newValue as double);
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )),
         )
       ]),
     );
