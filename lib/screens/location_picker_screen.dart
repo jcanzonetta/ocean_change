@@ -4,8 +4,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/user_report.dart';
 
-import '../widgets/forms/latitude_entry_field.dart';
-import '../widgets/forms/longitude_entry_field.dart';
+import '../widgets/forms/location_picker/lat_long_box.dart';
+import '../widgets/forms/location_picker/lat_long_target.dart';
 
 class LocationPickerScreen extends StatefulWidget {
   static const String routeName = 'LocationPickerScreen';
@@ -104,70 +104,5 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             updatePositionTarget: updatePositionTarget)
       ]),
     );
-  }
-}
-
-class LatLongBox extends StatelessWidget {
-  const LatLongBox({
-    super.key,
-    required TextEditingController latController,
-    required this.userReport,
-    required TextEditingController longController,
-    required this.updatePositionTarget,
-  })  : _latController = latController,
-        _longController = longController;
-
-  final TextEditingController _latController;
-  final UserReport userReport;
-  final TextEditingController _longController;
-  final Function updatePositionTarget;
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      top: MediaQuery.of(context).size.height * 1 / 24,
-      left: MediaQuery.of(context).size.width * 1 / 8,
-      width: MediaQuery.of(context).size.width * 3 / 4,
-      child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                width: 1,
-              )),
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Row(
-              children: [
-                LatitudeEntryField(
-                    latController: _latController,
-                    userReport: userReport,
-                    updatePositionTarget: updatePositionTarget),
-                LongitudeEntryField(
-                    longController: _longController,
-                    userReport: userReport,
-                    updatePositionTarget: updatePositionTarget),
-              ],
-            ),
-          )),
-    );
-  }
-}
-
-class LatLongTarget extends StatelessWidget {
-  const LatLongTarget({
-    super.key,
-    required CustomPoint<double>? position,
-  }) : _position = position;
-
-  final CustomPoint<double>? _position;
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-        left: _position!.x - 10,
-        top: _position!.y - 10,
-        height: 20,
-        width: 20,
-        child: const Icon(Icons.location_searching));
   }
 }
