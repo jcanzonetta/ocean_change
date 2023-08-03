@@ -48,16 +48,17 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
         FlutterMap(
           mapController: _mapController,
           options: MapOptions(
+            center: LatLng(45.3, -125),
+            zoom: 6,
+            maxZoom: 11,
+            minZoom: 5,
+            maxBounds:
+                LatLngBounds(LatLng(35.65, -140.10), LatLng(50.80, -120.50)),
             interactiveFlags: InteractiveFlag.doubleTapZoom |
                 InteractiveFlag.drag |
                 InteractiveFlag.pinchMove |
                 InteractiveFlag.pinchZoom |
                 InteractiveFlag.flingAnimation,
-            onPositionChanged: (mapPosition, someBool) {
-              updatePositionTarget();
-              imageCache.clear();
-              // imageCache.clearLiveImages();
-            },
             onMapReady: () {
               if (userReport.geopoint == null) {
                 final centerLatLng = _mapController.center;
@@ -69,12 +70,6 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
 
               updatePositionTarget();
             },
-            center: LatLng(45.3, -125),
-            zoom: 6,
-            maxZoom: 11,
-            minZoom: 5,
-            maxBounds:
-                LatLngBounds(LatLng(35.65, -140.10), LatLng(50.80, -120.50)),
             onTap: (tapPos, latLng) {
               debugPrint('x: ${_position?.x} y: ${_position?.y}');
 
@@ -86,6 +81,11 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                   'x: ${userReport.geopoint!.latitude}, y: ${userReport.geopoint!.longitude}');
 
               updatePositionTarget();
+            },
+            onPositionChanged: (mapPosition, someBool) {
+              updatePositionTarget();
+              imageCache.clear();
+              // imageCache.clearLiveImages();
             },
           ),
           children: [
