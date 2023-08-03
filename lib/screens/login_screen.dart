@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ocean_change/screens/create_account_screen.dart';
 import '../models/user_data.dart';
 import '../widgets/login/login_error_alert.dart';
