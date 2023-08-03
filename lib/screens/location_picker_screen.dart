@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:ocean_change/models/user_report.dart';
+import '../models/user_report.dart';
+
+import '../widgets/forms/location_picker/lat_long_box.dart';
+import '../widgets/forms/location_picker/lat_long_target.dart';
 
 class LocationPickerScreen extends StatefulWidget {
   static const String routeName = 'LocationPickerScreen';
@@ -46,42 +48,30 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
         FlutterMap(
           mapController: _mapController,
           options: MapOptions(
-            onPositionChanged: (mapPosition, someBool) {
-              final updatedLatLng = LatLng(userReport.geopoint!.latitude,
-                  userReport.geopoint!.longitude);
-
-              _position = _mapController.latLngToScreenPoint(updatedLatLng);
-
-              setState(() {});
-              imageCache.clear();
-              // imageCache.clearLiveImages();
-            },
-            onMapReady: () {
-              if (userReport.geopoint != null) {
-                _position = _mapController.latLngToScreenPoint(LatLng(
-                    userReport.geopoint!.latitude,
-                    userReport.geopoint!.longitude));
-              } else {
-                final centerLatLng = _mapController.center;
-                _position = _mapController.latLngToScreenPoint(centerLatLng);
-                userReport.geopoint =
-                    GeoPoint(centerLatLng.latitude, centerLatLng.longitude);
-              }
-              _latController.text = '${userReport.geopoint!.latitude}';
-              _longController.text = '${userReport.geopoint!.longitude}';
-
-              setState(() {});
-            },
             center: LatLng(45.3, -125),
             zoom: 6,
             maxZoom: 11,
             minZoom: 5,
             maxBounds:
                 LatLngBounds(LatLng(35.65, -140.10), LatLng(50.80, -120.50)),
+            interactiveFlags: InteractiveFlag.doubleTapZoom |
+                InteractiveFlag.drag |
+                InteractiveFlag.pinchMove |
+                InteractiveFlag.pinchZoom |
+                InteractiveFlag.flingAnimation,
+            onMapReady: () {
+              if (userReport.geopoint == null) {
+                final centerLatLng = _mapController.center;
+                userReport.geopoint =
+                    GeoPoint(centerLatLng.latitude, centerLatLng.longitude);
+              }
+              _latController.text = '${userReport.geopoint!.latitude}';
+              _longController.text = '${userReport.geopoint!.longitude}';
+
+              updatePositionTarget();
+            },
             onTap: (tapPos, latLng) {
               debugPrint('x: ${_position?.x} y: ${_position?.y}');
-
-              _position = _mapController.latLngToScreenPoint(latLng);
 
               userReport.geopoint = GeoPoint(latLng.latitude, latLng.longitude);
               _latController.text = '${userReport.geopoint!.latitude}';
@@ -90,9 +80,12 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               debugPrint(
                   'x: ${userReport.geopoint!.latitude}, y: ${userReport.geopoint!.longitude}');
 
-              setState(() {
-                _position = _mapController.latLngToScreenPoint(latLng);
-              });
+              updatePositionTarget();
+            },
+            onPositionChanged: (mapPosition, someBool) {
+              updatePositionTarget();
+              imageCache.clear();
+              // imageCache.clearLiveImages();
             },
           ),
           children: [
@@ -103,94 +96,12 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             )
           ],
         ),
-        Positioned(
-            left: _position!.x - 10,
-            top: _position!.y - 10,
-            height: 20,
-            width: 20,
-            child: const Icon(Icons.location_searching)),
-        Positioned(
-          top: MediaQuery.of(context).size.height * 1 / 24,
-          left: MediaQuery.of(context).size.width * 1 / 8,
-          width: MediaQuery.of(context).size.width * 3 / 4,
-          child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    width: 1,
-                  )),
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: _latController,
-                          decoration: const InputDecoration(
-                              labelText: 'Latitude:',
-                              border: OutlineInputBorder()),
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true, signed: false),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'^\d+\.?\d*'))
-                          ],
-                          onChanged: (newValue) {
-                            if (newValue.isEmpty ||
-                                !(num.parse(newValue) >= -90 &&
-                                    num.parse(newValue) <= 90)) {
-                              _latController.text =
-                                  userReport.geopoint!.latitude.toString();
-                              return;
-                            }
-
-                            userReport.geopoint = GeoPoint(
-                                double.parse(_latController.text),
-                                userReport.geopoint!.longitude);
-
-                            updatePositionTarget();
-                          },
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: _longController,
-                          decoration: const InputDecoration(
-                              labelText: 'Longitude:',
-                              border: OutlineInputBorder()),
-                          keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true, signed: true),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'^[-]\d+\.?\d*'))
-                          ],
-                          onChanged: (newValue) {
-                            if (newValue.isEmpty ||
-                                !(num.parse(newValue) >= -180 &&
-                                    num.parse(newValue) <= 180)) {
-                              _longController.text =
-                                  userReport.geopoint!.longitude.toString();
-                              return;
-                            }
-
-                            userReport.geopoint = GeoPoint(
-                                userReport.geopoint!.latitude,
-                                double.parse(_longController.text));
-
-                            updatePositionTarget();
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )),
-        )
+        LatLongTarget(position: _position),
+        LatLongBox(
+            latController: _latController,
+            userReport: userReport,
+            longController: _longController,
+            updatePositionTarget: updatePositionTarget)
       ]),
     );
   }
