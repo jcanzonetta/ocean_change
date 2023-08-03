@@ -49,30 +49,20 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
           mapController: _mapController,
           options: MapOptions(
             onPositionChanged: (mapPosition, someBool) {
-              final updatedLatLng = LatLng(userReport.geopoint!.latitude,
-                  userReport.geopoint!.longitude);
-
-              _position = _mapController.latLngToScreenPoint(updatedLatLng);
-
-              setState(() {});
+              updatePositionTarget();
               imageCache.clear();
               // imageCache.clearLiveImages();
             },
             onMapReady: () {
-              if (userReport.geopoint != null) {
-                _position = _mapController.latLngToScreenPoint(LatLng(
-                    userReport.geopoint!.latitude,
-                    userReport.geopoint!.longitude));
-              } else {
+              if (userReport.geopoint == null) {
                 final centerLatLng = _mapController.center;
-                _position = _mapController.latLngToScreenPoint(centerLatLng);
                 userReport.geopoint =
                     GeoPoint(centerLatLng.latitude, centerLatLng.longitude);
               }
               _latController.text = '${userReport.geopoint!.latitude}';
               _longController.text = '${userReport.geopoint!.longitude}';
 
-              setState(() {});
+              updatePositionTarget();
             },
             center: LatLng(45.3, -125),
             zoom: 6,
@@ -83,8 +73,6 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             onTap: (tapPos, latLng) {
               debugPrint('x: ${_position?.x} y: ${_position?.y}');
 
-              _position = _mapController.latLngToScreenPoint(latLng);
-
               userReport.geopoint = GeoPoint(latLng.latitude, latLng.longitude);
               _latController.text = '${userReport.geopoint!.latitude}';
               _longController.text = '${userReport.geopoint!.longitude}';
@@ -92,9 +80,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               debugPrint(
                   'x: ${userReport.geopoint!.latitude}, y: ${userReport.geopoint!.longitude}');
 
-              setState(() {
-                _position = _mapController.latLngToScreenPoint(latLng);
-              });
+              updatePositionTarget();
             },
           ),
           children: [
