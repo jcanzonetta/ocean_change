@@ -2,17 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../models/user_report.dart';
+import '../../../models/user_report.dart';
 
-class LatitudeEntryField extends StatelessWidget {
-  const LatitudeEntryField({
+class LongitudeEntryField extends StatelessWidget {
+  const LongitudeEntryField({
     super.key,
-    required TextEditingController latController,
+    required TextEditingController longController,
     required this.userReport,
     required this.updatePositionTarget,
-  }) : _latController = latController;
+  }) : _longController = longController;
 
-  final TextEditingController _latController;
+  final TextEditingController _longController;
   final UserReport userReport;
   final Function updatePositionTarget;
 
@@ -22,23 +22,23 @@ class LatitudeEntryField extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextFormField(
-          controller: _latController,
+          controller: _longController,
           decoration: const InputDecoration(
-              labelText: 'Latitude:', border: OutlineInputBorder()),
+              labelText: 'Longitude:', border: OutlineInputBorder()),
           keyboardType: const TextInputType.numberWithOptions(
-              decimal: true, signed: false),
+              decimal: true, signed: true),
           inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*'))
+            FilteringTextInputFormatter.allow(RegExp(r'^[-]\d+\.?\d*'))
           ],
           onChanged: (newValue) {
             if (newValue.isEmpty ||
-                !(num.parse(newValue) >= -90 && num.parse(newValue) <= 90)) {
-              _latController.text = userReport.geopoint!.latitude.toString();
+                !(num.parse(newValue) >= -180 && num.parse(newValue) <= 180)) {
+              _longController.text = userReport.geopoint!.longitude.toString();
               return;
             }
 
-            userReport.geopoint = GeoPoint(double.parse(_latController.text),
-                userReport.geopoint!.longitude);
+            userReport.geopoint = GeoPoint(userReport.geopoint!.latitude,
+                double.parse(_longController.text));
 
             updatePositionTarget();
           },
