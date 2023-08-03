@@ -78,7 +78,7 @@ class _SubmitFormButton extends State<SubmitFormButton> {
 
                   widget.clearImageCallback;
 
-                  Navigator.of(context).pop();
+                  if (context.mounted) Navigator.of(context).pop();
                 }
               },
         icon: _uploading
