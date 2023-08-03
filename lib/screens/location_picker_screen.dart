@@ -48,6 +48,11 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
         FlutterMap(
           mapController: _mapController,
           options: MapOptions(
+            interactiveFlags: InteractiveFlag.doubleTapZoom |
+                InteractiveFlag.drag |
+                InteractiveFlag.pinchMove |
+                InteractiveFlag.pinchZoom |
+                InteractiveFlag.flingAnimation,
             onPositionChanged: (mapPosition, someBool) {
               updatePositionTarget();
               imageCache.clear();
