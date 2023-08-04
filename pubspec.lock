@@ -303,7 +303,7 @@ packages:
     source: hosted
     version: "1.1.1"
   flutter_map_marker_popup:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_map_marker_popup
       sha256: "7cf30fab25ffe1ba04a9e0fbe1227f44a83c73256d4d70be1c26cf141ce5c41d"
