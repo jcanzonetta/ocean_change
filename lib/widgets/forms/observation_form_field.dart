@@ -27,55 +27,45 @@ class _ObservationFormFieldState extends State<ObservationFormField> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
+    return Column(
+      children: [
+        Row(
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text('What did you see?'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: DropdownButton<String>(
-                    value: widget.userReport.observation,
-                    icon: const Icon(Icons.arrow_downward),
-                    onChanged: (String? value) {
-                      setState(() {
-                        widget.userReport.observation = value!;
+            const Text('What did you see?'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton<String>(
+                value: widget.userReport.observation,
+                icon: const Icon(Icons.arrow_downward),
+                onChanged: (String? value) {
+                  setState(() {
+                    widget.userReport.observation = value!;
 
-                        chosenObservation = widget.observationList.firstWhere(
-                            (element) =>
-                                element.name == widget.userReport.observation);
-                      });
-                    },
-                    items: widget.observationList.map<DropdownMenuItem<String>>(
-                        (Observation observation) {
-                      return DropdownMenuItem<String>(
-                        value: observation.name,
-                        child: Text(observation.name),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
+                    chosenObservation = widget.observationList.firstWhere(
+                        (element) =>
+                            element.name == widget.userReport.observation);
+                  });
+                },
+                items: widget.observationList
+                    .map<DropdownMenuItem<String>>((Observation observation) {
+                  return DropdownMenuItem<String>(
+                    value: observation.name,
+                    child: Text(observation.name),
+                  );
+                }).toList(),
+              ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text('Was it one of these species?'),
-                ),
-                SpeciesFormField(
-                    userReport: widget.userReport,
-                    chosenObservation: chosenObservation),
-              ],
-            )
           ],
-        ));
+        ),
+        Row(
+          children: [
+            const Text('Details: '),
+            SpeciesFormField(
+                userReport: widget.userReport,
+                chosenObservation: chosenObservation),
+          ],
+        )
+      ],
+    );
   }
 }

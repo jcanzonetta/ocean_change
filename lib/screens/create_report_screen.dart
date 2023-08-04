@@ -46,25 +46,30 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Report an Observation'),
-        actions: const [SignOutButton()],),
+        actions: const [SignOutButton()],
+      ),
       body: Form(
         key: formKey,
         child: SingleChildScrollView(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            ObservationStreamBuilder(userReport: userReport),
-            NumberOfObservationFormField(userReport: userReport),
-            WaterTemperatureFormField(userReport: userReport),
-            DateTimeFormField(userReport: userReport),
-            LocationPickerFormField(userReport: userReport),
-            ImageFormField(
-                userReport: userReport,
-                updateImageCallback: updateImageCallback),
-            SubmitFormButton(
-                formKey: formKey,
-                userReport: userReport,
-                image: image,
-                clearImageCallback: clearImageCallback),
-          ]),
+          child: Container(
+            margin: const EdgeInsets.all(24.0),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              ObservationStreamBuilder(userReport: userReport),
+              NumberOfObservationFormField(userReport: userReport),
+              WaterTemperatureFormField(userReport: userReport),
+              DateTimeFormField(userReport: userReport),
+              LocationPickerFormField(userReport: userReport),
+              ImageFormField(
+                  userReport: userReport,
+                  updateImageCallback: updateImageCallback),
+              SubmitFormButton(
+                  formKey: formKey,
+                  userReport: userReport,
+                  image: image,
+                  clearImageCallback: clearImageCallback),
+            ]),
+          ),
         ),
       ),
     );
