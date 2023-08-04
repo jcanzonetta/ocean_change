@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ocean_change/widgets/login/sign_out_button.dart';
 import 'create_report_screen.dart';
 import '../widgets/map/base_map.dart';
@@ -25,10 +26,25 @@ class MapScreenState extends State<MapScreen> {
       .snapshots();
   late Query userReportQuery;
   Map activeQuery = {};
+  // variable to track if user is an admin. Passed throughout the app
+  bool adminStatus = false;
 
   @override
   void initState() {
     super.initState();
+
+    // Check if logged in user is an admin and update status if so
+    final User? currentUser = FirebaseAuth.instance.currentUser;
+    final usersData = FirebaseFirestore.instance.collection("users");
+    usersData
+        .where("email", isEqualTo: currentUser!.email)
+        .get()
+        .then((querySnapshot) {
+      final currentUserData = querySnapshot.docs[0].data();
+      if (currentUserData['admin'] == true) {
+        setState(() => adminStatus = true);
+      }
+    });
 
     DateTime now = DateTime.now();
     DateTime initStart = DateTime(now.year, now.month, now.day)
@@ -132,7 +148,9 @@ class MapScreenState extends State<MapScreen> {
                         builder: (context) =>
                             ReportMarkerIcon(observation: report.observation)));
                   }
-                  return BaseMap(reportMarkers: reportMarkers);
+                  return BaseMap(
+                      reportMarkers: reportMarkers,
+                      adminStatus: adminStatus);
                 } else {
                   return const Center(child: CircularProgressIndicator());
                 }

@@ -15,7 +15,8 @@ class LandingScreen extends StatelessWidget {
           if (snapshot.hasData) {
             Navigator.maybePop(context);
             return const MapScreen();
-          } else {
+          }
+          else {
             Navigator.maybePop(context);
             return const LoginScreen();
           }

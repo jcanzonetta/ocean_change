@@ -3,19 +3,17 @@ import 'package:ocean_change/models/user_report.dart';
 import 'package:ocean_change/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ocean_change/widgets/view_report/view_screen_args.dart';
 
 class ViewReportData extends StatelessWidget {
-  final UserReport userReport;
+  final ViewScreenArgs viewScreenArgs;
   final User? currentUser = FirebaseAuth.instance.currentUser;
-  ViewReportData({super.key, required this.userReport});
+  ViewReportData({super.key, required this.viewScreenArgs});
 
   @override
   Widget build(BuildContext context) {
-    print(currentUser?.email);
-    print(userReport.user);
-    if (currentUser?.email == userReport.user) {
       return Column(children: [
-        Center(child: loadImage(userReport.photoURL)),
+        Center(child: loadImage(viewScreenArgs.userReport.photoURL)),
         Padding(
             padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
             child: Row(
@@ -23,7 +21,7 @@ class ViewReportData extends StatelessWidget {
                 const Text('Observation:',
                     style: Styles.viewScreenObservationLabels),
                 Text(
-                  ' ${userReport.observation}',
+                  ' ${viewScreenArgs.userReport.observation}',
                   style: Styles.viewScreenObservationData,
                 ),
               ],
@@ -34,7 +32,7 @@ class ViewReportData extends StatelessWidget {
             children: [
               const Text('Number Observed:',
                   style: Styles.viewScreenMediumLabels),
-              Text(' ${userReport.observationNumber}',
+              Text(' ${viewScreenArgs.userReport.observationNumber}',
                   style: Styles.viewScreenMediumData),
             ],
           ),
@@ -45,95 +43,35 @@ class ViewReportData extends StatelessWidget {
             children: [
               const Text('Date: ', style: Styles.viewScreenMediumLabels),
               Text(
-                  '${userReport.date!.month}/${userReport.date!.day}/${userReport.date!.year}',
+                  '${viewScreenArgs.userReport.date!.month}/${viewScreenArgs.userReport.date!.day}/${viewScreenArgs.userReport.date!.year}',
                   style: Styles.viewScreenMediumData),
               const Expanded(
                   child: Text(' Time:',
                       style: Styles.viewScreenMediumLabels,
                       textAlign: TextAlign.right)),
-              Text(' ${userReport.date.toString().substring(11, 19)}',
+              Text(' ${viewScreenArgs.userReport.date.toString().substring(11, 19)}',
                   style: Styles.viewScreenMediumData,
                   textAlign: TextAlign.right)
             ],
           ),
         ),
-        loadWaterTemp(userReport.waterTemp),
+        loadWaterTemp(viewScreenArgs.userReport.waterTemp),
         Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
           child: Row(
             children: [
               const Text('Location:', style: Styles.viewScreenSmallLabels),
               Text(
-                ' ${userReport.geopoint?.latitude.toString().substring(0, 8)}° N, ${userReport.geopoint?.longitude.toString().substring(0, 10)}° W',
+                ' ${viewScreenArgs.userReport.geopoint?.latitude.toString().substring(0, 8)}° N, ${viewScreenArgs.userReport.geopoint?.longitude.toString().substring(0, 10)}° W',
                 style: Styles.viewScreenSmallData,
               ),
             ],
           ),
         ),
-        ElevatedButton(
-            onPressed: () => deleteReport(context, userReport),
-            child: const Text("Delete"))
-      ]);
-    } else {
-      return Column(children: [
-        Center(child: loadImage(userReport.photoURL)),
-        Padding(
-            padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-            child: Row(
-              children: [
-                const Text('Observation:',
-                    style: Styles.viewScreenObservationLabels),
-                Text(
-                  ' ${userReport.observation}',
-                  style: Styles.viewScreenObservationData,
-                ),
-              ],
-            )),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-          child: Row(
-            children: [
-              const Text('Number Observed:',
-                  style: Styles.viewScreenMediumLabels),
-              Text(' ${userReport.observationNumber}',
-                  style: Styles.viewScreenMediumData),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-          child: Row(
-            children: [
-              const Text('Date: ', style: Styles.viewScreenMediumLabels),
-              Text(
-                  '${userReport.date!.month}/${userReport.date!.day}/${userReport.date!.year}',
-                  style: Styles.viewScreenMediumData),
-              const Expanded(
-                  child: Text(' Time:',
-                      style: Styles.viewScreenMediumLabels,
-                      textAlign: TextAlign.right)),
-              Text(' ${userReport.date.toString().substring(11, 19)}',
-                  style: Styles.viewScreenMediumData,
-                  textAlign: TextAlign.right)
-            ],
-          ),
-        ),
-        loadWaterTemp(userReport.waterTemp),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-          child: Row(
-            children: [
-              const Text('Location:', style: Styles.viewScreenSmallLabels),
-              Text(
-                ' ${userReport.geopoint?.latitude.toString().substring(0, 8)}° N, ${userReport.geopoint?.longitude.toString().substring(0, 10)}° W',
-                style: Styles.viewScreenSmallData,
-              ),
-            ],
-          ),
-        ),
-      ]);
-    }
-  }
+        deleteReportButton(context, currentUser, viewScreenArgs.userReport, viewScreenArgs.adminStatus)
+    ]);
+  } 
+  
 
   Widget loadImage(imageUrl) {
     if (imageUrl == null || imageUrl.isEmpty) {
@@ -160,8 +98,23 @@ class ViewReportData extends StatelessWidget {
     }
   }
 
+  Widget deleteReportButton(
+      BuildContext context, User? currentUser, 
+      UserReport userReport, bool adminStatus) {
+    if (currentUser?.email == userReport.user || adminStatus == true) {
+      return ElevatedButton(
+          onPressed: () => deleteReport(context, userReport),
+          child: const Text("Delete"));
+    } else {
+      return Container();
+    }
+  }
+
   void deleteReport(BuildContext context, UserReport userReport) {
-    FirebaseFirestore.instance.collection("reports").doc(userReport.id).delete();
+    FirebaseFirestore.instance
+        .collection("reports")
+        .doc(userReport.id)
+        .delete();
     Navigator.pop(context);
   }
 }
