@@ -30,18 +30,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   child:
                       Text("Enter the fields below to create a new account")),
               TextFormField(
-                  decoration: const InputDecoration(labelText: "Username"),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter a username";
-                    } else {
-                      return null;
-                    }
-                  },
-                  onSaved: (value) {
-                    userData.username = value!;
-                  }),
-              TextFormField(
                   decoration: const InputDecoration(labelText: "Password"),
                   obscureText: true,
                   validator: (value) {
@@ -84,7 +72,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             email: userData.email!, password: userData.password!);
         FirebaseFirestore.instance.collection("users").add({
           'admin': false, //default is false on creation
-          'username': userData.username,
           'email': userData.email,
         });
       } on FirebaseAuthException catch (e) {

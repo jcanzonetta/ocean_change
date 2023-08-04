@@ -9,7 +9,8 @@ import 'report_marker.dart';
 
 class BaseMap extends StatefulWidget {
   final List<ReportMarker> reportMarkers;
-  BaseMap({super.key, required this.reportMarkers});
+  final bool adminStatus;
+  BaseMap({super.key, required this.reportMarkers, required this.adminStatus});
 
   @override
   State<BaseMap> createState() => _BaseMapState();
@@ -51,7 +52,7 @@ class _BaseMapState extends State<BaseMap> {
               popupController: _popupLayerController,
               popupBuilder: (BuildContext context, Marker marker) {
                 if (marker is ReportMarker) {
-                  return ReportPopUp(marker, marker.userReport);
+                  return ReportPopUp(marker, marker.userReport, widget.adminStatus);
                 } else {
                   return PopUp(marker);
                 }
