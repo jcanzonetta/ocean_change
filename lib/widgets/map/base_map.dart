@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:ocean_change/widgets/map/popup.dart';
-import 'package:ocean_change/widgets/map/report_popup.dart';
-import 'package:ocean_change/widgets/map/report_marker.dart';
+
+import 'popup.dart';
+import 'report_popup.dart';
+import 'report_marker.dart';
 
 class BaseMap extends StatefulWidget {
   final List<ReportMarker> reportMarkers;

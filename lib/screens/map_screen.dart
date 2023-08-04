@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ocean_change/widgets/login/sign_out_button.dart';
+
 import 'create_report_screen.dart';
+
+import '../models/user_report.dart';
+
 import '../widgets/map/base_map.dart';
 import '../widgets/map/bottom_sheet/bottom_list_sheet.dart';
 import '../widgets/map/csv_export_button.dart';
 import '../widgets/map/report_marker_icon.dart';
 import '../widgets/map/report_marker.dart';
-import '../models/user_report.dart';
 
 class MapScreen extends StatefulWidget {
   static const String routeName = 'MapScreen';
