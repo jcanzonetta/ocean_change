@@ -21,35 +21,38 @@ class _DateTimeFormFieldState extends State<DateTimeFormField> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: OutlinedButton(
-              onPressed: _pickDate,
-              child: const Icon(Icons.calendar_month_outlined),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: OutlinedButton(
+                onPressed: _pickDate,
+                child: const Icon(Icons.calendar_month_outlined),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child:
-                Text(DateFormat('MM-dd-yyyy').format(widget.userReport.date!)),
-          ),
-          Padding(
-              padding: const EdgeInsets.all(8.0),
+            Text(DateFormat('MM-dd-yyyy').format(widget.userReport.date!)),
+          ],
+        ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: OutlinedButton(
                 onPressed: _pickTime,
                 child: const Icon(Icons.schedule_outlined),
-              )),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(DateFormat('hh:mm a').format(widget.userReport.date!)),
-          )
-        ],
-      ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child:
+                  Text(DateFormat('hh:mm a').format(widget.userReport.date!)),
+            )
+          ],
+        ),
+      ],
     );
   }
 
