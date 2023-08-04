@@ -30,6 +30,18 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   child:
                       Text("Enter the fields below to create a new account")),
               TextFormField(
+                  decoration: const InputDecoration(labelText: "Email"),
+                  validator: (value) {
+                    if (value!.isEmpty || !value.contains('@')) {
+                      return "Please enter an email";
+                    } else {
+                      return null;
+                    }
+                  },
+                  onSaved: (value) {
+                    userData.email = value!;
+                  }),
+              TextFormField(
                   decoration: const InputDecoration(labelText: "Password"),
                   obscureText: true,
                   validator: (value) {
@@ -41,18 +53,6 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                   },
                   onSaved: (value) {
                     userData.password = value!;
-                  }),
-              TextFormField(
-                  decoration: const InputDecoration(labelText: "Email"),
-                  validator: (value) {
-                    if (value!.isEmpty || !value.contains('@')) {
-                      return "Please enter an email";
-                    } else {
-                      return null;
-                    }
-                  },
-                  onSaved: (value) {
-                    userData.email = value!;
                   }),
               ElevatedButton(
                   onPressed: _createAccount,
