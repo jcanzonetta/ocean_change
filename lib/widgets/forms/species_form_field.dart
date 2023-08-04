@@ -42,7 +42,7 @@ class _SpeciesFormFieldState extends State<SpeciesFormField> {
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: DropdownButton<String>(
-          disabledHint: const Text('No species to choose from.'),
+          disabledHint: const Text('None'),
           value: widget.userReport.species,
           icon: const Icon(Icons.arrow_downward),
           onChanged: (String? value) {
