@@ -47,47 +47,53 @@ class _SubmitFormButton extends State<SubmitFormButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ElevatedButton.icon(
-        onPressed: _uploading
-            ? null
-            : () async {
-                if (widget.formKey.currentState?.validate() ?? true) {
-                  setState(() {
-                    _uploading = true;
-                  });
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton.icon(
+            onPressed: _uploading
+                ? null
+                : () async {
+                    if (widget.formKey.currentState?.validate() ?? true) {
+                      setState(() {
+                        _uploading = true;
+                      });
 
-                  widget.formKey.currentState!.save();
+                      widget.formKey.currentState!.save();
 
-                  String? imageUrl;
-                  if (widget.image != null) {
-                    imageUrl = await uploadImage(widget.image!);
-                  }
+                      String? imageUrl;
+                      if (widget.image != null) {
+                        imageUrl = await uploadImage(widget.image!);
+                      }
 
-                  FirebaseFirestore.instance.collection('reports').add({
-                    'observation': widget.userReport.observation,
-                    'species': widget.userReport.species,
-                    'observation_number': widget.userReport.observationNumber,
-                    'water_temp': widget.userReport.waterTemp,
-                    'date': widget.userReport.date,
-                    'photo_url': imageUrl,
-                    'geopoint': widget.userReport.geopoint,
-                    'user': FirebaseAuth.instance.currentUser?.email
-                  });
+                      FirebaseFirestore.instance.collection('reports').add({
+                        'observation': widget.userReport.observation,
+                        'species': widget.userReport.species,
+                        'observation_number':
+                            widget.userReport.observationNumber,
+                        'water_temp': widget.userReport.waterTemp,
+                        'date': widget.userReport.date,
+                        'photo_url': imageUrl,
+                        'geopoint': widget.userReport.geopoint,
+                        'user': FirebaseAuth.instance.currentUser?.email
+                      });
 
-                  widget.clearImageCallback;
+                      widget.clearImageCallback;
 
-                  if (context.mounted) Navigator.of(context).pop();
-                }
-              },
-        icon: _uploading
-            ? Transform.scale(
-                scale: 0.5,
-                child: const CircularProgressIndicator(color: Colors.white))
-            : const Icon(Icons.cloud_circle),
-        label: const Text('Submit'),
-      ),
+                      if (context.mounted) Navigator.of(context).pop();
+                    }
+                  },
+            icon: _uploading
+                ? Transform.scale(
+                    scale: 0.5,
+                    child: const CircularProgressIndicator(color: Colors.white))
+                : const Icon(Icons.cloud_circle),
+            label: const Text('Submit'),
+          ),
+        ),
+      ],
     );
   }
 }
