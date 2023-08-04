@@ -60,10 +60,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: _emailSignIn, child: const Text("Sign In")),
               const Spacer(),
               const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 150, 0, 6),
+                  padding: EdgeInsets.fromLTRB(0, 16, 0, 6),
                   child: Text("New user who can't sign in with a Google account?")),
               Padding(
-                padding: const EdgeInsets.only(bottom: 48),
+                padding: const EdgeInsets.only(bottom: 50),
                 child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(
