@@ -39,7 +39,8 @@ class MapScreenState extends State<MapScreen> {
     DateTime now = DateTime.now();
     DateTime initStart = DateTime(now.year, now.month, now.day)
         .subtract(const Duration(days: 7));
-    DateTime initEnd = DateTime.now();
+    DateTime initEnd =
+        DateTime(now.year, now.month, now.day).add(const Duration(days: 1));
 
     userReportQuery = FirebaseFirestore.instance
         .collection('reports')
