@@ -32,7 +32,10 @@ class MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
+    setOneWeekQuery();
+  }
 
+  void setOneWeekQuery() {
     DateTime now = DateTime.now();
     DateTime initStart = DateTime(now.year, now.month, now.day)
         .subtract(const Duration(days: 7));
