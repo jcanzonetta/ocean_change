@@ -55,21 +55,14 @@ class _ImageFormFieldState extends State<ImageFormField> {
 
         if (connected) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: OutlinedButton(
-                    onPressed: () async {
-                      getImage();
-                    },
-                    child: const Icon(Icons.photo)),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child:
-                    Text(_imagePicked ? 'Image Selected' : 'No Image Selected'),
-              )
+              OutlinedButton(
+                  onPressed: () async {
+                    getImage();
+                  },
+                  child: const Icon(Icons.photo)),
+              Text(_imagePicked ? 'Image Selected' : 'No Image Selected')
             ],
           );
         } else {
