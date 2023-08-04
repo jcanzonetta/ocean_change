@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:ocean_change/models/user_report.dart';
 import '../../screens/view_report_screen.dart';
+import '../view_report/view_screen_args.dart';
 
 class ReportPopUp extends StatefulWidget {
   final Marker marker;
   final UserReport userReport;
+  final bool adminStatus;
 
-  const ReportPopUp(this.marker, this.userReport, {super.key});
+  const ReportPopUp(this.marker, this.userReport, this.adminStatus,
+      {super.key});
 
   @override
   State<ReportPopUp> createState() => _ReportPopUpState();
@@ -18,8 +21,10 @@ class _ReportPopUpState extends State<ReportPopUp> {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        onTap: () => Navigator.pushNamed(context, ViewReportScreen.routeName,
-            arguments: widget.userReport),
+        onTap: () => Navigator.pushNamed(
+            context,
+            ViewReportScreen.routeName,
+            arguments: ViewScreenArgs(widget.userReport, widget.adminStatus)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -57,7 +62,9 @@ class _ReportPopUpState extends State<ReportPopUp> {
             const Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
             const Text(
               'Tap for more info',
-              style: TextStyle(fontSize: 11.0, ),
+              style: TextStyle(
+                fontSize: 11.0,
+              ),
             )
           ],
         ),
