@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '798401796422',
     projectId: 'ocean-change',
     storageBucket: 'ocean-change.appspot.com',
+    androidClientId: '798401796422-fodm3279n0kq7sg72fe5vg1atpdndqp3.apps.googleusercontent.com',
     iosClientId: '798401796422-6ffst6a9plm8qi16nhkm15amp946hd28.apps.googleusercontent.com',
     iosBundleId: 'com.example.oceanChange',
   );

@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import '../../models/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,8 +20,8 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all(const Color.fromARGB(255, 204, 204, 204))),
+            backgroundColor: MaterialStateProperty.all(
+                const Color.fromARGB(255, 204, 204, 204))),
         onPressed: () => _signInWithGoogle(),
         child: const Padding(
           padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -43,23 +45,24 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
   }
 
   Future _signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAccount? googleUser;
+    googleUser = await GoogleSignIn().signIn();
+
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
     final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
     await FirebaseAuth.instance.signInWithCredential(credential);
     final usersData = FirebaseFirestore.instance.collection("users");
-    usersData
-        .where("email", isEqualTo: googleUser!.email)
-        .get()
-        .then((querySnapshot) {
-      if (querySnapshot.size == 0) {
-        usersData.add({
-          'admin': false, //default is false on creation
-          'email': googleUser.email,
-        });
-      }
-    });
+
+    final QuerySnapshot querySnapshot =
+        await usersData.where("email", isEqualTo: googleUser!.email).get();
+
+    if (querySnapshot.size == 0) {
+      usersData.add({
+        'admin': false, //default is false on creation
+        'email': googleUser.email,
+      });
+    }
   }
 }
