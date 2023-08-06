@@ -8,6 +8,7 @@ import '../widgets/forms/location_picker_form_field.dart';
 import '../widgets/forms/number_of_observation_form_field.dart';
 import '../widgets/forms/observation_stream_builder.dart';
 import '../widgets/forms/submit_form_button.dart';
+import '../widgets/forms/water_color_form_field.dart';
 import '../widgets/forms/water_temperature_form_field.dart';
 
 class CreateReportScreen extends StatefulWidget {
@@ -58,6 +59,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
               ObservationStreamBuilder(userReport: userReport),
               NumberOfObservationFormField(userReport: userReport),
               WaterTemperatureFormField(userReport: userReport),
+              WaterColorFormField(userReport: userReport),
               DateTimeFormField(userReport: userReport),
               LocationPickerFormField(userReport: userReport),
               ImageFormField(
