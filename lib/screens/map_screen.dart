@@ -50,10 +50,6 @@ class MapScreenState extends State<MapScreen> {
     setOneWeekQuery();
   }
 
-
-
-
-
   void setOneWeekQuery() {
     DateTime now = DateTime.now();
     DateTime initStart = DateTime(now.year, now.month, now.day)
@@ -159,8 +155,7 @@ class MapScreenState extends State<MapScreen> {
                             ReportMarkerIcon(observation: report.observation)));
                   }
                   return BaseMap(
-                      reportMarkers: reportMarkers,
-                      adminStatus: adminStatus);
+                      reportMarkers: reportMarkers, adminStatus: adminStatus);
                 } else {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -168,6 +163,7 @@ class MapScreenState extends State<MapScreen> {
           BottomListSheet(
             userReportStream: userReportsStream,
             setStreamQuery: setStreamQuery,
+            adminStatus: adminStatus,
           ),
         ],
       ),

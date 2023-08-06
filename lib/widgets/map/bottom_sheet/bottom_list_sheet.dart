@@ -7,11 +7,13 @@ import 'bottom_sheet_app_bar.dart';
 class BottomListSheet extends StatelessWidget {
   final Stream userReportStream;
   final Function setStreamQuery;
+  final bool adminStatus;
 
   const BottomListSheet(
       {super.key,
       required this.userReportStream,
-      required this.setStreamQuery});
+      required this.setStreamQuery,
+      required this.adminStatus});
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class BottomListSheet extends StatelessWidget {
               scrollController: scrollController,
               userReportsStream: userReportStream,
               setStreamQuery: setStreamQuery,
+              adminStatus: adminStatus,
             ),
           );
         });
@@ -37,12 +40,14 @@ class UserReportStreamBuilder extends StatefulWidget {
   final ScrollController scrollController;
   final Stream userReportsStream;
   final Function setStreamQuery;
+  final bool adminStatus;
 
   const UserReportStreamBuilder(
       {super.key,
       required this.scrollController,
       required this.userReportsStream,
-      required this.setStreamQuery});
+      required this.setStreamQuery,
+      required this.adminStatus});
 
   @override
   State<UserReportStreamBuilder> createState() =>
@@ -64,9 +69,13 @@ class _UserReportStreamBuilderState extends State<UserReportStreamBuilder> {
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     UserReport report = UserReport.fromFirestore(
-                        snapshot.data!.docs[index].data(), snapshot.data!.docs[index].id);
+                        snapshot.data!.docs[index].data(),
+                        snapshot.data!.docs[index].id);
 
-                    return BottomSheetCard(report: report);
+                    return BottomSheetCard(
+                      report: report,
+                      adminStatus: widget.adminStatus,
+                    );
                   },
                 ),
               ]);
