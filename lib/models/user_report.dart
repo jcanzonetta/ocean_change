@@ -3,26 +3,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserReport {
   DateTime? date;
   GeoPoint? geopoint;
-  String? geohash;
   String? observation;
   String? species;
   num? observationNumber;
   String? waterColor;
   num? waterTemp;
   bool? temperatureBreak;
+  String? activity;
   String? photoURL;
   String? user;
   String? id;
+
   UserReport(
       {this.date,
       this.geopoint,
-      this.geohash,
       this.observation,
       this.species,
       this.observationNumber,
       this.waterColor,
       this.waterTemp,
       this.temperatureBreak,
+      this.activity,
       this.photoURL,
       this.user,
       this.id});
@@ -37,6 +38,7 @@ class UserReport {
         waterColor: post['water_color'],
         waterTemp: post['water_temp'],
         temperatureBreak: post['temperature_break'],
+        activity: post['activity'],
         photoURL: post['photo_url'],
         user: post['user'],
         id: id);
@@ -50,8 +52,9 @@ class UserReport {
       'water temperature',
       'water color',
       'temperatuse break',
+      'activity',
       'date',
-      'location'
+      'location',
     ];
   }
 
@@ -63,8 +66,9 @@ class UserReport {
       '$waterTemp',
       '$waterColor',
       '$temperatureBreak',
+      '$activity',
       '$date',
-      '${geopoint?.latitude},${geopoint?.longitude}'
+      '${geopoint?.latitude},${geopoint?.longitude}',
     ];
   }
 }
