@@ -1,15 +1,18 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:ocean_change/models/user_report.dart';
-import 'package:ocean_change/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ocean_change/widgets/view_report/view_screen_args.dart';
+
+import 'package:ocean_change/styles.dart';
+
+import '../../models/user_report.dart';
+
+import '../../widgets/view_report/view_screen_args.dart';
 
 class ViewReportData extends StatefulWidget {
   final ViewScreenArgs viewScreenArgs;
 
-  ViewReportData({super.key, required this.viewScreenArgs});
+  const ViewReportData({super.key, required this.viewScreenArgs});
 
   @override
   State<ViewReportData> createState() => _ViewReportDataState();
@@ -66,12 +69,43 @@ class _ViewReportDataState extends State<ViewReportData> {
       ),
       loadWaterTemp(widget.viewScreenArgs.userReport.waterTemp),
       Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+          child: Row(
+            children: [
+              const Text('Water Color: ', style: Styles.viewScreenSmallLabels),
+              Text(widget.viewScreenArgs.userReport.waterColor ?? 'none',
+                  style: Styles.viewScreenSmallData),
+            ],
+          )),
+      Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+          child: Row(
+            children: [
+              const Text('Temperature/transition break: ',
+                  style: Styles.viewScreenSmallLabels),
+              widget.viewScreenArgs.userReport.temperatureBreak ?? false
+                  ? const Text('Yes', style: Styles.viewScreenSmallData)
+                  : const Text('No', style: Styles.viewScreenSmallData),
+            ],
+          )),
+      Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+          child: Row(
+            children: [
+              const Text('Activity: ', style: Styles.viewScreenSmallLabels),
+              Text(
+                widget.viewScreenArgs.userReport.activity ?? 'none',
+                style: Styles.viewScreenSmallData,
+              ),
+            ],
+          )),
+      Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
         child: Row(
           children: [
             const Text('Location:', style: Styles.viewScreenSmallLabels),
             Text(
-              ' ${widget.viewScreenArgs.userReport.geopoint?.latitude.toString().substring(0, 8)}° N, ${widget.viewScreenArgs.userReport.geopoint?.longitude.toString().substring(0, 10)}° W',
+              ' ${double.parse(widget.viewScreenArgs.userReport.geopoint!.latitude.toStringAsFixed(2))}° N, ${double.parse(widget.viewScreenArgs.userReport.geopoint!.longitude.toStringAsFixed(4))}° W',
               style: Styles.viewScreenSmallData,
             ),
           ],
@@ -123,8 +157,14 @@ class _ViewReportDataState extends State<ViewReportData> {
         .collection("reports")
         .doc(userReport.id)
         .delete();
-    final imageRef = FirebaseStorage.instance.refFromURL(userReport.photoURL.toString());
-    await imageRef.delete();
-    setState(() {Navigator.pop(context);});
+
+    if (userReport.photoURL != null) {
+      final imageRef =
+          FirebaseStorage.instance.refFromURL(userReport.photoURL.toString());
+      await imageRef.delete();
+    }
+    setState(() {
+      Navigator.pop(context);
+    });
   }
 }

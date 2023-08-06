@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'package:ocean_change/models/user_report.dart';
 
 class SubmitFormButton extends StatefulWidget {
@@ -74,6 +75,9 @@ class _SubmitFormButton extends State<SubmitFormButton> {
                         'observation_number':
                             widget.userReport.observationNumber,
                         'water_temp': widget.userReport.waterTemp,
+                        'water_color': widget.userReport.waterColor,
+                        'temperature_break': widget.userReport.temperatureBreak,
+                        'activity': widget.userReport.activity,
                         'date': widget.userReport.date,
                         'photo_url': imageUrl,
                         'geopoint': widget.userReport.geopoint,
