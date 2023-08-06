@@ -1,10 +1,13 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:ocean_change/models/user_report.dart';
-import 'package:ocean_change/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ocean_change/widgets/view_report/view_screen_args.dart';
+
+import 'package:ocean_change/styles.dart';
+
+import '../../models/user_report.dart';
+
+import '../../widgets/view_report/view_screen_args.dart';
 
 class ViewReportData extends StatefulWidget {
   final ViewScreenArgs viewScreenArgs;
@@ -83,6 +86,17 @@ class _ViewReportDataState extends State<ViewReportData> {
               widget.viewScreenArgs.userReport.temperatureBreak ?? false
                   ? const Text('Yes', style: Styles.viewScreenSmallData)
                   : const Text('No', style: Styles.viewScreenSmallData),
+            ],
+          )),
+      Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+          child: Row(
+            children: [
+              const Text('Activity: ', style: Styles.viewScreenSmallLabels),
+              Text(
+                widget.viewScreenArgs.userReport.activity ?? 'none',
+                style: Styles.viewScreenSmallData,
+              ),
             ],
           )),
       Padding(

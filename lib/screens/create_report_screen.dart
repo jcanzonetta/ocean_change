@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:ocean_change/widgets/login/sign_out_button.dart';
 import '../models/user_report.dart';
+import '../widgets/forms/activity_stream_builder.dart';
 import '../widgets/forms/date_time_form_field.dart';
 import '../widgets/forms/image_form_field.dart';
 import '../widgets/forms/location_picker_form_field.dart';
@@ -63,6 +64,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
               WaterTemperatureFormField(userReport: userReport),
               WaterColorFormField(userReport: userReport),
               TemperatureBreakFormField(userReport: userReport),
+              ActivityStreamBuilder(userReport: userReport),
               DateTimeFormField(userReport: userReport),
               LocationPickerFormField(userReport: userReport),
               ImageFormField(
