@@ -4,5 +4,8 @@ class ViewScreenArgs {
   final UserReport userReport;
   final bool adminStatus;
 
-  ViewScreenArgs(this.userReport, this.adminStatus);
+  ViewScreenArgs(
+    this.userReport,
+    this.adminStatus,
+  );
 }
