@@ -9,6 +9,7 @@ class UserReport {
   num? observationNumber;
   String? waterColor;
   num? waterTemp;
+  bool? temperatureBreak;
   String? photoURL;
   String? user;
   String? id;
@@ -21,13 +22,12 @@ class UserReport {
       this.observationNumber,
       this.waterColor,
       this.waterTemp,
+      this.temperatureBreak,
       this.photoURL,
       this.user,
       this.id});
 
   factory UserReport.fromFirestore(Map post, String id) {
-    // ToDo: calculate geohash here using geoflutterfire package.
-
     return UserReport(
         geopoint: post['geopoint'],
         date: post['date'].toDate(),
@@ -36,6 +36,7 @@ class UserReport {
         observationNumber: post['observation_number'],
         waterColor: post['water_color'],
         waterTemp: post['water_temp'],
+        temperatureBreak: post['temperature_break'],
         photoURL: post['photo_url'],
         user: post['user'],
         id: id);
@@ -47,6 +48,8 @@ class UserReport {
       'species',
       'number',
       'water temperature',
+      'water color',
+      'temperatuse break',
       'date',
       'location'
     ];
@@ -58,6 +61,8 @@ class UserReport {
       '$species',
       '$observationNumber',
       '$waterTemp',
+      '$waterColor',
+      '$temperatureBreak',
       '$date',
       '${geopoint?.latitude},${geopoint?.longitude}'
     ];

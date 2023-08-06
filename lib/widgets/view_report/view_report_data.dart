@@ -75,6 +75,17 @@ class _ViewReportDataState extends State<ViewReportData> {
             ],
           )),
       Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+          child: Row(
+            children: [
+              const Text('Temperature/transition break: ',
+                  style: Styles.viewScreenSmallLabels),
+              widget.viewScreenArgs.userReport.temperatureBreak ?? false
+                  ? const Text('Yes', style: Styles.viewScreenSmallData)
+                  : const Text('No', style: Styles.viewScreenSmallData),
+            ],
+          )),
+      Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
         child: Row(
           children: [
