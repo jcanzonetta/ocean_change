@@ -75,6 +75,7 @@ class _SubmitFormButton extends State<SubmitFormButton> {
                             widget.userReport.observationNumber,
                         'water_temp': widget.userReport.waterTemp,
                         'water_color': widget.userReport.waterColor,
+                        'temperature_break': widget.userReport.temperatureBreak,
                         'date': widget.userReport.date,
                         'photo_url': imageUrl,
                         'geopoint': widget.userReport.geopoint,
