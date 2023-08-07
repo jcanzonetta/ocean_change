@@ -48,8 +48,8 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Photos are used in your reports to help the Oregon Department of Fish and Wildlife better understand your observations.</string>
+	<string>Photos are used in your reports to help others better understand what you saw.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location is used when making a report.</string>
+	<string>You phone's location can be used when making a report and is entirely optional. You can still share coordinates manually using our location picker.</string>
 </dict>
 </plist>
