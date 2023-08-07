@@ -40,6 +40,9 @@ class _BaseMapState extends State<BaseMap> {
             InteractiveFlag.flingAnimation,
         onTap: (_, __) => _popupLayerController.hideAllPopups(),
       ),
+      nonRotatedChildren: const [
+        SimpleAttributionWidget(source: Text('OpenStreetMap')),
+      ],
       children: [
         TileLayer(
           tileProvider: AssetTileProvider(),
@@ -52,12 +55,13 @@ class _BaseMapState extends State<BaseMap> {
               popupController: _popupLayerController,
               popupBuilder: (BuildContext context, Marker marker) {
                 if (marker is ReportMarker) {
-                  return ReportPopUp(marker, marker.userReport, widget.adminStatus);
+                  return ReportPopUp(
+                      marker, marker.userReport, widget.adminStatus);
                 } else {
                   return PopUp(marker);
                 }
               }),
-        )
+        ),
       ],
     );
   }
