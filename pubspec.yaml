@@ -45,11 +45,11 @@ dependencies:
   latlong2: ^0.8.0
   flutter_map_marker_popup: ^4.1.0
   flutter_map_marker_cluster: ^1.1.1
-  location: ^5.0.0
   image_picker: ^1.0.1
   flutter_offline: ^3.0.0
   firebase_auth: ^4.7.2
   google_sign_in: ^6.1.4
+  geolocator: ^9.0.2
 
 dev_dependencies:
   flutter_test:
