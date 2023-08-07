@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
+// import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../../screens/location_picker_screen.dart';
 
@@ -24,30 +25,33 @@ class _LocationPickerFormFieldState extends State<LocationPickerFormField> {
   }
 
   void _initializeLocation() async {
-    Location location = Location();
-
     bool serviceEnabled;
-    PermissionStatus permissionGranted;
-    serviceEnabled = await location.serviceEnabled();
+    LocationPermission permissionGranted;
 
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
     // Check if service is enabled.
     if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) return;
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        return Future.error('Location services are disabled.');
+      }
     }
 
     // Check if presmission is granted.
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) return;
+    permissionGranted = await Geolocator.checkPermission();
+    if (permissionGranted == LocationPermission.denied) {
+      permissionGranted = await Geolocator.requestPermission();
+      if (permissionGranted == LocationPermission.denied) {
+        return Future.error('Location permissions are denied.');
+      }
     }
 
-    var locationData = await location.getLocation();
-    widget.userReport.geopoint =
-        GeoPoint(locationData.latitude!, locationData.longitude!);
-
-    setState(() {});
+    var locationData = await Geolocator.getCurrentPosition();
+    debugPrint('${locationData.latitude}, ${locationData.longitude}');
+    setState(() {
+      widget.userReport.geopoint =
+          GeoPoint(locationData.latitude, locationData.longitude);
+    });
   }
 
   Widget _showGeopoint() {
