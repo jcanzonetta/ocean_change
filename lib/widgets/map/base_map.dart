@@ -41,7 +41,10 @@ class _BaseMapState extends State<BaseMap> {
         onTap: (_, __) => _popupLayerController.hideAllPopups(),
       ),
       nonRotatedChildren: const [
-        SimpleAttributionWidget(source: Text('OpenStreetMap')),
+        SimpleAttributionWidget(
+          source: Text('OpenStreetMap'),
+          alignment: Alignment.topRight,
+        ),
       ],
       children: [
         TileLayer(
