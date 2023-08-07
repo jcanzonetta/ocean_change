@@ -88,6 +88,9 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               // imageCache.clearLiveImages();
             },
           ),
+          nonRotatedChildren: const [
+            SimpleAttributionWidget(source: Text('OpenStreetMap')),
+          ],
           children: [
             TileLayer(
               tileProvider: AssetTileProvider(),
