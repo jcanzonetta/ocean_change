@@ -33,8 +33,9 @@ class _SubmitFormButton extends State<SubmitFormButton> {
   }
 
   Future<String> uploadImage(File image) async {
+    int uniqueFileId = DateTime.now().millisecondsSinceEpoch;
     String fileName =
-        '${widget.userReport.observation!}${DateFormat('MMddyyyy').format(widget.userReport.date!)}.jpg';
+        '${widget.userReport.observation!}${DateFormat('MMddyyyy').format(widget.userReport.date!)}$uniqueFileId.jpg';
 
     // Upload image to Cloud Storage
     Reference storageReference = FirebaseStorage.instance.ref().child(fileName);
