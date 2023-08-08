@@ -1,12 +1,14 @@
+import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
 import 'package:ocean_change/styles.dart';
-
+import 'package:ocean_change/widgets/view_report/delete_report_button.dart';
 import '../../models/user_report.dart';
-
 import '../../widgets/view_report/view_screen_args.dart';
 
 class ViewReportData extends StatefulWidget {
@@ -20,6 +22,7 @@ class ViewReportData extends StatefulWidget {
 
 class _ViewReportDataState extends State<ViewReportData> {
   final User? currentUser = FirebaseAuth.instance.currentUser;
+  late File image;
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +114,10 @@ class _ViewReportDataState extends State<ViewReportData> {
           ],
         ),
       ),
-      deleteReportButton(context, currentUser, widget.viewScreenArgs.userReport,
-          widget.viewScreenArgs.adminStatus)
+      addPhotoButton(context, currentUser, widget.viewScreenArgs.userReport,
+          widget.viewScreenArgs.adminStatus),
+      DeleteReportButton(currentUser: currentUser, userReport: widget.viewScreenArgs.userReport,
+          adminStatus: widget.viewScreenArgs.adminStatus)
     ]);
   }
 
@@ -141,30 +146,62 @@ class _ViewReportDataState extends State<ViewReportData> {
     }
   }
 
-  Widget deleteReportButton(BuildContext context, User? currentUser,
+  Widget addPhotoButton(BuildContext context, User? currentUser,
       UserReport userReport, bool adminStatus) {
-    if (currentUser?.email == userReport.user || adminStatus == true) {
+    if (currentUser?.email == userReport.user) {
       return ElevatedButton(
-          onPressed: () => deleteReport(context, userReport),
-          child: const Text("Delete"));
+          onPressed: () async {
+            addPhoto(context, userReport);
+          },
+          child: const Text("Add or Swap Photo"));
     } else {
       return Container();
     }
   }
 
-  void deleteReport(BuildContext context, UserReport userReport) async {
+  void addPhoto(BuildContext context, UserReport userReport) async {
+    try {
+      final pickedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (pickedImage == null) return;
+
+      image = File(pickedImage.path);
+      //widget.updateImageCallback(image);
+    } on PlatformException catch (error) {
+      debugPrint('Unable to get image: $error');
+    }
+
+    String? imageUrl;
+    imageUrl = await uploadNewImage(image, userReport);
+
     FirebaseFirestore.instance
         .collection("reports")
         .doc(userReport.id)
-        .delete();
+        .update({"photo_url": imageUrl});
 
+    setState(() {
+      userReport.photoURL = imageUrl;
+    });
+  }
+
+  Future<String> uploadNewImage(File image, UserReport userReport) async {
     if (userReport.photoURL != null) {
       final imageRef =
           FirebaseStorage.instance.refFromURL(userReport.photoURL.toString());
       await imageRef.delete();
     }
-    setState(() {
-      Navigator.pop(context);
-    });
+    int uniqueFileId = DateTime.now().millisecondsSinceEpoch;
+    String fileName =
+        '${widget.viewScreenArgs.userReport.observation!}${DateFormat('MMddyyyy').format(widget.viewScreenArgs.userReport.date!)}$uniqueFileId.jpg';
+
+    // Upload image to Cloud Storage
+    Reference storageReference = FirebaseStorage.instance.ref().child(fileName);
+
+    UploadTask uploadTask = storageReference.putFile(image);
+    await uploadTask;
+
+    // Receive url of photo
+    return storageReference.getDownloadURL();
   }
 }
