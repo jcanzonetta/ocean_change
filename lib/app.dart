@@ -5,6 +5,7 @@ import 'package:ocean_change/screens/login_screen.dart';
 import 'screens/view_report_screen.dart';
 import 'screens/create_report_screen.dart';
 import 'screens/location_picker_screen.dart';
+import 'screens/admin_screen.dart';
 
 class App extends StatelessWidget {
   static final routes = {
@@ -14,6 +15,7 @@ class App extends StatelessWidget {
     CreateReportScreen.routeName: (context) => const CreateReportScreen(),
     ViewReportScreen.routeName: (context) => const ViewReportScreen(),
     LocationPickerScreen.routeName: (context) => const LocationPickerScreen(),
+    AdminScreen.routeName: (context) => const AdminScreen()
   };
 
   const App({super.key});

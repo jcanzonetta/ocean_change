@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ocean_change/widgets/login/sign_out_button.dart';
+import 'package:ocean_change/widgets/map/admin_button.dart';
 
 import 'create_report_screen.dart';
 
@@ -131,12 +132,20 @@ class MapScreenState extends State<MapScreen> {
     setState(() {});
   }
 
+  List<Widget> getAppBarButtons(bool adminStatus) {
+    if (adminStatus == true) {
+      return const [CSVExportButton(), AdminButton(), SignOutButton()];
+    } else {
+      return const [CSVExportButton(), SignOutButton()];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ocean Change'),
-        actions: const [CSVExportButton(), SignOutButton()],
+        actions: getAppBarButtons(adminStatus),
       ),
       body: Stack(
         fit: StackFit.expand,
