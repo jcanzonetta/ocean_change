@@ -60,6 +60,7 @@ class _BaseMapState extends State<BaseMap> {
                 if (marker is ReportMarker) {
                   return ReportPopUp(
                       marker, marker.userReport, widget.adminStatus);
+                // all markers should be ReportMarkers, so the else condition should never occur, but was required
                 } else {
                   return PopUp(marker);
                 }

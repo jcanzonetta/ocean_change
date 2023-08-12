@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ocean_change/models/user_data.dart';
 
+// builds a widget for displaying/changing a looked up user's admin status
+
 class UserLookup extends StatefulWidget {
   final UserData user;
   const UserLookup({super.key, required this.user});
