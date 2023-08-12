@@ -17,9 +17,12 @@ class LatLongTarget extends StatelessWidget {
         top: _position!.y - iconSize,
         height: iconSize,
         width: iconSize,
-        child: const Icon(
-          Icons.add_location_outlined,
-          size: iconSize,
+        child: const IgnorePointer(
+          ignoring: true,
+          child: Icon(
+            Icons.add_location_outlined,
+            size: iconSize,
+          ),
         ));
   }
 }
