@@ -6,7 +6,7 @@ class UserData {
 
   UserData({this.email, this.password, this.adminStatus, this.id});
 
-  // does not pull the users password
+  // Used for admin checks/management - it does not pull the users password
   factory UserData.fromFirestore(Map post, String id) {
     return UserData(
       email: post['email'],
