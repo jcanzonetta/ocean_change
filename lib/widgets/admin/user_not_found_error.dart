@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 
-
+// error dialog popup that displays when an admin looks up a user that doesn't exist
 Future<void> showUserNotFoundError(BuildContext context, String message) async {
   return showDialog<void>(
     context: context,

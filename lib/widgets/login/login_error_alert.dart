@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 
-
+// error dialog popup that displays any login errors that occur
 Future<void> showLoginError(BuildContext context, String message) async {
   return showDialog<void>(
     context: context,

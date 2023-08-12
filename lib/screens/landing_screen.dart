@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ocean_change/screens/login_screen.dart';
 import 'package:ocean_change/screens/map_screen.dart';
 
+// initial screen in the app that redirects to login or map screen based on login status
+
 class LandingScreen extends StatelessWidget {
   static const String routeName = '/';
   const LandingScreen({super.key});
