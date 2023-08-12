@@ -76,6 +76,10 @@ class _AdminScreenState extends State<AdminScreen> {
         if (querySnapshot.size == 0) {
           showUserNotFoundError(
               context, "${user.email} is not a registered user.");
+          setState(() {
+            // we clear user.email to remove any previously looked up users from the display
+            user.email = "";
+          });
         } else {
           final userData = querySnapshot.docs[0].data();
           final userID = querySnapshot.docs[0].id;

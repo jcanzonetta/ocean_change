@@ -17,21 +17,27 @@ class _UserLookupState extends State<UserLookup> {
       return Container();
     } else {
       return Padding(
-          padding: const EdgeInsets.only(top: 16.0),
+          padding: const EdgeInsets.only(top: 20.0),
           child: Column(children: [
-            Text(widget.user.email!),
-            Row(children: [
-              Switch(
-                  value: widget.user.adminStatus!,
-                  onChanged: (bool value) {
-                    FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(widget.user.id)
-                        .set({"admin": value}, SetOptions(merge: true));
-                    setState(() {
-                      widget.user.adminStatus = value;
-                    });
-                  })
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: Text(widget.user.email!),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              const Text("Admin: "),
+                Switch(
+                    value: widget.user.adminStatus!,
+                    onChanged: (bool value) {
+                      FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(widget.user.id)
+                          .set({"admin": value}, SetOptions(merge: true));
+                      setState(() {
+                        widget.user.adminStatus = value;
+                      });
+                    }),
             ])
           ]));
     }
