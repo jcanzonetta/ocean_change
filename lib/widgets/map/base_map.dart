@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../../components/get_current_location.dart';
 import 'popup.dart';
 import 'report_popup.dart';
 import 'report_marker.dart';
@@ -19,6 +21,18 @@ class BaseMap extends StatefulWidget {
 class _BaseMapState extends State<BaseMap> {
   final mapController = MapController();
   final PopupController _popupLayerController = PopupController();
+  Position? currentLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeLocation();
+  }
+
+  void _initializeLocation() async {
+    currentLocation = await getCurrentLocation();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +74,13 @@ class _BaseMapState extends State<BaseMap> {
                 if (marker is ReportMarker) {
                   return ReportPopUp(
                       marker, marker.userReport, widget.adminStatus);
-                // all markers should be ReportMarkers, so the else condition should never occur, but was required
+                  // all markers should be ReportMarkers, so the else condition should never occur, but was required
                 } else {
                   return PopUp(marker);
                 }
               }),
         ),
+        addCurrentLocationMarker(currentLocation),
       ],
     );
   }
