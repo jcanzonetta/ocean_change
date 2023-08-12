@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ocean_change/screens/create_account_screen.dart';
+import 'package:ocean_change/screens/password_reset_screen.dart';
 import '../models/user_data.dart';
-import '../widgets/login/login_error_alert.dart';
+import '../widgets/login/show_login_error.dart';
 import '../widgets/login/google_sign_in_button.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -59,6 +60,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   }),
               ElevatedButton(
                   onPressed: _emailSignIn, child: const Text("Sign In")),
+              ElevatedButton(
+                  onPressed: () => Navigator.pushNamed(context, PasswordResetScreen.routeName),
+                  child: const Text("Forgot Password?")
+              ),
               const Spacer(),
               const Padding(
                   padding: EdgeInsets.fromLTRB(0, 16, 0, 6),
@@ -86,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: userData.email!, password: userData.password!);
       } on FirebaseAuthException catch (e) {
-        showLoginError(context, e.message!);
+        showFireBaseAuthError(context, e.message!);
       }
     }
   }

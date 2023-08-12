@@ -1,17 +1,17 @@
 import "package:flutter/material.dart";
 
-// error dialog popup that displays any login errors that occur
-Future<void> showLoginError(BuildContext context, String message) async {
+// dialog pop up to tell the user a verification email has been sent
+Future<void> showVerificationEmailSent(BuildContext context) async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Text('Error'),
-        content: SingleChildScrollView(
+        title: const Text('Verification Email Sent'),
+        content: const SingleChildScrollView(
           child: ListBody(
             children: [
-              Text(message),
+              Text("Check your email and tap the link we provided."),
             ],
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ocean_change/screens/create_account_screen.dart';
 import 'package:ocean_change/screens/landing_screen.dart';
 import 'package:ocean_change/screens/login_screen.dart';
+import 'package:ocean_change/screens/password_reset_screen.dart';
 import 'screens/view_report_screen.dart';
 import 'screens/create_report_screen.dart';
 import 'screens/location_picker_screen.dart';
@@ -15,7 +16,8 @@ class App extends StatelessWidget {
     CreateReportScreen.routeName: (context) => const CreateReportScreen(),
     ViewReportScreen.routeName: (context) => const ViewReportScreen(),
     LocationPickerScreen.routeName: (context) => const LocationPickerScreen(),
-    AdminScreen.routeName: (context) => const AdminScreen()
+    AdminScreen.routeName: (context) => const AdminScreen(),
+    PasswordResetScreen.routeName: (context) => const PasswordResetScreen()
   };
 
   const App({super.key});
