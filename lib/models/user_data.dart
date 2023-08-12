@@ -4,7 +4,7 @@ class UserData {
   bool? adminStatus = false;
   String? id;
 
-  UserData({this.email, this.password, this.adminStatus, this.id});
+  UserData({this.email, this.password, this.adminStatus = false, this.id});
 
   // Used for admin checks/management - it does not pull the users password
   factory UserData.fromFirestore(Map post, String id) {

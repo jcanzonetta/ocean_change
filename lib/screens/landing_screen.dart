@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ocean_change/screens/email_verification_screen.dart';
 import 'package:ocean_change/screens/login_screen.dart';
 import 'package:ocean_change/screens/map_screen.dart';
 
@@ -16,9 +17,13 @@ class LandingScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             Navigator.maybePop(context);
-            return const MapScreen();
-          }
-          else {
+            if (snapshot.data!.emailVerified == false) {
+              return const EmailVerificationScreen();
+            }
+            else {
+              return const MapScreen();
+            }
+          } else {
             Navigator.maybePop(context);
             return const LoginScreen();
           }

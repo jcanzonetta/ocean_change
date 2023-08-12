@@ -17,7 +17,7 @@ class ViewReportScreen extends StatelessWidget {
           title: Text('${args.userReport.observation} Report',
               style: const TextStyle(fontSize: 22)),
               actions: const [SignOutButton()],),
-      body: ViewReportData(viewScreenArgs: args)
+      body: SingleChildScrollView(child: ViewReportData(viewScreenArgs: args))
     );
   }
 
