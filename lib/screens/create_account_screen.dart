@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_data.dart';
-import '../widgets/login/login_error_alert.dart';
+import '../widgets/login/show_login_error.dart';
 
 class CreateAccountScreen extends StatefulWidget {
   static const String routeName = 'CreateAccountScreen';
@@ -75,7 +75,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
           'email': userData.email,
         });
       } on FirebaseAuthException catch (e) {
-        showLoginError(context, e.message!);
+        showFireBaseAuthError(context, e.message!);
       }
     }
   }
