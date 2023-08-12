@@ -108,7 +108,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               urlTemplate: 'assets/map/{z}/{x}/{y}.png',
               tms: false,
             ),
-            addCurrentLocationMarker(),
+            addCurrentLocationMarker(currentLocation),
           ],
         ),
         LatLongTarget(position: _position),
@@ -119,23 +119,5 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             updatePositionTarget: updatePositionTarget)
       ]),
     );
-  }
-
-  StatelessWidget addCurrentLocationMarker() {
-    if (currentLocation != null) {
-      return MarkerLayer(
-        markers: [
-          Marker(
-              point:
-                  LatLng(currentLocation!.latitude, currentLocation!.longitude),
-              builder: (_) => const Icon(
-                    Icons.my_location,
-                    color: Colors.blue,
-                  ))
-        ],
-      );
-    } else {
-      return (Container());
-    }
   }
 }

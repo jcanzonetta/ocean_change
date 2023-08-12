@@ -14,7 +14,7 @@ class LatLongTarget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
         left: _position!.x - iconSize / 2,
-        top: _position!.y - iconSize / 2,
+        top: _position!.y - iconSize,
         height: iconSize,
         width: iconSize,
         child: const Icon(
