@@ -80,6 +80,7 @@ class _AdminScreenState extends State<AdminScreen> {
             // we clear user.email to remove any previously looked up users from the display
             user.email = "";
           });
+          // if the email entered is a user, querySnapshot should return just one doc
         } else {
           final userData = querySnapshot.docs[0].data();
           final userID = querySnapshot.docs[0].id;

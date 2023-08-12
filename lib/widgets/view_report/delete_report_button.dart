@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../../models/user_report.dart';
 
+// this button only displays when the user is an admin or the report submitter
+
 class DeleteReportButton extends StatefulWidget {
   final User? currentUser;
   final UserReport userReport;

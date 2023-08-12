@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 
+// Currently not used in the app, but needed in basemap code
 class PopUp extends StatefulWidget {
   final Marker marker;
 

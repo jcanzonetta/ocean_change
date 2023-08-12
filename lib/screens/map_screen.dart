@@ -132,6 +132,7 @@ class MapScreenState extends State<MapScreen> {
     setState(() {});
   }
 
+  // adds the Admin button to app bar if the current user is an admin
   List<Widget> getAppBarButtons(bool adminStatus) {
     if (adminStatus == true) {
       return const [CSVExportButton(), AdminButton(), SignOutButton()];
