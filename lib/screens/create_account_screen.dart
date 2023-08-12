@@ -71,7 +71,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: userData.email!, password: userData.password!);
         FirebaseFirestore.instance.collection("users").add({
-          'admin': false, //default is false on creation
+          'admin': userData.adminStatus, //default is false on creation
           'email': userData.email,
         });
       } on FirebaseAuthException catch (e) {
