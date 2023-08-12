@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 
 Future<Position> getCurrentLocation() async {
   bool serviceEnabled;
@@ -24,4 +27,22 @@ Future<Position> getCurrentLocation() async {
 
   Position locationData = await Geolocator.getCurrentPosition();
   return locationData;
+}
+
+StatelessWidget addCurrentLocationMarker(currentLocation) {
+  if (currentLocation != null) {
+    return MarkerLayer(
+      markers: [
+        Marker(
+            point:
+                LatLng(currentLocation!.latitude, currentLocation!.longitude),
+            builder: (_) => const Icon(
+                  Icons.my_location,
+                  color: Colors.blue,
+                ))
+      ],
+    );
+  } else {
+    return (Container());
+  }
 }

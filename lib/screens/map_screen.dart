@@ -36,6 +36,7 @@ class MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
+
     // Check if logged in user is an admin and update status if so
     final User? currentUser = FirebaseAuth.instance.currentUser;
     final usersData = FirebaseFirestore.instance.collection("users");
@@ -48,6 +49,7 @@ class MapScreenState extends State<MapScreen> {
         setState(() => adminStatus = true);
       }
     });
+
     setOneWeekQuery();
   }
 
