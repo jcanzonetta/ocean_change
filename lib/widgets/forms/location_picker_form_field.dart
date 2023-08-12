@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-// import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
+
+import '../../components/get_current_location.dart';
 
 import '../../screens/location_picker_screen.dart';
 
@@ -25,29 +26,10 @@ class _LocationPickerFormFieldState extends State<LocationPickerFormField> {
   }
 
   void _initializeLocation() async {
-    bool serviceEnabled;
-    LocationPermission permissionGranted;
+    Position locationData = await getCurrentLocation();
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    // Check if service is enabled.
-    if (!serviceEnabled) {
-      serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        return Future.error('Location services are disabled.');
-      }
-    }
-
-    // Check if presmission is granted.
-    permissionGranted = await Geolocator.checkPermission();
-    if (permissionGranted == LocationPermission.denied) {
-      permissionGranted = await Geolocator.requestPermission();
-      if (permissionGranted == LocationPermission.denied) {
-        return Future.error('Location permissions are denied.');
-      }
-    }
-
-    var locationData = await Geolocator.getCurrentPosition();
     debugPrint('${locationData.latitude}, ${locationData.longitude}');
+
     setState(() {
       widget.userReport.geopoint =
           GeoPoint(locationData.latitude, locationData.longitude);
