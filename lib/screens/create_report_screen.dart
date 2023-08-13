@@ -69,7 +69,8 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
               LocationPickerFormField(userReport: userReport),
               ImageFormField(
                   userReport: userReport,
-                  updateImageCallback: updateImageCallback),
+                  updateImageCallback: updateImageCallback,
+                  clearImageCallback: clearImageCallback),
               SubmitFormButton(
                   formKey: formKey,
                   userReport: userReport,
