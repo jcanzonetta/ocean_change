@@ -32,9 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             children: [
               Platform.isAndroid ? const GoogleSignInButton() : Container(),
-              const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 24, 0, 6),
-                  child: Text("Or sign in with email and password.")),
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 24, 0, 6),
+                  child: Platform.isAndroid
+                      ? const Text("Or sign in with email and password.")
+                      : const Text('Sign in with email and password.')),
               TextFormField(
                   decoration: const InputDecoration(labelText: "Email"),
                   validator: (value) {
@@ -67,10 +69,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       context, PasswordResetScreen.routeName),
                   child: const Text("Forgot Password?")),
               const Spacer(),
-              const Padding(
-                  padding: EdgeInsets.fromLTRB(0, 16, 0, 6),
-                  child: Text(
-                      "New user who can't sign in with a Google account?")),
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 16, 0, 6),
+                  child: Platform.isAndroid
+                      ? const Text(
+                          "New user who can't sign in with a Google account?")
+                      : Container()),
               Padding(
                 padding: const EdgeInsets.only(bottom: 50),
                 child: ElevatedButton(
@@ -78,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushNamed(
                           context, CreateAccountScreen.routeName);
                     },
-                    child: const Text("Create Account Manually")),
+                    child: const Text("Create Account")),
               ),
             ],
           ),
