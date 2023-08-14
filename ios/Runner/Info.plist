@@ -50,6 +50,8 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photos are used in your reports to help others better understand what you saw.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>You phone's location can be used when making a report and is entirely optional. You can still share coordinates manually using our location picker.</string>
+	<string>You phone's location can be used when making a report and is entirely optional. You can still share coordinates manually by selecting them on a map.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>You phone's location can be used when making a report and is entirely optional. You can still share coordinates manually by selecting them on a map.</string>
 </dict>
 </plist>

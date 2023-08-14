@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ocean_change/screens/create_account_screen.dart';
@@ -29,10 +31,10 @@ class _LoginScreenState extends State<LoginScreen> {
           key: formKey,
           child: Column(
             children: [
-              const GoogleSignInButton(),
+              Platform.isAndroid ? const GoogleSignInButton() : Container(),
               const Padding(
-                padding: EdgeInsets.fromLTRB(0, 24, 0, 6),
-                child: Text("Or sign in with email and password.")),
+                  padding: EdgeInsets.fromLTRB(0, 24, 0, 6),
+                  child: Text("Or sign in with email and password.")),
               TextFormField(
                   decoration: const InputDecoration(labelText: "Email"),
                   validator: (value) {
@@ -61,13 +63,14 @@ class _LoginScreenState extends State<LoginScreen> {
               ElevatedButton(
                   onPressed: _emailSignIn, child: const Text("Sign In")),
               ElevatedButton(
-                  onPressed: () => Navigator.pushNamed(context, PasswordResetScreen.routeName),
-                  child: const Text("Forgot Password?")
-              ),
+                  onPressed: () => Navigator.pushNamed(
+                      context, PasswordResetScreen.routeName),
+                  child: const Text("Forgot Password?")),
               const Spacer(),
               const Padding(
                   padding: EdgeInsets.fromLTRB(0, 16, 0, 6),
-                  child: Text("New user who can't sign in with a Google account?")),
+                  child: Text(
+                      "New user who can't sign in with a Google account?")),
               Padding(
                 padding: const EdgeInsets.only(bottom: 50),
                 child: ElevatedButton(
@@ -95,5 +98,4 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
-
 }
