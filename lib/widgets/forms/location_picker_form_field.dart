@@ -45,50 +45,59 @@ class _LocationPickerFormFieldState extends State<LocationPickerFormField> {
     }
   }
 
+  Widget _locationTextField(FormFieldState formFieldState) {
+    if (formFieldState.hasError) {
+      return Text(
+        formFieldState.errorText!,
+        style: const TextStyle(color: Colors.red),
+      );
+    } else {
+      return _showGeopoint();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
+    return FormField(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) {
+        if (value == null) {
+          return 'Please select a coordinate.';
+        } else {
+          return null;
+        }
+      },
+      builder: (formFieldState) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            OutlinedButton(
-              onPressed: () async {
-                await Navigator.pushNamed(
-                    context, LocationPickerScreen.routeName,
-                    arguments: widget.userReport);
-                setState(() {
-                  widget.userReport.geopoint;
-                });
-              },
-              child: const Icon(Icons.location_on_outlined),
+            Row(
+              children: [
+                OutlinedButton(
+                  onPressed: () async {
+                    await Navigator.pushNamed(
+                        context, LocationPickerScreen.routeName,
+                        arguments: widget.userReport);
+                    formFieldState.didChange(widget.userReport.geopoint);
+                  },
+                  child: const Icon(Icons.location_on_outlined),
+                ),
+                const SizedBox(
+                  width: 8.0,
+                ),
+                OutlinedButton(
+                    onPressed: () {
+                      formFieldState.didChange(null);
+
+                      widget.userReport.geopoint = null;
+                    },
+                    child: const Icon(Icons.clear)),
+              ],
             ),
-            const SizedBox(
-              width: 8.0,
-            ),
-            OutlinedButton(
-                onPressed: () {
-                  setState(() {
-                    widget.userReport.geopoint = null;
-                  });
-                },
-                child: const Icon(Icons.clear)),
+            _locationTextField(formFieldState),
           ],
-        ),
-        FormField(validator: (value) {
-          if (widget.userReport.geopoint == null) {
-            return 'Please select a coordinate';
-          } else {
-            return null;
-          }
-        }, builder: (formFieldState) {
-          if (formFieldState.hasError) {
-            return Text(formFieldState.errorText!);
-          } else {
-            return _showGeopoint();
-          }
-        }),
-      ],
+        );
+      },
     );
   }
 }
