@@ -8,14 +8,21 @@ class LatLongTarget extends StatelessWidget {
   }) : _position = position;
 
   final CustomPoint<double>? _position;
+  static const double iconSize = 40.0;
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-        left: _position!.x - 10,
-        top: _position!.y - 10,
-        height: 20,
-        width: 20,
-        child: const Icon(Icons.location_searching));
+        left: _position!.x - iconSize / 2,
+        top: _position!.y - iconSize,
+        height: iconSize,
+        width: iconSize,
+        child: const IgnorePointer(
+          ignoring: true,
+          child: Icon(
+            Icons.add_location_outlined,
+            size: iconSize,
+          ),
+        ));
   }
 }

@@ -9,10 +9,14 @@ import '../../models/user_report.dart';
 
 class ImageFormField extends StatefulWidget {
   const ImageFormField(
-      {super.key, required this.userReport, required this.updateImageCallback});
+      {super.key,
+      required this.userReport,
+      required this.updateImageCallback,
+      required this.clearImageCallback});
 
   final UserReport userReport;
   final Function(File) updateImageCallback;
+  final Function clearImageCallback;
 
   @override
   State<ImageFormField> createState() => _ImageFormFieldState();
@@ -57,18 +61,34 @@ class _ImageFormFieldState extends State<ImageFormField> {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              OutlinedButton(
-                  onPressed: () async {
-                    getImage();
-                  },
-                  child: const Icon(Icons.photo)),
+              Row(
+                children: [
+                  OutlinedButton(
+                      onPressed: () async {
+                        getImage();
+                      },
+                      child: const Icon(Icons.photo)),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  OutlinedButton(
+                      onPressed: () {
+                        widget.clearImageCallback();
+
+                        setState(() {
+                          _imagePicked = false;
+                        });
+                      },
+                      child: const Icon(Icons.clear)),
+                ],
+              ),
               Text(_imagePicked ? 'Image Selected' : 'No Image Selected')
             ],
           );
         } else {
           return const Padding(
             padding: EdgeInsets.all(8.0),
-            child: Text('Image can only be uploaded while online.'),
+            child: Text('Images can only be uploaded while online.'),
           );
         }
       },
