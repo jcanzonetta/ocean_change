@@ -57,7 +57,9 @@ class _LocationPickerFormFieldState extends State<LocationPickerFormField> {
                 await Navigator.pushNamed(
                     context, LocationPickerScreen.routeName,
                     arguments: widget.userReport);
-                setState(() {});
+                setState(() {
+                  widget.userReport.geopoint;
+                });
               },
               child: const Icon(Icons.location_on_outlined),
             ),
@@ -73,7 +75,19 @@ class _LocationPickerFormFieldState extends State<LocationPickerFormField> {
                 child: const Icon(Icons.clear)),
           ],
         ),
-        _showGeopoint(),
+        FormField(validator: (value) {
+          if (widget.userReport.geopoint == null) {
+            return 'Please select a coordinate';
+          } else {
+            return null;
+          }
+        }, builder: (formFieldState) {
+          if (formFieldState.hasError) {
+            return Text(formFieldState.errorText!);
+          } else {
+            return _showGeopoint();
+          }
+        }),
       ],
     );
   }
