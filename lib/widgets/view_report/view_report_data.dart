@@ -30,15 +30,18 @@ class _ViewReportDataState extends State<ViewReportData> {
       Center(child: loadImage(widget.viewScreenArgs.userReport.photoURL)),
       Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-          child: Row(
-            children: [
-              const Text('Observation:',
-                  style: Styles.viewScreenObservationLabels),
-              Text(
-                ' ${widget.viewScreenArgs.userReport.observation}',
-                style: Styles.viewScreenObservationData,
-              ),
-            ],
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Wrap(
+              children: [
+                const Text('Observation:',
+                    style: Styles.viewScreenObservationLabels),
+                Text(
+                  ' ${widget.viewScreenArgs.userReport.observation}',
+                  style: Styles.viewScreenObservationData,
+                ),
+              ],
+            ),
           )),
       Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
