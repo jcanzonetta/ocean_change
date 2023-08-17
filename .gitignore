@@ -62,3 +62,7 @@ linux/
 macos/
 windows/
 web/
+
+# Secrets
+/ios/Runner/GoogleService-Info.plist
+/android/app/google-services.json
