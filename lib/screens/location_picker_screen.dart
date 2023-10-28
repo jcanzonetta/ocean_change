@@ -57,17 +57,23 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
         FlutterMap(
           mapController: _mapController,
           options: MapOptions(
-            center: LatLng(45.3, -125),
-            zoom: 6,
-            maxZoom: 11,
-            minZoom: 5,
-            maxBounds:
-                LatLngBounds(LatLng(35.65, -140.10), LatLng(50.80, -120.50)),
+            crs: const Epsg3857(),                 //coordinate reference system
+            center: LatLng(44.1, -124.75),
+            boundsOptions: const FitBoundsOptions(padding: EdgeInsets.all(8.0)),
+            zoom: 10.0,
+            minZoom: 8.0,
+            maxZoom: 12.0,
+
+            maxBounds: LatLngBounds(LatLng(46.3, -123.50), LatLng(44, -124)),
+            nePanBoundary: LatLng(46.3, -123.50),
+            swPanBoundary: LatLng(41.9, -127.0),
+
             interactiveFlags: InteractiveFlag.doubleTapZoom |
-                InteractiveFlag.drag |
-                InteractiveFlag.pinchMove |
-                InteractiveFlag.pinchZoom |
-                InteractiveFlag.flingAnimation,
+              InteractiveFlag.drag |
+              InteractiveFlag.pinchMove |
+              InteractiveFlag.pinchZoom |
+              InteractiveFlag.flingAnimation,
+
             onMapReady: () async {
               if (userReport.geopoint == null) {
                 final centerLatLng = _mapController.center;
@@ -98,12 +104,16 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               imageCache.clear();
               // imageCache.clearLiveImages();
             },
+
           ),
           nonRotatedChildren: const [
             SimpleAttributionWidget(source: Text('OpenStreetMap')),
           ],
           children: [
             TileLayer(
+              minZoom: 8,
+              maxZoom: 12,
+              tileBounds: LatLngBounds(LatLng(46.3, -123.50),  LatLng(44, -124)),
               tileProvider: AssetTileProvider(),
               urlTemplate: 'assets/map/{z}/{x}/{y}.png',
               tms: false,
