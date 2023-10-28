@@ -1,9 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:ocean_change/widgets/admin/user_lookup.dart';
 import 'package:ocean_change/widgets/admin/user_not_found_error.dart';
 import 'package:ocean_change/widgets/login/sign_out_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ocean_change/models/user_data.dart';
+
+import '../widgets/map/delete_user_screen_button.dart';
 
 class AdminScreen extends StatefulWidget {
   static const String routeName = 'AdminScreen';
@@ -17,12 +22,14 @@ class AdminScreen extends StatefulWidget {
 class _AdminScreenState extends State<AdminScreen> {
   final formKey = GlobalKey<FormState>();
   UserData user = UserData();
+  UserData deleteUser = UserData();
   final usersData = FirebaseFirestore.instance.collection("users");
 
   @override
   void initState() {
     super.initState();
     user.email = "";
+    deleteUser.email = "";
   }
 
   @override
@@ -30,7 +37,7 @@ class _AdminScreenState extends State<AdminScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Administration', style: TextStyle(fontSize: 22)),
-          actions: const [SignOutButton()],
+          actions: const [DeleteUserButton(),SignOutButton()],
         ),
         body: Form(
             key: formKey,
@@ -60,11 +67,28 @@ class _AdminScreenState extends State<AdminScreen> {
                             _findUser(usersData);
                           },
                           child: const Text("Look up user")),
-                      UserLookup(user: user)
+                      UserLookup(user: user),
+                      // TextFormField(
+                      //   decoration: const InputDecoration(labelText: "Email to Delete"),
+                      //   validator: (value) {
+                      //     if (value!.isEmpty) {
+                      //       return "Please enter an email";
+                      //     } else {
+                      //       return null;
+                      //     }
+                      //   },
+                      //   onSaved: (newValue){deleteUser.email = newValue!;},
+                      // ),
+                      // ElevatedButton(
+                      //     onPressed: () {
+                      //       _deleteUser(deleteUser);
+                      //     },
+                      //     child: const Text("Run delete"))
                     ]),
               ),
             )));
   }
+
 
   Future _findUser(CollectionReference<Map<String, dynamic>> usersData) async {
     if (formKey.currentState!.validate()) {

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ocean_change/screens/create_account_screen.dart';
@@ -95,10 +96,38 @@ class _LoginScreenState extends State<LoginScreen> {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
       try {
+
+      
+
+      var userDocs = FirebaseFirestore.instance
+            .collection("users")
+            .where("email", isEqualTo: userData.email)
+            .get();
+
+        bool found = false;
+       await userDocs.then((QuerySnapshot value){
+          if (value.size == 0){
+            print("Not found user");
+            return;
+          }
+          for( var element in value.docs){
+            print(element.get("email"));
+            if(element.get("email") == userData.email){
+              found = true;
+            }
+          }
+        });
+        
+        if(!found){
+          throw Exception('User not registered for app');
+        }
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: userData.email!, password: userData.password!);
       } on FirebaseAuthException catch (e) {
         showFireBaseAuthError(context, e.message!);
+      } on Exception catch (e2){
+        // ignore: use_build_context_synchronously
+        showFireBaseAuthError(context, "User not registered for app");
       }
     }
   }

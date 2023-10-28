@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ocean_change/widgets/login/sign_out_button.dart';
 import 'package:ocean_change/widgets/map/admin_button.dart';
+import 'package:ocean_change/widgets/map/delete_user_screen_button.dart';
 
 import 'create_report_screen.dart';
 

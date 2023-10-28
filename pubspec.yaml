@@ -50,6 +50,7 @@ dependencies:
   firebase_auth: ^4.7.2
   google_sign_in: ^6.1.4
   geolocator: ^9.0.2
+  logger: ^2.0.2+1
 
 dev_dependencies:
   flutter_test:
