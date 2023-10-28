@@ -42,11 +42,16 @@ class _BaseMapState extends State<BaseMap> {
           imageCache.clear();
           _popupLayerController.hideAllPopups();
         },
-        center: LatLng(45.3, -125),
-        zoom: 6,
-        maxZoom: 11,
-        minZoom: 5,
-        maxBounds: LatLngBounds(LatLng(35.65, -140.10), LatLng(50.80, -120.50)),
+        crs: const Epsg3857(),                 //coordinate reference system
+        center: LatLng(44.1, -124.75),
+        //boundsOptions: const FitBoundsOptions(padding: EdgeInsets.all(8.0)),
+        zoom: 10.0,
+        minZoom: 7.0,
+        maxZoom: 12.0,
+
+        maxBounds: LatLngBounds(LatLng(41.9, -127.0), LatLng(46.3, -123.50)), //LatLng(46.3, -123.50), LatLng(44, -124)
+        nePanBoundary: LatLng(46.3, -123.50),
+        swPanBoundary: LatLng(41.9, -127.0),
         interactiveFlags: InteractiveFlag.doubleTapZoom |
             InteractiveFlag.drag |
             InteractiveFlag.pinchMove |
@@ -56,7 +61,7 @@ class _BaseMapState extends State<BaseMap> {
       ),
       nonRotatedChildren: const [
         SimpleAttributionWidget(
-          source: Text('OpenStreetMap'),
+          source: Text('mapzen, NOAA, OpenStreetMap'),
           alignment: Alignment.topRight,
         ),
       ],
