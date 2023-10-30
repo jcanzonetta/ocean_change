@@ -1,8 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ocean_change/models/user_data.dart';
 
 // builds a widget for displaying/changing a looked up user's admin status
+
 
 class UserLookup extends StatefulWidget {
   final UserData user;
@@ -13,6 +16,14 @@ class UserLookup extends StatefulWidget {
 }
 
 class _UserLookupState extends State<UserLookup> {
+  late UserData deleteUser;
+
+  void setDeleteUser(UserData userData) {
+    setState(() {
+      deleteUser = userData;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.user.email == "" || widget.user.email == null) {
@@ -20,15 +31,14 @@ class _UserLookupState extends State<UserLookup> {
     } else {
       return Padding(
           padding: const EdgeInsets.only(top: 20.0),
-          child: Column(children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10.0),
-              child: Text(widget.user.email!),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-              const Text("Admin: "),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0),
+                child: Text(widget.user.email!),
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                const Text("Admin: "),
                 Switch(
                     value: widget.user.adminStatus!,
                     onChanged: (bool value) {
@@ -40,8 +50,9 @@ class _UserLookupState extends State<UserLookup> {
                         widget.user.adminStatus = value;
                       });
                     }),
-            ])
-          ]));
+              ])
+            ],
+          ));
     }
   }
 }
