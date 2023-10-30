@@ -78,108 +78,20 @@ flutter:
   assets:
    - assets/images/
 
-  # Map Assets  
-   - assets/map/5/3/
-   - assets/map/5/4/
-   - assets/map/5/5/
+  # Map Assets
 
-   - assets/map/6/7/
-   - assets/map/6/8/
-   - assets/map/6/9/
-   - assets/map/6/10/
-
-   - assets/map/7/14/
-   - assets/map/7/15/
-   - assets/map/7/16/
-   - assets/map/7/17/
-   - assets/map/7/18/
-   - assets/map/7/19/
-   - assets/map/7/20/
-   - assets/map/7/21/
-
-   - assets/map/8/28/
-   - assets/map/8/29/
-   - assets/map/8/30/
-   - assets/map/8/31/
-   - assets/map/8/32/
-   - assets/map/8/33/
-   - assets/map/8/34/
-   - assets/map/8/35/
-   - assets/map/8/36/
    - assets/map/8/37/
    - assets/map/8/38/
    - assets/map/8/39/
    - assets/map/8/40/
-   - assets/map/8/41/
-   - assets/map/8/42/
-   
-   - assets/map/9/56/
-   - assets/map/9/57/
-   - assets/map/9/58/
-   - assets/map/9/59/
-   - assets/map/9/60/
-   - assets/map/9/61/
-   - assets/map/9/62/
-   - assets/map/9/63/
-   - assets/map/9/64/
-   - assets/map/9/65/
-   - assets/map/9/66/
-   - assets/map/9/67/
-   - assets/map/9/68/
-   - assets/map/9/69/
-   - assets/map/9/70/
-   - assets/map/9/71/
-   - assets/map/9/72/
-   - assets/map/9/73/
-   - assets/map/9/74/
+
    - assets/map/9/75/
    - assets/map/9/76/
    - assets/map/9/77/
    - assets/map/9/78/
    - assets/map/9/79/
    - assets/map/9/80/
-   - assets/map/9/81/
-   - assets/map/9/82/
-   - assets/map/9/83/
-   - assets/map/9/84/
 
-   - assets/map/10/113/
-   - assets/map/10/114/
-   - assets/map/10/115/
-   - assets/map/10/116/
-   - assets/map/10/117/
-   - assets/map/10/118/
-   - assets/map/10/119/
-   - assets/map/10/120/
-   - assets/map/10/121/
-   - assets/map/10/122/
-   - assets/map/10/123/
-   - assets/map/10/124/
-   - assets/map/10/125/
-   - assets/map/10/126/
-   - assets/map/10/127/
-   - assets/map/10/128/
-   - assets/map/10/129/
-   - assets/map/10/130/
-   - assets/map/10/131/
-   - assets/map/10/132/
-   - assets/map/10/133/
-   - assets/map/10/134/
-   - assets/map/10/135/
-   - assets/map/10/136/
-   - assets/map/10/137/
-   - assets/map/10/138/
-   - assets/map/10/139/
-   - assets/map/10/140/
-   - assets/map/10/141/
-   - assets/map/10/142/
-   - assets/map/10/143/
-   - assets/map/10/144/
-   - assets/map/10/145/
-   - assets/map/10/146/
-   - assets/map/10/147/
-   - assets/map/10/148/
-   - assets/map/10/149/
    - assets/map/10/150/
    - assets/map/10/151/
    - assets/map/10/152/
@@ -191,92 +103,7 @@ flutter:
    - assets/map/10/158/
    - assets/map/10/159/
    - assets/map/10/160/
-   - assets/map/10/161/
-   - assets/map/10/162/
-   - assets/map/10/163/
-   - assets/map/10/164/
-   - assets/map/10/165/
-   - assets/map/10/166/
-   - assets/map/10/167/
-   - assets/map/10/168/
-   - assets/map/10/169/
 
-   - assets/map/11/226/
-   - assets/map/11/227/
-   - assets/map/11/228/
-   - assets/map/11/229/
-   - assets/map/11/230/
-   - assets/map/11/231/
-   - assets/map/11/232/
-   - assets/map/11/233/
-   - assets/map/11/234/
-   - assets/map/11/235/
-   - assets/map/11/236/
-   - assets/map/11/237/
-   - assets/map/11/238/
-   - assets/map/11/239/
-   - assets/map/11/240/
-   - assets/map/11/241/
-   - assets/map/11/242/
-   - assets/map/11/243/
-   - assets/map/11/244/
-   - assets/map/11/245/
-   - assets/map/11/246/
-   - assets/map/11/247/
-   - assets/map/11/248/
-   - assets/map/11/249/
-   - assets/map/11/250/
-   - assets/map/11/251/
-   - assets/map/11/252/
-   - assets/map/11/253/
-   - assets/map/11/254/
-   - assets/map/11/255/
-   - assets/map/11/256/
-   - assets/map/11/257/
-   - assets/map/11/258/
-   - assets/map/11/259/
-   - assets/map/11/260/
-   - assets/map/11/261/
-   - assets/map/11/262/
-   - assets/map/11/262/
-   - assets/map/11/263/
-   - assets/map/11/264/
-   - assets/map/11/265/
-   - assets/map/11/266/
-   - assets/map/11/267/
-   - assets/map/11/268/
-   - assets/map/11/269/
-   - assets/map/11/270/
-   - assets/map/11/271/
-   - assets/map/11/272/
-   - assets/map/11/273/
-   - assets/map/11/274/
-   - assets/map/11/275/
-   - assets/map/11/276/
-   - assets/map/11/277/
-   - assets/map/11/278/
-   - assets/map/11/279/
-   - assets/map/11/280/
-   - assets/map/11/281/
-   - assets/map/11/282/
-   - assets/map/11/283/
-   - assets/map/11/284/
-   - assets/map/11/285/
-   - assets/map/11/286/
-   - assets/map/11/287/
-   - assets/map/11/288/
-   - assets/map/11/289/
-   - assets/map/11/290/
-   - assets/map/11/291/
-   - assets/map/11/292/
-   - assets/map/11/293/
-   - assets/map/11/294/
-   - assets/map/11/295/
-   - assets/map/11/296/
-   - assets/map/11/297/
-   - assets/map/11/298/
-   - assets/map/11/299/
-   - assets/map/11/300/
    - assets/map/11/301/
    - assets/map/11/302/
    - assets/map/11/303/
@@ -298,23 +125,47 @@ flutter:
    - assets/map/11/319/
    - assets/map/11/320/
    - assets/map/11/321/
-   - assets/map/11/322/
-   - assets/map/11/323/
-   - assets/map/11/324/
-   - assets/map/11/325/
-   - assets/map/11/326/
-   - assets/map/11/327/
-   - assets/map/11/328/
-   - assets/map/11/329/
-   - assets/map/11/330/
-   - assets/map/11/331/
-   - assets/map/11/332/
-   - assets/map/11/333/
-   - assets/map/11/334/
-   - assets/map/11/335/
-   - assets/map/11/336/
-   - assets/map/11/337/
-   - assets/map/11/338/
+
+   - assets/map/12/603/
+   - assets/map/12/604/
+   - assets/map/12/605/
+   - assets/map/12/606/
+   - assets/map/12/607/
+   - assets/map/12/608/
+   - assets/map/12/609/
+   - assets/map/12/610/
+   - assets/map/12/611/
+   - assets/map/12/612/
+   - assets/map/12/613/
+   - assets/map/12/614/
+   - assets/map/12/615/
+   - assets/map/12/616/
+   - assets/map/12/617/
+   - assets/map/12/618/
+   - assets/map/12/619/
+   - assets/map/12/620/
+   - assets/map/12/621/
+   - assets/map/12/622/
+   - assets/map/12/623/
+   - assets/map/12/624/
+   - assets/map/12/625/
+   - assets/map/12/626/
+   - assets/map/12/627/
+   - assets/map/12/628/
+   - assets/map/12/629/
+   - assets/map/12/630/
+   - assets/map/12/631/
+   - assets/map/12/632/
+   - assets/map/12/633/
+   - assets/map/12/634/
+   - assets/map/12/635/
+   - assets/map/12/636/
+   - assets/map/12/637/
+   - assets/map/12/638/
+   - assets/map/12/639/
+   - assets/map/12/640/
+   - assets/map/12/641/
+   - assets/map/12/642/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
