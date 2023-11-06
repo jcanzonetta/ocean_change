@@ -67,4 +67,7 @@ web/
 /ios/Runner/GoogleService-Info.plist
 /android/app/google-services.json
 
+
 /android/app/src/main/res/xml/network_security_config.xml
+.vscode/
+
