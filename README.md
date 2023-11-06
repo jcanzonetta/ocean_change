@@ -12,3 +12,5 @@ If working in emulatar mode for andriod add the following to a file named networ
     </domain-config>
 </network-security-config>
 ```
+
+This also only for andriod
